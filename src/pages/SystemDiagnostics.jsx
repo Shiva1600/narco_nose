@@ -46,7 +46,7 @@ export default function SystemDiagnostics() {
         </div>
 
         <div className="flex flex-col md:items-center text-left md:text-center">
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-slate-900 tracking-tight font-display-hero">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-slate-900 tracking-tight font-inter">
             System Diagnostics
           </h1>
           <div className="mt-2 inline-flex items-center gap-2.5 px-4 py-1.5 bg-surface-container-lowest rounded-full text-slate-800 text-xs sm:text-sm font-semibold border border-outline-variant/40 shadow-sm">

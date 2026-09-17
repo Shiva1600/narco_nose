@@ -27,10 +27,10 @@ export default function HomeHub() {
           <span className="w-2.5 h-2.5 rounded-full bg-primary animate-pulse"></span>
           <span>Biosensing Array Active & Telemetry Synchronized</span>
         </div>
-        <h1 className="text-4xl sm:text-5xl md:text-6xl font-black font-display-hero text-on-surface tracking-tight mb-3">
+        <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold font-inter text-slate-900 tracking-tight mb-2.5">
           Narco Nose
         </h1>
-        <p className="text-lg sm:text-xl font-medium text-slate-600 max-w-2xl mx-auto leading-relaxed">
+        <p className="text-base sm:text-lg font-normal text-slate-600 max-w-2xl mx-auto leading-relaxed">
           Real-Time Chemical Threat Proxy Detection & Edge Machine Learning Interface
         </p>
 

@@ -179,7 +179,7 @@ export default function SensorData() {
             <span className="material-symbols-outlined text-base text-primary">sensors</span>
             <span>Biosensor Telemetry Suite</span>
           </div>
-          <h1 className="text-3xl sm:text-4xl font-black font-display-hero text-on-surface tracking-tight">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold font-inter text-slate-900 tracking-tight">
             Sensor Data Dashboard
           </h1>
         </div>

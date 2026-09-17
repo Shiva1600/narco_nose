@@ -119,7 +119,7 @@ export default function HistoryLogs() {
           </button>
           <div className="h-5 w-px bg-outline-variant/60 hidden sm:block"></div>
           <div className="flex flex-wrap items-center gap-3">
-            <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-on-surface font-display-hero">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight text-slate-900 font-inter">
               History
             </h1>
             <span className="inline-flex items-center px-3.5 py-1 rounded-full bg-surface-container-low border border-outline-variant/60 text-on-surface-variant text-xs font-bold shadow-xs">

@@ -34,26 +34,26 @@ export default function Navbar() {
         <div className="flex items-center gap-8">
           <button
             onClick={() => setActiveTab('home')}
-            className="text-2xl md:text-3xl font-extrabold text-on-surface tracking-tight flex items-center gap-2.5 hover:opacity-90 transition-opacity"
+            className="text-xl md:text-2xl font-bold text-slate-900 tracking-tight flex items-center gap-2 hover:opacity-90 transition-opacity font-inter"
           >
-            <span className="material-symbols-outlined text-primary text-3xl font-bold" data-icon="sensors">
+            <span className="material-symbols-outlined text-primary text-2xl font-bold" data-icon="sensors">
               sensors
             </span>
-            <span className="font-extrabold">Narco Nose</span>
+            <span className="font-bold">Narco Nose</span>
           </button>
 
           {/* Navigation Links with Physical Sliding Pill */}
-          <nav className="hidden md:flex items-center gap-1.5 lg:gap-2 ml-2 bg-surface-container/70 p-1.5 rounded-full border border-outline-variant/40 shadow-inner">
+          <nav className="hidden md:flex items-center gap-1 lg:gap-1.5 ml-2 bg-surface-container/70 p-1.5 rounded-full border border-outline-variant/40 shadow-inner font-inter">
             {tabs.map(t => {
               const isActive = activeTab === t.id;
               return (
                 <button
                   key={t.id}
                   onClick={() => setActiveTab(t.id)}
-                  className={`relative flex items-center gap-1.5 px-4 py-2 rounded-full text-sm lg:text-base font-bold transition-colors duration-200 z-10 ${
+                  className={`relative flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-sm font-semibold transition-colors duration-200 z-10 ${
                     isActive
-                      ? 'text-primary font-black'
-                      : 'text-secondary hover:text-on-surface'
+                      ? 'text-primary font-bold'
+                      : 'text-slate-600 hover:text-slate-900'
                   }`}
                 >
                   {isActive && (

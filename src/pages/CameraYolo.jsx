@@ -137,7 +137,7 @@ export default function CameraYolo() {
           </button>
           <div className="h-6 w-px bg-outline-variant/60 hidden sm:block"></div>
           <div className="flex items-center gap-3">
-            <h1 className="text-2xl sm:text-3xl font-extrabold text-on-surface tracking-tight font-display-hero">
+            <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight font-inter">
               Camera YOLO
             </h1>
             <span className="bg-surface-container-highest/80 px-3.5 py-1 rounded-full text-xs font-bold text-on-surface-variant border border-outline-variant/30">

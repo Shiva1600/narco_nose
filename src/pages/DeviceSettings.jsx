@@ -87,7 +87,7 @@ export default function DeviceSettings() {
         </div>
 
         <div className="text-left sm:text-center">
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-slate-900 tracking-tight font-display-hero">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-slate-900 tracking-tight font-inter">
             Settings &amp; Actuator Control
           </h1>
           <p className="text-xs sm:text-sm font-medium text-secondary mt-1 flex items-center sm:justify-center space-x-2">
