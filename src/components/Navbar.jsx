@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useApp } from '../context/AppContext';
+import { motion } from 'framer-motion';
 
 export default function Navbar() {
   const {
@@ -41,25 +42,29 @@ export default function Navbar() {
             <span className="font-extrabold">Narco Nose</span>
           </button>
 
-          {/* Navigation Links */}
-          <nav className="hidden md:flex items-center gap-6 lg:gap-8 ml-2">
+          {/* Navigation Links with Physical Sliding Pill */}
+          <nav className="hidden md:flex items-center gap-1.5 lg:gap-2 ml-2 bg-surface-container/70 p-1.5 rounded-full border border-outline-variant/40 shadow-inner">
             {tabs.map(t => {
               const isActive = activeTab === t.id;
               return (
                 <button
                   key={t.id}
                   onClick={() => setActiveTab(t.id)}
-                  className={`flex items-center gap-1.5 py-1 text-base lg:text-lg font-semibold transition-colors duration-150 relative ${
+                  className={`relative flex items-center gap-1.5 px-4 py-2 rounded-full text-sm lg:text-base font-bold transition-colors duration-200 z-10 ${
                     isActive
-                      ? 'text-primary font-bold'
+                      ? 'text-primary font-black'
                       : 'text-secondary hover:text-on-surface'
                   }`}
                 >
-                  <span className="material-symbols-outlined text-xl">{t.icon}</span>
-                  <span>{t.label}</span>
                   {isActive && (
-                    <span className="absolute -bottom-[21px] left-0 right-0 h-[3px] bg-primary rounded-t-full" />
+                    <motion.div
+                      layoutId="activeNavPill"
+                      className="absolute inset-0 bg-surface-container-lowest rounded-full shadow-sm border border-outline-variant/40"
+                      transition={{ type: 'spring', stiffness: 420, damping: 32 }}
+                    />
                   )}
+                  <span className="material-symbols-outlined text-xl relative z-10">{t.icon}</span>
+                  <span className="relative z-10">{t.label}</span>
                 </button>
               );
             })}
@@ -161,21 +166,28 @@ export default function Navbar() {
       </div>
 
       {/* Mobile Nav Scroller */}
-      <div className="md:hidden flex items-center gap-4 px-4 py-2.5 overflow-x-auto bg-surface-container-low border-t border-outline-variant/20 scrollbar-none">
+      <div className="md:hidden flex items-center gap-2 px-4 py-2.5 overflow-x-auto bg-surface-container-low border-t border-outline-variant/20 scrollbar-none">
         {tabs.map(t => {
           const isActive = activeTab === t.id;
           return (
             <button
               key={t.id}
               onClick={() => setActiveTab(t.id)}
-              className={`flex items-center gap-1 text-sm font-semibold whitespace-nowrap px-3 py-1 rounded-full transition-all ${
+              className={`relative flex items-center gap-1 text-sm font-bold whitespace-nowrap px-3.5 py-1.5 rounded-full transition-colors z-10 ${
                 isActive
-                  ? 'bg-primary text-on-primary shadow-sm font-bold'
+                  ? 'text-primary font-black'
                   : 'text-secondary hover:text-on-surface'
               }`}
             >
-              <span className="material-symbols-outlined text-base">{t.icon}</span>
-              <span>{t.label}</span>
+              {isActive && (
+                <motion.div
+                  layoutId="mobileActiveNavPill"
+                  className="absolute inset-0 bg-surface-container-lowest rounded-full shadow-xs border border-outline-variant/40"
+                  transition={{ type: 'spring', stiffness: 420, damping: 32 }}
+                />
+              )}
+              <span className="material-symbols-outlined text-base relative z-10">{t.icon}</span>
+              <span className="relative z-10">{t.label}</span>
             </button>
           );
         })}

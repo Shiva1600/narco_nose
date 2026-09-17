@@ -10,25 +10,41 @@ import HistoryLogs from './pages/HistoryLogs';
 import SystemDiagnostics from './pages/SystemDiagnostics';
 import DeviceSettings from './pages/DeviceSettings';
 
+import { AnimatePresence, motion } from 'framer-motion';
+
 function DashboardContent() {
   const { activeTab } = useApp();
 
   return (
-    <div className="min-h-screen flex flex-col bg-background text-on-surface">
+    <div className="min-h-screen flex flex-col bg-background text-on-surface overflow-x-hidden">
       {/* Top Navigation Bar */}
       <Navbar />
 
       {/* Hardware Simulation & Scenario Test Toolbar */}
       <SimulationBar />
 
-      {/* Main Tab Router Canvas */}
-      <main className="flex-1 flex flex-col">
-        {activeTab === 'home' && <HomeHub />}
-        {activeTab === 'sensors' && <SensorData />}
-        {activeTab === 'camera' && <CameraYolo />}
-        {activeTab === 'history' && <HistoryLogs />}
-        {activeTab === 'diagnostics' && <SystemDiagnostics />}
-        {activeTab === 'settings' && <DeviceSettings />}
+      {/* Main Animated Tab Router Canvas */}
+      <main className="flex-1 flex flex-col relative overflow-hidden">
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={activeTab}
+            initial={{ opacity: 0, y: 20, filter: 'blur(4px)' }}
+            animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+            exit={{ opacity: 0, y: -16, filter: 'blur(3px)' }}
+            transition={{
+              duration: 0.32,
+              ease: [0.22, 1, 0.36, 1]
+            }}
+            className="flex-1 flex flex-col"
+          >
+            {activeTab === 'home' && <HomeHub />}
+            {activeTab === 'sensors' && <SensorData />}
+            {activeTab === 'camera' && <CameraYolo />}
+            {activeTab === 'history' && <HistoryLogs />}
+            {activeTab === 'diagnostics' && <SystemDiagnostics />}
+            {activeTab === 'settings' && <DeviceSettings />}
+          </motion.div>
+        </AnimatePresence>
       </main>
 
       {/* High-Resolution Snapshot Inspection Modal */}

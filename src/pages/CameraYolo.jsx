@@ -19,7 +19,8 @@ export default function CameraYolo() {
     toggleBoundingBoxes,
     captureSnapshot,
     setSelectedSnapshot,
-    setActiveTab
+    setActiveTab,
+    activeTab
   } = useApp();
 
   const [sensitivity, setSensitivity] = useState(75);
@@ -30,6 +31,15 @@ export default function CameraYolo() {
   const markerRef = useRef(null);
   const polylineRef = useRef(null);
 
+  // Invalidate map layout when switching into camera tab
+  useEffect(() => {
+    if (activeTab === 'camera' && mapInstanceRef.current) {
+      setTimeout(() => {
+        mapInstanceRef.current?.invalidateSize();
+      }, 60);
+    }
+  }, [activeTab]);
+
   // Auto refresh static frame if MJPEG stream is not active
   useEffect(() => {
     const timer = setInterval(() => {
@@ -38,60 +48,66 @@ export default function CameraYolo() {
     return () => clearInterval(timer);
   }, []);
 
-  // Initialize Leaflet Map
+  // Initialize Leaflet Map once on mount, clean up on unmount
   useEffect(() => {
     if (!mapContainerRef.current) return;
 
-    if (!mapInstanceRef.current) {
-      const map = L.map(mapContainerRef.current, {
-        center: [gps.lat, gps.lon],
-        zoom: 16,
-        zoomControl: false,
-        attributionControl: false
-      });
+    const map = L.map(mapContainerRef.current, {
+      center: [gps.lat, gps.lon],
+      zoom: 16,
+      zoomControl: false,
+      attributionControl: false
+    });
 
-      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        maxZoom: 19
-      }).addTo(map);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 19
+    }).addTo(map);
 
-      // Threat marker custom icon
-      const customIcon = L.divIcon({
-        className: 'custom-gps-pin',
-        html: `
-          <div style="background-color: #00685f; width: 28px; height: 28px; border-radius: 50%; border: 3px solid white; box-shadow: 0 0 10px rgba(0,104,95,0.6); display: flex; align-items: center; justify-content: center; color: white;">
-            <span class="material-symbols-outlined" style="font-size: 16px;">sensors</span>
-          </div>
-        `,
-        iconSize: [28, 28],
-        iconAnchor: [14, 14]
-      });
+    const customIcon = L.divIcon({
+      className: 'custom-gps-pin',
+      html: `
+        <div style="background-color: #00685f; width: 28px; height: 28px; border-radius: 50%; border: 3px solid white; box-shadow: 0 0 10px rgba(0,104,95,0.6); display: flex; align-items: center; justify-content: center; color: white;">
+          <span class="material-symbols-outlined" style="font-size: 16px;">sensors</span>
+        </div>
+      `,
+      iconSize: [28, 28],
+      iconAnchor: [14, 14]
+    });
 
-      const marker = L.marker([gps.lat, gps.lon], { icon: customIcon }).addTo(map);
-      marker.bindPopup(`<b>Narco Nose Node</b><br/>Lat: ${gps.lat.toFixed(5)}<br/>Lon: ${gps.lon.toFixed(5)}`);
+    const marker = L.marker([gps.lat, gps.lon], { icon: customIcon }).addTo(map);
+    marker.bindPopup(`<b>Narco Nose Node</b><br/>Lat: ${gps.lat.toFixed(5)}<br/>Lon: ${gps.lon.toFixed(5)}`);
 
-      // Polyline trail
-      const polyline = L.polyline(gps.routeTrail || [[gps.lat, gps.lon]], {
-        color: '#008378',
-        weight: 3.5,
-        opacity: 0.7,
-        dashArray: '5, 8'
-      }).addTo(map);
+    const polyline = L.polyline(gps.routeTrail || [[gps.lat, gps.lon]], {
+      color: '#008378',
+      weight: 3.5,
+      opacity: 0.7,
+      dashArray: '5, 8'
+    }).addTo(map);
 
-      mapInstanceRef.current = map;
-      markerRef.current = marker;
-      polylineRef.current = polyline;
-    } else {
-      // Update position
-      const map = mapInstanceRef.current;
-      const marker = markerRef.current;
-      const polyline = polylineRef.current;
+    mapInstanceRef.current = map;
+    markerRef.current = marker;
+    polylineRef.current = polyline;
 
-      if (marker) {
-        marker.setLatLng([gps.lat, gps.lon]);
-      }
-      if (polyline && gps.routeTrail) {
-        polyline.setLatLngs(gps.routeTrail);
-      }
+    // Small delay to ensure container dimension layout finishes
+    setTimeout(() => {
+      map.invalidateSize();
+    }, 50);
+
+    return () => {
+      map.remove();
+      mapInstanceRef.current = null;
+      markerRef.current = null;
+      polylineRef.current = null;
+    };
+  }, []);
+
+  // Update marker & trail smoothly when GPS coordinates change
+  useEffect(() => {
+    if (markerRef.current) {
+      markerRef.current.setLatLng([gps.lat, gps.lon]);
+    }
+    if (polylineRef.current && gps.routeTrail) {
+      polylineRef.current.setLatLngs(gps.routeTrail);
     }
   }, [gps]);
 
