@@ -135,7 +135,7 @@ export default function HistoryLogs() {
       </div>
 
       {/* Section 1: 24-Hour Biosensing Telemetry Trend */}
-      <section className="bg-surface-container-lowest squircle-card p-6 sm:p-8 space-y-6">
+      <section className="bg-surface-container-lowest squircle-card hover-pop-teal p-6 sm:p-8 space-y-6">
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-4 border-b border-surface-container">
           <div>
             <div className="flex items-center gap-3">
@@ -198,7 +198,7 @@ export default function HistoryLogs() {
       </section>
 
       {/* Section 2: Chronological Threat Event Log & YOLO Snapshots */}
-      <section className="bg-surface-container-lowest squircle-card p-6 sm:p-8 space-y-6">
+      <section className="bg-surface-container-lowest squircle-card hover-pop-rose p-6 sm:p-8 space-y-6">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-surface-container">
           <div>
             <div className="flex items-center gap-3">
@@ -247,7 +247,9 @@ export default function HistoryLogs() {
               return (
                 <div
                   key={evt.id}
-                  className="p-5 rounded-3xl bg-surface-container-low/70 border border-outline-variant/30 hover:border-outline-variant transition-all flex flex-col md:flex-row items-start md:items-center justify-between gap-5 hover:shadow-sm"
+                  className={`p-5 rounded-3xl bg-surface-container-low/70 border border-outline-variant/30 transition-all flex flex-col md:flex-row items-start md:items-center justify-between gap-5 ${
+                    isCrit ? 'hover-pop-rose' : 'hover-pop-amber'
+                  }`}
                 >
                   {/* Left info */}
                   <div className="flex items-start gap-4">

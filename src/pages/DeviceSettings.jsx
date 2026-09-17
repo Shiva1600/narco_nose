@@ -117,7 +117,7 @@ export default function DeviceSettings() {
       {/* 2x2 Bento Grid of Squircles */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 pb-12">
         {/* CARD 1: Threshold Calibration */}
-        <section className="squircle-card bg-surface-container-lowest p-6 sm:p-8 flex flex-col justify-between">
+        <section className="squircle-card hover-pop-teal bg-surface-container-lowest p-6 sm:p-8 flex flex-col justify-between">
           <div>
             <div className="flex items-start justify-between mb-6">
               <div className="flex items-center space-x-3.5">
@@ -237,7 +237,7 @@ export default function DeviceSettings() {
         </section>
 
         {/* CARD 2: Physical Actuators & Hardware Triggers (Bi-directional MQTT) */}
-        <section className="squircle-card bg-surface-container-lowest p-6 sm:p-8 flex flex-col justify-between">
+        <section className="squircle-card hover-pop-amber bg-surface-container-lowest p-6 sm:p-8 flex flex-col justify-between">
           <div>
             <div className="flex items-start justify-between mb-6">
               <div className="flex items-center space-x-3.5">
@@ -364,7 +364,7 @@ export default function DeviceSettings() {
         </section>
 
         {/* CARD 3: MQTT Broker & IoT Gateway Configuration */}
-        <section className="squircle-card bg-surface-container-lowest p-6 sm:p-8 flex flex-col justify-between">
+        <section className="squircle-card hover-pop-blue bg-surface-container-lowest p-6 sm:p-8 flex flex-col justify-between">
           <div>
             <div className="flex items-start justify-between mb-6">
               <div className="flex items-center space-x-3.5">
@@ -446,7 +446,7 @@ export default function DeviceSettings() {
         </section>
 
         {/* CARD 4: Machine Learning & Edge Model Parameters */}
-        <section className="squircle-card bg-surface-container-lowest p-6 sm:p-8 flex flex-col justify-between">
+        <section className="squircle-card hover-pop-purple bg-surface-container-lowest p-6 sm:p-8 flex flex-col justify-between">
           <div>
             <div className="flex items-start justify-between mb-6">
               <div className="flex items-center space-x-3.5">

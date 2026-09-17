@@ -75,7 +75,7 @@ export default function SystemDiagnostics() {
       {/* 1. Top Row: Hardware Health (3 Uniform Squircle Gauge Cards) */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {/* Card 1: CPU Usage */}
-        <div className="squircle-card bg-surface-container-lowest p-6 flex flex-col justify-between relative overflow-hidden">
+        <div className="squircle-card hover-pop-teal bg-surface-container-lowest p-6 flex flex-col justify-between relative overflow-hidden cursor-default">
           <div>
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-3">
@@ -133,7 +133,7 @@ export default function SystemDiagnostics() {
         </div>
 
         {/* Card 2: RAM Usage */}
-        <div className="squircle-card bg-surface-container-lowest p-6 flex flex-col justify-between relative overflow-hidden">
+        <div className="squircle-card hover-pop-blue bg-surface-container-lowest p-6 flex flex-col justify-between relative overflow-hidden cursor-default">
           <div>
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-3">
@@ -191,7 +191,7 @@ export default function SystemDiagnostics() {
         </div>
 
         {/* Card 3: Core Temperature */}
-        <div className="squircle-card bg-surface-container-lowest p-6 flex flex-col justify-between relative overflow-hidden">
+        <div className="squircle-card hover-pop-amber bg-surface-container-lowest p-6 flex flex-col justify-between relative overflow-hidden cursor-default">
           <div>
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-3">
@@ -250,7 +250,7 @@ export default function SystemDiagnostics() {
       </div>
 
       {/* 2. Sensor Module Health & I/O Status Matrix */}
-      <div className="squircle-card bg-surface-container-lowest p-6 sm:p-8 space-y-6">
+      <div className="squircle-card hover-pop-teal bg-surface-container-lowest p-6 sm:p-8 space-y-6">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-surface-container">
           <div>
             <h2 className="text-2xl font-black text-slate-900 tracking-tight">

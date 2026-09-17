@@ -299,7 +299,7 @@ export default function SensorData() {
       {sensorViewMode === 'simple' && (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {/* Card: MQ-2 Combustible Gas & Smoke */}
-          <div className="squircle-card bg-surface-container-lowest p-6 flex flex-col justify-between">
+          <div className="squircle-card hover-pop-teal bg-surface-container-lowest p-6 flex flex-col justify-between cursor-default">
             <div className="flex justify-between items-start">
               <div>
                 <span className="text-xs font-bold uppercase tracking-wider text-secondary">
@@ -336,7 +336,7 @@ export default function SensorData() {
           </div>
 
           {/* Card: MQ-3 Alcohol & Organic Vapors */}
-          <div className="squircle-card bg-surface-container-lowest p-6 flex flex-col justify-between">
+          <div className="squircle-card hover-pop-rose bg-surface-container-lowest p-6 flex flex-col justify-between cursor-default">
             <div className="flex justify-between items-start">
               <div>
                 <span className="text-xs font-bold uppercase tracking-wider text-secondary">
@@ -373,7 +373,7 @@ export default function SensorData() {
           </div>
 
           {/* Card: MQ-135 Air Quality & Hazardous Gases */}
-          <div className="squircle-card bg-surface-container-lowest p-6 flex flex-col justify-between">
+          <div className="squircle-card hover-pop-blue bg-surface-container-lowest p-6 flex flex-col justify-between cursor-default">
             <div className="flex justify-between items-start">
               <div>
                 <span className="text-xs font-bold uppercase tracking-wider text-secondary">
@@ -410,7 +410,7 @@ export default function SensorData() {
           </div>
 
           {/* Card: Temperature (DHT22) */}
-          <div className="squircle-card bg-surface-container-lowest p-6 flex flex-col justify-between">
+          <div className="squircle-card hover-pop-amber bg-surface-container-lowest p-6 flex flex-col justify-between cursor-default">
             <div className="flex justify-between items-start">
               <div>
                 <span className="text-xs font-bold uppercase tracking-wider text-secondary">
@@ -418,7 +418,7 @@ export default function SensorData() {
                 </span>
                 <h3 className="text-xl font-extrabold text-on-surface mt-0.5">DHT22 Temp</h3>
               </div>
-              <div className="w-10 h-10 rounded-2xl bg-surface-container flex items-center justify-center text-secondary">
+              <div className="w-10 h-10 rounded-2xl bg-amber-50 border border-amber-200 flex items-center justify-center text-amber-700">
                 <span className="material-symbols-outlined text-2xl">thermostat</span>
               </div>
             </div>
@@ -430,13 +430,13 @@ export default function SensorData() {
                 Equivalent to {((telemetry.temp * 9) / 5 + 32).toFixed(1)}°F (Calibrated)
               </div>
             </div>
-            <div className="text-xs font-semibold text-emerald-700 bg-emerald-50 px-3 py-1.5 rounded-full w-fit">
+            <div className="text-xs font-semibold text-amber-800 bg-amber-50 px-3 py-1.5 rounded-full w-fit">
               Thermal Chamber Stabilized
             </div>
           </div>
 
           {/* Card: Relative Humidity (DHT22) */}
-          <div className="squircle-card bg-surface-container-lowest p-6 flex flex-col justify-between">
+          <div className="squircle-card hover-pop-teal bg-surface-container-lowest p-6 flex flex-col justify-between cursor-default">
             <div className="flex justify-between items-start">
               <div>
                 <span className="text-xs font-bold uppercase tracking-wider text-secondary">
@@ -444,7 +444,7 @@ export default function SensorData() {
                 </span>
                 <h3 className="text-xl font-extrabold text-on-surface mt-0.5">DHT22 RH</h3>
               </div>
-              <div className="w-10 h-10 rounded-2xl bg-surface-container flex items-center justify-center text-secondary">
+              <div className="w-10 h-10 rounded-2xl bg-teal-50 border border-teal-200 flex items-center justify-center text-primary">
                 <span className="material-symbols-outlined text-2xl">humidity_mid</span>
               </div>
             </div>
@@ -456,13 +456,13 @@ export default function SensorData() {
                 Target range: 35% - 65% RH
               </div>
             </div>
-            <div className="text-xs font-semibold text-teal-700 bg-teal-50 px-3 py-1.5 rounded-full w-fit">
+            <div className="text-xs font-semibold text-teal-800 bg-teal-50 px-3 py-1.5 rounded-full w-fit">
               Optimal Sensor Sensitivity
             </div>
           </div>
 
           {/* Card: Heat Index & Vapor Pressure */}
-          <div className="squircle-card bg-surface-container-lowest p-6 flex flex-col justify-between">
+          <div className="squircle-card hover-pop-blue bg-surface-container-lowest p-6 flex flex-col justify-between cursor-default">
             <div className="flex justify-between items-start">
               <div>
                 <span className="text-xs font-bold uppercase tracking-wider text-secondary">
@@ -470,7 +470,7 @@ export default function SensorData() {
                 </span>
                 <h3 className="text-xl font-extrabold text-on-surface mt-0.5">Enthalpy Proxy</h3>
               </div>
-              <div className="w-10 h-10 rounded-2xl bg-surface-container flex items-center justify-center text-secondary">
+              <div className="w-10 h-10 rounded-2xl bg-blue-50 border border-blue-200 flex items-center justify-center text-tertiary">
                 <span className="material-symbols-outlined text-2xl">device_thermostat</span>
               </div>
             </div>
@@ -482,7 +482,7 @@ export default function SensorData() {
                 Calibrated against MQ vapor sorption rate
               </div>
             </div>
-            <div className="text-xs font-semibold text-blue-700 bg-blue-50 px-3 py-1.5 rounded-full w-fit">
+            <div className="text-xs font-semibold text-blue-800 bg-blue-50 px-3 py-1.5 rounded-full w-fit">
               Vaporization Compensation Active
             </div>
           </div>
@@ -494,7 +494,7 @@ export default function SensorData() {
         <div className="flex flex-col gap-6">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             {/* Rolling Multi-Line Trend Chart */}
-            <div className="lg:col-span-2 squircle-card bg-surface-container-lowest p-6 flex flex-col">
+            <div className="lg:col-span-2 squircle-card hover-pop-teal bg-surface-container-lowest p-6 flex flex-col">
               <div className="flex justify-between items-center mb-4">
                 <div>
                   <h3 className="text-xl font-black text-on-surface">
@@ -516,7 +516,7 @@ export default function SensorData() {
             </div>
 
             {/* 5-Axis Threat Radar Chart */}
-            <div className="squircle-card bg-surface-container-lowest p-6 flex flex-col">
+            <div className="squircle-card hover-pop-purple bg-surface-container-lowest p-6 flex flex-col">
               <div className="mb-2">
                 <h3 className="text-xl font-black text-on-surface">
                   5-Axis Chemical Vector Radar
@@ -534,7 +534,7 @@ export default function SensorData() {
 
           {/* Differential Telemetry & ADC Voltage Matrix */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="squircle-card bg-surface-container-lowest p-5 border border-outline-variant/30">
+            <div className="squircle-card hover-pop-amber bg-surface-container-lowest p-5 border border-outline-variant/30">
               <div className="flex items-center gap-2 text-xs font-bold text-secondary uppercase">
                 <span className="material-symbols-outlined text-primary text-base">electric_meter</span>
                 <span>ADS1115 ADC Raw Voltages</span>
@@ -561,7 +561,7 @@ export default function SensorData() {
               </div>
             </div>
 
-            <div className="squircle-card bg-surface-container-lowest p-5 border border-outline-variant/30">
+            <div className="squircle-card hover-pop-blue bg-surface-container-lowest p-5 border border-outline-variant/30">
               <div className="flex items-center gap-2 text-xs font-bold text-secondary uppercase">
                 <span className="material-symbols-outlined text-tertiary text-base">delta</span>
                 <span>Baseline Drift (Tare Delta)</span>
@@ -588,7 +588,7 @@ export default function SensorData() {
               </div>
             </div>
 
-            <div className="squircle-card bg-surface-container-lowest p-5 border border-outline-variant/30">
+            <div className="squircle-card hover-pop-rose bg-surface-container-lowest p-5 border border-outline-variant/30">
               <div className="flex items-center gap-2 text-xs font-bold text-secondary uppercase">
                 <span className="material-symbols-outlined text-rose-600 text-base">psychology</span>
                 <span>ML Classifier Confidence</span>

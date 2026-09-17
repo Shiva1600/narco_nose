@@ -64,13 +64,13 @@ export default function HomeHub() {
           <button
             onClick={() => setActiveTab('sensors')}
             aria-label="Open Sensor Data module"
-            className="squircle-card bg-surface-container-lowest w-52 h-52 sm:w-60 sm:h-60 flex flex-col items-center justify-center p-6 sm:p-7 text-center group cursor-pointer active:scale-95 relative"
+            className="squircle-card hover-pop-teal bg-surface-container-lowest w-52 h-52 sm:w-60 sm:h-60 flex flex-col items-center justify-center p-6 sm:p-7 text-center group cursor-pointer active:scale-95 relative"
           >
             {/* Live Indicator Pill */}
             <span className="absolute top-4 right-4 text-[11px] font-bold px-2 py-0.5 rounded-full bg-surface-container text-primary border border-outline-variant/30">
               {telemetry.mq2} ppm
             </span>
-            <div className="w-16 h-16 sm:w-18 sm:h-18 rounded-full bg-surface-container-low flex items-center justify-center text-on-surface group-hover:text-primary group-hover:bg-primary/10 transition-colors duration-200 mb-3 sm:mb-4">
+            <div className="w-16 h-16 sm:w-18 sm:h-18 rounded-full bg-surface-container-low flex items-center justify-center text-on-surface group-hover:text-primary group-hover:bg-primary/15 transition-all duration-200 mb-3 sm:mb-4 group-hover:scale-110">
               <span className="material-symbols-outlined text-[36px] sm:text-[40px]">graphic_eq</span>
             </div>
             <span className="text-xl sm:text-2xl font-bold text-slate-900 group-hover:text-primary transition-colors tracking-tight">
@@ -85,17 +85,17 @@ export default function HomeHub() {
           <button
             onClick={() => setActiveTab('camera')}
             aria-label="Open Camera YOLO detection"
-            className="squircle-card bg-surface-container-lowest w-52 h-52 sm:w-60 sm:h-60 flex flex-col items-center justify-center p-6 sm:p-7 text-center group cursor-pointer active:scale-95 relative"
+            className="squircle-card hover-pop-blue bg-surface-container-lowest w-52 h-52 sm:w-60 sm:h-60 flex flex-col items-center justify-center p-6 sm:p-7 text-center group cursor-pointer active:scale-95 relative"
           >
             {/* Live Indicator Pill */}
             <span className="absolute top-4 right-4 text-[11px] font-bold px-2 py-0.5 rounded-full bg-surface-container text-tertiary border border-outline-variant/30 flex items-center gap-1">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
               LIVE
             </span>
-            <div className="w-16 h-16 sm:w-18 sm:h-18 rounded-full bg-surface-container-low flex items-center justify-center text-on-surface group-hover:text-primary group-hover:bg-primary/10 transition-colors duration-200 mb-3 sm:mb-4">
+            <div className="w-16 h-16 sm:w-18 sm:h-18 rounded-full bg-surface-container-low flex items-center justify-center text-on-surface group-hover:text-tertiary group-hover:bg-tertiary/15 transition-all duration-200 mb-3 sm:mb-4 group-hover:scale-110">
               <span className="material-symbols-outlined text-[36px] sm:text-[40px]">center_focus_strong</span>
             </div>
-            <span className="text-xl sm:text-2xl font-bold text-slate-900 group-hover:text-primary transition-colors tracking-tight">
+            <span className="text-xl sm:text-2xl font-bold text-slate-900 group-hover:text-tertiary transition-colors tracking-tight">
               Camera YOLO
             </span>
             <span className="text-xs sm:text-sm font-medium text-slate-500 mt-1">
@@ -107,15 +107,15 @@ export default function HomeHub() {
           <button
             onClick={() => setActiveTab('history')}
             aria-label="View History and logs"
-            className="squircle-card bg-surface-container-lowest w-52 h-52 sm:w-60 sm:h-60 flex flex-col items-center justify-center p-6 sm:p-7 text-center group cursor-pointer active:scale-95 relative"
+            className="squircle-card hover-pop-purple bg-surface-container-lowest w-52 h-52 sm:w-60 sm:h-60 flex flex-col items-center justify-center p-6 sm:p-7 text-center group cursor-pointer active:scale-95 relative"
           >
             <span className="absolute top-4 right-4 text-[11px] font-bold px-2 py-0.5 rounded-full bg-surface-container text-secondary border border-outline-variant/30">
               {anomalies.length} events
             </span>
-            <div className="w-16 h-16 sm:w-18 sm:h-18 rounded-full bg-surface-container-low flex items-center justify-center text-on-surface group-hover:text-primary group-hover:bg-primary/10 transition-colors duration-200 mb-3 sm:mb-4">
+            <div className="w-16 h-16 sm:w-18 sm:h-18 rounded-full bg-surface-container-low flex items-center justify-center text-on-surface group-hover:text-purple-700 group-hover:bg-purple-100 transition-all duration-200 mb-3 sm:mb-4 group-hover:scale-110">
               <span className="material-symbols-outlined text-[36px] sm:text-[40px]">history</span>
             </div>
-            <span className="text-xl sm:text-2xl font-bold text-slate-900 group-hover:text-primary transition-colors tracking-tight">
+            <span className="text-xl sm:text-2xl font-bold text-slate-900 group-hover:text-purple-700 transition-colors tracking-tight">
               History
             </span>
             <span className="text-xs sm:text-sm font-medium text-slate-500 mt-1">
@@ -130,12 +130,12 @@ export default function HomeHub() {
           <button
             onClick={() => setActiveTab('diagnostics')}
             aria-label="Run System Diagnostics"
-            className="squircle-card bg-surface-container-lowest w-52 h-52 sm:w-60 sm:h-60 flex flex-col items-center justify-center p-6 sm:p-7 text-center group cursor-pointer active:scale-95 relative"
+            className="squircle-card hover-pop-teal bg-surface-container-lowest w-52 h-52 sm:w-60 sm:h-60 flex flex-col items-center justify-center p-6 sm:p-7 text-center group cursor-pointer active:scale-95 relative"
           >
             <span className="absolute top-4 right-4 text-[11px] font-bold px-2 py-0.5 rounded-full bg-surface-container text-primary border border-outline-variant/30">
               {diagnostics.tempC}°C
             </span>
-            <div className="w-16 h-16 sm:w-18 sm:h-18 rounded-full bg-surface-container-low flex items-center justify-center text-on-surface group-hover:text-primary group-hover:bg-primary/10 transition-colors duration-200 mb-3 sm:mb-4">
+            <div className="w-16 h-16 sm:w-18 sm:h-18 rounded-full bg-surface-container-low flex items-center justify-center text-on-surface group-hover:text-primary group-hover:bg-primary/15 transition-all duration-200 mb-3 sm:mb-4 group-hover:scale-110">
               <span className="material-symbols-outlined text-[36px] sm:text-[40px]">memory</span>
             </div>
             <span className="text-xl sm:text-2xl font-bold text-slate-900 group-hover:text-primary transition-colors tracking-tight">
@@ -150,15 +150,15 @@ export default function HomeHub() {
           <button
             onClick={() => setActiveTab('settings')}
             aria-label="Configure Settings"
-            className="squircle-card bg-surface-container-lowest w-52 h-52 sm:w-60 sm:h-60 flex flex-col items-center justify-center p-6 sm:p-7 text-center group cursor-pointer active:scale-95 relative"
+            className="squircle-card hover-pop-amber bg-surface-container-lowest w-52 h-52 sm:w-60 sm:h-60 flex flex-col items-center justify-center p-6 sm:p-7 text-center group cursor-pointer active:scale-95 relative"
           >
             <span className="absolute top-4 right-4 text-[11px] font-bold px-2 py-0.5 rounded-full bg-surface-container text-secondary border border-outline-variant/30">
               I/O Ready
             </span>
-            <div className="w-16 h-16 sm:w-18 sm:h-18 rounded-full bg-surface-container-low flex items-center justify-center text-on-surface group-hover:text-primary group-hover:bg-primary/10 transition-colors duration-200 mb-3 sm:mb-4">
+            <div className="w-16 h-16 sm:w-18 sm:h-18 rounded-full bg-surface-container-low flex items-center justify-center text-on-surface group-hover:text-amber-700 group-hover:bg-amber-100 transition-all duration-200 mb-3 sm:mb-4 group-hover:scale-110">
               <span className="material-symbols-outlined text-[36px] sm:text-[40px]">tune</span>
             </div>
-            <span className="text-xl sm:text-2xl font-bold text-slate-900 group-hover:text-primary transition-colors tracking-tight">
+            <span className="text-xl sm:text-2xl font-bold text-slate-900 group-hover:text-amber-700 transition-colors tracking-tight">
               Settings
             </span>
             <span className="text-xs sm:text-sm font-medium text-slate-500 mt-1">

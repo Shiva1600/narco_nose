@@ -21,11 +21,63 @@
   border-radius: 28px;
   box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.04), 0 2px 6px -1px rgba(15, 23, 42, 0.02);
   border: 1px solid rgba(226, 232, 240, 0.85);
-  transition: all 0.2s ease-out;
+  transition: transform 0.24s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.24s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.24s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform, box-shadow;
 }
 
 .squircle-card:hover {
+  transform: translateY(-4px);
   box-shadow: 0 16px 36px -4px rgba(15, 23, 42, 0.08), 0 4px 14px -2px rgba(15, 23, 42, 0.03);
+}
+
+/* Contextual Hover Pop-Up Classes with Color Accents */
+.hover-pop,
+.hover-pop-teal,
+.hover-pop-rose,
+.hover-pop-blue,
+.hover-pop-amber,
+.hover-pop-purple {
+  transition: transform 0.26s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.26s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.26s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform, box-shadow;
+}
+
+.hover-pop-teal:hover {
+  transform: translateY(-6px) scale(1.02);
+  border-color: rgba(0, 104, 95, 0.5) !important;
+  box-shadow: 0 20px 40px -8px rgba(0, 104, 95, 0.22), 0 8px 20px -2px rgba(0, 104, 95, 0.12) !important;
+  z-index: 10;
+}
+
+.hover-pop-rose:hover {
+  transform: translateY(-6px) scale(1.02);
+  border-color: rgba(186, 26, 26, 0.5) !important;
+  box-shadow: 0 20px 40px -8px rgba(186, 26, 26, 0.22), 0 8px 20px -2px rgba(186, 26, 26, 0.12) !important;
+  z-index: 10;
+}
+
+.hover-pop-blue:hover {
+  transform: translateY(-6px) scale(1.02);
+  border-color: rgba(0, 123, 185, 0.5) !important;
+  box-shadow: 0 20px 40px -8px rgba(0, 123, 185, 0.22), 0 8px 20px -2px rgba(0, 123, 185, 0.12) !important;
+  z-index: 10;
+}
+
+.hover-pop-amber:hover {
+  transform: translateY(-6px) scale(1.02);
+  border-color: rgba(217, 119, 6, 0.5) !important;
+  box-shadow: 0 20px 40px -8px rgba(217, 119, 6, 0.22), 0 8px 20px -2px rgba(217, 119, 6, 0.12) !important;
+  z-index: 10;
+}
+
+.hover-pop-purple:hover {
+  transform: translateY(-6px) scale(1.02);
+  border-color: rgba(126, 34, 206, 0.5) !important;
+  box-shadow: 0 20px 40px -8px rgba(126, 34, 206, 0.22), 0 8px 20px -2px rgba(126, 34, 206, 0.12) !important;
+  z-index: 10;
 }
 
 .hud-box {
