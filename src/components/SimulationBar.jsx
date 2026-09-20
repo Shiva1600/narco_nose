@@ -3,40 +3,24 @@ import { useApp } from '../context/AppContext';
 
 export default function SimulationBar() {
   const { triggerScenario, calibrate, telemetry, actuators, setActuator } = useApp();
-  const [collapsed, setCollapsed] = useState(false);
+  const [collapsed, setCollapsed] = useState(true);
 
   return (
-    <div className="bg-surface-container-high border-b border-outline-variant/30 text-xs px-4 py-2 transition-all">
-      <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-2">
-        <div className="flex items-center gap-2">
-          <span className="flex h-2 w-2 relative">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
-            <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
+    <div className="bg-transparent text-xs px-4 sm:px-6 lg:px-8 xl:px-10 py-1 transition-all w-full">
+      <div className="w-full flex items-center justify-end">
+        <button
+          onClick={() => setCollapsed(!collapsed)}
+          className="text-secondary hover:text-on-surface font-semibold flex items-center gap-1 text-[11px] transition-colors"
+        >
+          <span>{collapsed ? 'Show Test Scenarios' : 'Hide'}</span>
+          <span className="material-symbols-outlined text-sm">
+            {collapsed ? 'expand_more' : 'expand_less'}
           </span>
-          <span className="font-bold text-on-surface uppercase tracking-wider text-[11px]">
-            Hardware Test & Simulation Suite
-          </span>
-          <span className="text-secondary hidden sm:inline">|</span>
-          <span className="text-secondary hidden sm:inline">
-            Inject realistic multi-gas threat vectors or test auto clearing fan
-          </span>
-        </div>
-
-        <div className="flex items-center gap-2">
-          <button
-            onClick={() => setCollapsed(!collapsed)}
-            className="text-secondary hover:text-on-surface font-semibold flex items-center gap-1 text-[11px]"
-          >
-            <span>{collapsed ? 'Show Test Scenarios' : 'Hide'}</span>
-            <span className="material-symbols-outlined text-sm">
-              {collapsed ? 'expand_more' : 'expand_less'}
-            </span>
-          </button>
-        </div>
+        </button>
       </div>
 
       {!collapsed && (
-        <div className="max-w-7xl mx-auto mt-2 pt-2 border-t border-outline-variant/20 flex flex-wrap items-center gap-2">
+        <div className="w-full mt-2 pt-2 border-t border-outline-variant/20 flex flex-wrap items-center gap-2">
           <span className="text-secondary font-medium text-[11px]">Inject Scenario:</span>
 
           <button

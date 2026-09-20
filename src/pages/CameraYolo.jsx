@@ -128,14 +128,6 @@ export default function CameraYolo() {
       {/* Subheader Bar with Return Navigation & Node Identity */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-1">
         <div className="flex flex-wrap items-center gap-3.5">
-          <button
-            onClick={() => setActiveTab('home')}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-surface-container-lowest hover:bg-surface-container border border-outline-variant/40 text-on-surface text-sm font-bold transition-all active:scale-95 shadow-xs"
-          >
-            <span className="material-symbols-outlined text-base font-semibold">arrow_back</span>
-            <span>Back to Home</span>
-          </button>
-          <div className="h-6 w-px bg-outline-variant/60 hidden sm:block"></div>
           <div className="flex items-center gap-3">
             <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight font-inter">
               Camera YOLO

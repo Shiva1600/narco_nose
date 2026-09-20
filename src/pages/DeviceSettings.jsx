@@ -74,17 +74,6 @@ export default function DeviceSettings() {
     <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 py-8 flex-1 space-y-8">
       {/* Sub-Header Area */}
       <section className="flex flex-col sm:flex-row sm:items-center justify-between gap-5 pb-4 pt-1">
-        <div className="flex items-center">
-          <button
-            onClick={() => setActiveTab('home')}
-            className="inline-flex items-center space-x-2 text-secondary hover:text-primary text-base font-bold transition-colors group"
-          >
-            <span className="material-symbols-outlined text-xl group-hover:-translate-x-1 transition-transform">
-              arrow_back
-            </span>
-            <span>Back to Home</span>
-          </button>
-        </div>
 
         <div className="text-left sm:text-center">
           <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-slate-900 tracking-tight font-inter">

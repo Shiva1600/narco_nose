@@ -108,16 +108,6 @@ export default function HistoryLogs() {
       {/* Sub-Header Navigation Bar */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div className="flex flex-wrap items-center gap-3.5">
-          <button
-            onClick={() => setActiveTab('home')}
-            className="inline-flex items-center gap-2 text-sm font-extrabold text-secondary hover:text-primary transition-colors py-1 group"
-          >
-            <span className="material-symbols-outlined text-lg group-hover:-translate-x-0.5 transition-transform">
-              arrow_back
-            </span>
-            <span>Back to Home</span>
-          </button>
-          <div className="h-5 w-px bg-outline-variant/60 hidden sm:block"></div>
           <div className="flex flex-wrap items-center gap-3">
             <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight text-slate-900 font-inter">
               History

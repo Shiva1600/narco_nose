@@ -35,15 +35,6 @@ export default function SystemDiagnostics() {
     <div className="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 py-8 space-y-8">
       {/* Sub-header Area */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-5 pb-2">
-        <div className="flex items-center">
-          <button
-            onClick={() => setActiveTab('home')}
-            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-surface-container-lowest border-2 border-outline-variant/50 text-slate-800 hover:text-primary hover:border-primary/50 text-base font-bold transition-all shadow-sm active:scale-95"
-          >
-            <span className="material-symbols-outlined text-xl">arrow_back</span>
-            <span>Back to Home</span>
-          </button>
-        </div>
 
         <div className="flex flex-col md:items-center text-left md:text-center">
           <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-slate-900 tracking-tight font-inter">
