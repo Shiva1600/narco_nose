@@ -32,15 +32,14 @@ export default function SystemDiagnostics() {
   const tempOffset = strokeDash - (strokeDash * tempPercent) / 100;
 
   return (
-    <div className="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 py-8 space-y-8">
+    <div className="flex-1 w-full max-w-[1720px] mx-auto px-6 sm:px-8 lg:px-12 py-6 space-y-8">
       {/* Sub-header Area */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-5 pb-2">
-
-        <div className="flex flex-col md:items-center text-left md:text-center">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-2">
+        <div className="flex flex-col items-start text-left">
           <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-slate-900 tracking-tight font-inter">
             System Diagnostics
           </h1>
-          <div className="mt-2 inline-flex items-center gap-2.5 px-4 py-1.5 bg-surface-container-lowest rounded-full text-slate-800 text-xs sm:text-sm font-semibold border border-outline-variant/40 shadow-sm">
+          <div className="mt-2 inline-flex items-center gap-2.5 px-4 py-1.5 bg-surface-container-lowest rounded-full text-slate-800 text-xs sm:text-sm font-semibold border border-outline-variant/40 shadow-xs">
             <span className="flex items-center gap-1.5 text-emerald-800 font-bold">
               <span className={`w-2.5 h-2.5 rounded-full ${connected ? 'bg-emerald-600 animate-pulse' : 'bg-rose-500'}`} />
               Raspberry Pi 5 (8GB)
@@ -57,8 +56,8 @@ export default function SystemDiagnostics() {
         </div>
 
         <div className="flex items-center gap-2">
-          <span className="text-xs font-bold text-secondary bg-surface-container-lowest px-3 py-1.5 rounded-full border border-outline-variant/40">
-            MQTT Latency: <strong>4.2 ms</strong>
+          <span className="text-xs font-bold text-secondary bg-surface-container-lowest px-3 py-1.5 rounded-full border border-outline-variant/40 shadow-xs">
+            MQTT Latency: <strong className="text-primary font-mono">4.2 ms</strong>
           </span>
         </div>
       </div>

@@ -71,15 +71,14 @@ export default function DeviceSettings() {
   };
 
   return (
-    <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 py-8 flex-1 space-y-8">
+    <div className="w-full max-w-[1720px] mx-auto px-6 sm:px-8 lg:px-12 py-6 flex-1 space-y-8">
       {/* Sub-Header Area */}
-      <section className="flex flex-col sm:flex-row sm:items-center justify-between gap-5 pb-4 pt-1">
-
-        <div className="text-left sm:text-center">
+      <section className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 pt-1">
+        <div className="text-left">
           <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-slate-900 tracking-tight font-inter">
             Settings &amp; Actuator Control
           </h1>
-          <p className="text-xs sm:text-sm font-medium text-secondary mt-1 flex items-center sm:justify-center space-x-2">
+          <p className="text-xs sm:text-sm font-medium text-secondary mt-1 flex items-center space-x-2">
             <span>Bi-directional MQTT Publishing &amp; Hardware Telemetry Triggers</span>
             <span className="text-outline font-bold">•</span>
             <span className="font-mono text-primary font-bold">Node SN-9021-TX</span>

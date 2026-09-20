@@ -54,6 +54,100 @@ app.get('/api/telemetry/recent', async (req, res) => {
   }
 });
 
+// -------------------------------------------------------------
+// HARDWARE INGESTION ENDPOINTS (Push data from Raspberry Pi to Website)
+// -------------------------------------------------------------
+
+// Ingestion API: Receive real hardware telemetry from external Raspberry Pi
+app.post('/api/telemetry', async (req, res) => {
+  try {
+    const payload = req.body || {};
+
+    // When real telemetry arrives from Pi, pause the mock simulation
+    if (simEngine.timer) {
+      simEngine.stop();
+      console.log('[Hardware Ingest] Real Pi Telemetry detected — stopped mock simulator.');
+    }
+
+    const mq2 = Number(payload.mq2 ?? payload.mq2_smoke ?? 0);
+    const mq3 = Number(payload.mq3 ?? payload.mq3_alcohol ?? 0);
+    const mq135 = Number(payload.mq135 ?? payload.mq135_air ?? 0);
+    const temp = Number(payload.temp ?? 24.0);
+    const humidity = Number(payload.humidity ?? 45.0);
+    const heat_index = Number(payload.heat_index ?? (temp + 0.4));
+    const threat_level = payload.threat_level || (mq2 > 420 || mq3 > 380 ? 'THREAT' : 'SAFE');
+    const ml_confidence = Number(payload.ml_confidence ?? (threat_level === 'THREAT' ? 95 : 20));
+
+    const telemetryData = {
+      timestamp: payload.timestamp || new Date().toISOString(),
+      mq2,
+      mq3,
+      mq135,
+      temp,
+      humidity,
+      heat_index: +heat_index.toFixed(1),
+      threat_level,
+      ml_confidence,
+      actuators: payload.actuators || simEngine.actuators
+    };
+
+    // Broadcast immediately to all connected browsers via WebSocket
+    io.emit('sensor_update', telemetryData);
+
+    // Save to SQLite
+    await database.logTelemetry({
+      mq2_smoke: mq2,
+      mq3_alcohol: mq3,
+      mq135_air: mq135,
+      temp,
+      humidity,
+      heat_index: +heat_index.toFixed(1),
+      threat_level,
+      ml_confidence
+    });
+
+    res.json({ success: true, message: 'Telemetry received and live streamed' });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Hardware Ingestion: GPS coordinates from Pi
+app.post('/api/gps', (req, res) => {
+  try {
+    const gpsData = req.body || {};
+    io.emit('gps_update', gpsData);
+    res.json({ success: true });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Hardware Ingestion: Diagnostics (CPU, RAM, Temp) from Pi
+app.post('/api/diagnostics', (req, res) => {
+  try {
+    const diagData = req.body || {};
+    io.emit('pi_diagnostics', diagData);
+    res.json({ success: true });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Hardware Ingestion: YOLO Detections from Pi Model
+app.post('/api/camera/yolo', (req, res) => {
+  try {
+    const data = req.body || {};
+    if (Array.isArray(data.detections)) {
+      cameraService.updateDetections(data.detections);
+    }
+    io.emit('yolo_update', cameraService.getDetectionState());
+    res.json({ success: true });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 // Threat Anomaly history
 app.get('/api/history', async (req, res) => {
   try {

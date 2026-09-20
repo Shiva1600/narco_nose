@@ -124,7 +124,7 @@ export default function CameraYolo() {
   const isThreat = telemetry.threat_level === 'THREAT';
 
   return (
-    <div className="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 py-6 space-y-6">
+    <div className="flex-1 w-full max-w-[1720px] mx-auto px-6 sm:px-8 lg:px-12 py-6 space-y-6">
       {/* Subheader Bar with Return Navigation & Node Identity */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-1">
         <div className="flex flex-wrap items-center gap-3.5">
