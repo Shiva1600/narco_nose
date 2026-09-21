@@ -74,7 +74,7 @@ export default function Navbar() {
   const isWarning = telemetry.threat_level === 'WARNING';
 
   return (
-    <header className={`${activeTab === 'home' ? 'bg-background' : 'bg-white/85 backdrop-blur-md border-b border-slate-200/60 shadow-xs'} sticky top-0 z-50 w-full transition-colors duration-300`}>
+    <header className={`${activeTab === 'home' ? 'bg-white/60 backdrop-blur-md border-b border-white/30 shadow-2xs' : 'bg-white/85 backdrop-blur-md border-b border-slate-200/60 shadow-xs'} sticky top-0 z-50 w-full transition-colors duration-300`}>
       <div className="w-full px-4 sm:px-6 lg:px-8 xl:px-10 flex justify-between items-center h-20">
         {/* Brand Anchor - Pushed to Far Left Corner */}
         <div className="flex items-center shrink-0">

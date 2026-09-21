@@ -5,9 +5,9 @@ export default function HomeHub() {
   const { setActiveTab, telemetry, diagnostics, detections, anomalies } = useApp();
 
   return (
-    <div className="flex-1 w-full max-w-[1720px] mx-auto px-6 sm:px-10 lg:px-12 py-6 flex flex-col justify-center">
+    <div className="flex-1 w-full max-w-[1720px] mx-auto px-6 sm:px-10 lg:px-12 pb-8 pt-4 flex flex-col justify-end">
       {/* 2-Column Command Center Grid: Left Brand & Hardware Hub, Right Module Bento */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 xl:gap-14 items-center w-full my-auto">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 xl:gap-14 items-center w-full mt-auto mb-2">
         
         {/* Left Column: Brand Hero & Device Status Anchor (Spans 4 to 5 cols) */}
         <div className="lg:col-span-5 xl:col-span-4 flex flex-col justify-center text-left space-y-6">
