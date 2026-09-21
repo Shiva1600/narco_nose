@@ -126,7 +126,7 @@ export default function CameraYolo() {
   return (
     <div className="flex-1 w-full max-w-[1720px] mx-auto px-6 sm:px-8 lg:px-12 py-6 space-y-6">
       {/* Subheader Bar with Return Navigation & Node Identity */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-1">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white/85 backdrop-blur-md p-4 sm:p-5 rounded-3xl border border-white/60 shadow-xs">
         <div className="flex flex-wrap items-center gap-3.5">
           <div className="flex items-center gap-3">
             <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight font-inter">

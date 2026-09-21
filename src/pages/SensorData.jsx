@@ -173,7 +173,7 @@ export default function SensorData() {
   return (
     <div className="flex-1 w-full max-w-[1720px] mx-auto px-6 sm:px-8 lg:px-12 py-6 flex flex-col gap-6">
       {/* Header & Mode Switch */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white/85 backdrop-blur-md p-4 sm:p-5 rounded-3xl border border-white/60 shadow-xs">
         <div>
           <div className="flex items-center gap-2 text-xs font-semibold text-secondary uppercase tracking-wider mb-1">
             <span className="material-symbols-outlined text-base text-primary">sensors</span>

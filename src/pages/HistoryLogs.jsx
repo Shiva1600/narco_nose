@@ -106,7 +106,7 @@ export default function HistoryLogs() {
   return (
     <div className="w-full max-w-[1720px] mx-auto px-6 sm:px-8 lg:px-12 py-6 flex-1 flex flex-col gap-6">
       {/* Sub-Header Navigation Bar */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white/85 backdrop-blur-md p-4 sm:p-5 rounded-3xl border border-white/60 shadow-xs">
         <div className="flex flex-wrap items-center gap-3.5">
           <div className="flex flex-wrap items-center gap-3">
             <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight text-slate-900 font-inter">

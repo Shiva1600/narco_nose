@@ -14,9 +14,24 @@ import { AnimatePresence, motion } from 'framer-motion';
 
 function DashboardContent() {
   const { activeTab } = useApp();
+  const isHomePage = activeTab === 'home';
 
   return (
-    <div className="min-h-screen flex flex-col bg-background text-on-surface overflow-x-hidden">
+    <div className={`min-h-screen flex flex-col ${isHomePage ? 'bg-background' : 'bg-transparent page-translucent'} text-on-surface overflow-x-hidden relative`}>
+      {/* Railway Station Platform Background - Only active for pages other than homepage */}
+      {!isHomePage && (
+        <div className="fixed inset-0 pointer-events-none -z-10 overflow-hidden">
+          <img
+            src="/images/platform_bg.jpg"
+            alt="Railway Station Platform Background"
+            className="w-full h-full object-cover object-center fixed inset-0"
+          />
+          {/* Subtle ambient overlay to maintain contrast while preserving the sunset and platform imagery */}
+          <div className="absolute inset-0 bg-slate-950/25 backdrop-blur-[0.5px]" />
+          <div className="absolute inset-0 bg-gradient-to-t from-slate-950/40 via-transparent to-slate-950/20" />
+        </div>
+      )}
+
       {/* Top Navigation Bar */}
       <Navbar />
 

@@ -73,7 +73,7 @@ export default function DeviceSettings() {
   return (
     <div className="w-full max-w-[1720px] mx-auto px-6 sm:px-8 lg:px-12 py-6 flex-1 space-y-8">
       {/* Sub-Header Area */}
-      <section className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 pt-1">
+      <section className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white/85 backdrop-blur-md p-4 sm:p-5 rounded-3xl border border-white/60 shadow-xs">
         <div className="text-left">
           <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-slate-900 tracking-tight font-inter">
             Settings &amp; Actuator Control
