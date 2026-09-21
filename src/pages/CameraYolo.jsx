@@ -66,7 +66,7 @@ export default function CameraYolo() {
     const customIcon = L.divIcon({
       className: 'custom-gps-pin',
       html: `
-        <div style="background-color: #00685f; width: 28px; height: 28px; border-radius: 50%; border: 3px solid white; box-shadow: 0 0 10px rgba(0,104,95,0.6); display: flex; align-items: center; justify-content: center; color: white;">
+        <div style="background-color: #2563eb; width: 28px; height: 28px; border-radius: 50%; border: 3px solid white; box-shadow: 0 0 10px rgba(37,99,235,0.6); display: flex; align-items: center; justify-content: center; color: white;">
           <span class="material-symbols-outlined" style="font-size: 16px;">sensors</span>
         </div>
       `,
@@ -78,7 +78,7 @@ export default function CameraYolo() {
     marker.bindPopup(`<b>Narco Nose Node</b><br/>Lat: ${gps.lat.toFixed(5)}<br/>Lon: ${gps.lon.toFixed(5)}`);
 
     const polyline = L.polyline(gps.routeTrail || [[gps.lat, gps.lon]], {
-      color: '#008378',
+      color: '#2563eb',
       weight: 3.5,
       opacity: 0.7,
       dashArray: '5, 8'
@@ -250,7 +250,7 @@ export default function CameraYolo() {
                     >
                       <div
                         className={`absolute -top-7 left-1 text-white text-[11px] font-black px-2.5 py-0.5 rounded shadow flex items-center gap-1 ${
-                          isCrit ? 'bg-rose-600' : 'bg-teal-700'
+                          isCrit ? 'bg-rose-600' : 'bg-blue-600'
                         }`}
                       >
                         <span className="material-symbols-outlined text-xs">
@@ -350,7 +350,7 @@ export default function CameraYolo() {
                 </div>
                 <h2 className="text-xl font-extrabold text-on-surface">Target Detections</h2>
               </div>
-              <span className="bg-teal-50 text-teal-900 border border-teal-200 px-3 py-0.5 rounded-full text-xs font-black">
+              <span className="bg-blue-50 text-blue-900 border border-blue-200 px-3 py-0.5 rounded-full text-xs font-black">
                 {detections.length} Targets
               </span>
             </div>

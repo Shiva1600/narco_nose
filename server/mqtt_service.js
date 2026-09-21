@@ -40,7 +40,7 @@ class MqttService extends EventEmitter {
         try {
           const payload = JSON.parse(message.toString());
           this.emit('message', { topic, payload });
-          
+
           if (topic.includes('telemetry')) {
             this.emit('telemetry', payload);
           } else if (topic.includes('gps')) {
@@ -92,7 +92,7 @@ class MqttService extends EventEmitter {
   publish(subtopic, payload) {
     const fullTopic = `${this.topicPrefix}${subtopic}`;
     const message = typeof payload === 'object' ? JSON.stringify(payload) : String(payload);
-    
+
     if (this.client && this.isConnected) {
       this.client.publish(fullTopic, message, { qos: 1 }, (err) => {
         if (err) console.error(`[MQTT] Publish error on ${fullTopic}:`, err);
@@ -101,7 +101,7 @@ class MqttService extends EventEmitter {
     } else {
       console.log(`[MQTT Sim-Bridge] Dispatched ${fullTopic}:`, message);
     }
-    
+
     // Always emit internally so simulation and UI stay in sync
     this.emit('actuator_command', { topic: fullTopic, payload });
   }

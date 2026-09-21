@@ -46,8 +46,8 @@ export default function SensorData() {
       {
         label: 'MQ-2 (Smoke / LPG)',
         data: telemetryStream.map(t => t.mq2),
-        borderColor: '#008378',
-        backgroundColor: 'rgba(0, 131, 120, 0.1)',
+        borderColor: '#2563eb',
+        backgroundColor: 'rgba(37, 99, 235, 0.1)',
         tension: 0.35,
         borderWidth: 2.5,
         pointRadius: 2
@@ -125,10 +125,10 @@ export default function SensorData() {
           Math.min(100, Math.round((telemetry.temp / 40) * 100)),
           Math.min(100, Math.round(telemetry.humidity))
         ],
-        backgroundColor: isThreat ? 'rgba(186, 26, 26, 0.25)' : 'rgba(0, 104, 95, 0.2)',
-        borderColor: isThreat ? '#ba1a1a' : '#00685f',
+        backgroundColor: isThreat ? 'rgba(186, 26, 26, 0.25)' : 'rgba(37, 99, 235, 0.2)',
+        borderColor: isThreat ? '#ba1a1a' : '#2563eb',
         borderWidth: 2.5,
-        pointBackgroundColor: isThreat ? '#ba1a1a' : '#00685f',
+        pointBackgroundColor: isThreat ? '#ba1a1a' : '#2563eb',
         pointRadius: 4
       },
       {
@@ -228,7 +228,7 @@ export default function SensorData() {
             ? 'bg-rose-50 border-rose-300 shadow-md ring-1 ring-rose-300'
             : isWarning
             ? 'bg-amber-50 border-amber-300 shadow-md'
-            : 'bg-teal-50/60 border-teal-200 shadow-sm'
+            : 'bg-blue-50/60 border-blue-200 shadow-sm'
         }`}
       >
         <div className="flex items-start gap-4">
@@ -256,7 +256,7 @@ export default function SensorData() {
                     ? 'bg-rose-200 text-rose-900'
                     : isWarning
                     ? 'bg-amber-200 text-amber-900'
-                    : 'bg-teal-100 text-teal-900'
+                    : 'bg-blue-100 text-blue-900'
                 }`}
               >
                 {telemetry.threat_level}
@@ -308,7 +308,7 @@ export default function SensorData() {
                   </span>
                   <h3 className="text-lg font-extrabold text-on-surface mt-0.5">MQ-2 Sensor</h3>
                 </div>
-                <div className="w-9 h-9 rounded-2xl bg-teal-50 border border-teal-200 flex items-center justify-center text-primary">
+                <div className="w-9 h-9 rounded-2xl bg-blue-50 border border-blue-200 flex items-center justify-center text-primary">
                   <span className="material-symbols-outlined text-xl">propane</span>
                 </div>
               </div>
@@ -445,7 +445,7 @@ export default function SensorData() {
                   </span>
                   <h3 className="text-lg font-extrabold text-on-surface mt-0.5">DHT22 RH</h3>
                 </div>
-                <div className="w-9 h-9 rounded-2xl bg-teal-50 border border-teal-200 flex items-center justify-center text-primary">
+                <div className="w-9 h-9 rounded-2xl bg-blue-50 border border-blue-200 flex items-center justify-center text-primary">
                   <span className="material-symbols-outlined text-xl">humidity_mid</span>
                 </div>
               </div>
@@ -457,7 +457,7 @@ export default function SensorData() {
                   Target: 35% - 65% RH
                 </div>
               </div>
-              <div className="text-[11px] font-semibold text-teal-800 bg-teal-50 px-2.5 py-1 rounded-full w-fit">
+              <div className="text-[11px] font-semibold text-blue-800 bg-blue-50 px-2.5 py-1 rounded-full w-fit">
                 Optimal Sensitivity
               </div>
             </div>

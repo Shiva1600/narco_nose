@@ -12,7 +12,7 @@ export default function HomeHub() {
         {/* Left Column: Brand Hero & Device Status Anchor (Spans 4 to 5 cols) */}
         <div className="lg:col-span-5 xl:col-span-4 flex flex-col justify-center text-left space-y-6">
           <div className="space-y-3">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-teal-50 text-teal-800 border border-teal-200 text-xs font-bold uppercase tracking-wider w-fit shadow-2xs">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-blue-50 text-blue-800 border border-blue-200 text-xs font-bold uppercase tracking-wider w-fit shadow-2xs">
               <span className="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
               <span>Edge AI &amp; Biosensing Core</span>
             </div>
@@ -62,10 +62,10 @@ export default function HomeHub() {
               className="squircle-card hover-pop-teal bg-surface-container-lowest w-full min-h-[220px] sm:min-h-[240px] flex flex-col justify-between p-6 sm:p-7 text-left group cursor-pointer active:scale-98 relative shadow-xs"
             >
               <div className="flex justify-between items-start w-full">
-                <div className="w-14 h-14 rounded-2xl bg-teal-50 border border-teal-100 flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
+                <div className="w-14 h-14 rounded-2xl bg-blue-50 border border-blue-100 flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
                   <span className="material-symbols-outlined text-3xl">graphic_eq</span>
                 </div>
-                <span className="text-xs font-extrabold px-3 py-1 rounded-full bg-teal-50 text-teal-800 border border-teal-200">
+                <span className="text-xs font-extrabold px-3 py-1 rounded-full bg-blue-50 text-blue-800 border border-blue-200">
                   {telemetry.mq2} ppm
                 </span>
               </div>
@@ -156,7 +156,7 @@ export default function HomeHub() {
               className="squircle-card hover-pop-teal bg-surface-container-lowest w-full min-h-[190px] sm:min-h-[200px] flex flex-col justify-between p-5 text-left group cursor-pointer active:scale-98 relative shadow-xs"
             >
               <div className="flex justify-between items-start w-full">
-                <div className="w-11 h-11 rounded-2xl bg-teal-50 border border-teal-100 flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
+                <div className="w-11 h-11 rounded-2xl bg-blue-50 border border-blue-100 flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
                   <span className="material-symbols-outlined text-2xl">memory</span>
                 </div>
                 <span className="text-[11px] font-bold px-2 py-0.5 rounded-full bg-surface-container text-primary border border-outline-variant/30">

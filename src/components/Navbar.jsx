@@ -187,7 +187,7 @@ export default function Navbar() {
                 ? 'bg-rose-100 text-rose-800 border border-rose-300 animate-bounce'
                 : isWarning
                 ? 'bg-amber-100 text-amber-800 border border-amber-300'
-                : 'bg-teal-50 text-teal-800 border border-teal-200'
+                : 'bg-emerald-50 text-emerald-800 border border-emerald-200'
             }`}
           >
             <span className="material-symbols-outlined text-base">
@@ -240,7 +240,7 @@ export default function Navbar() {
                       notification.type === 'threat'
                         ? 'bg-rose-50 text-rose-900 border border-rose-200'
                         : notification.type === 'success'
-                        ? 'bg-teal-50 text-teal-900 border border-teal-200'
+                        ? 'bg-blue-50 text-blue-900 border border-blue-200'
                         : 'bg-blue-50 text-blue-900 border border-blue-200'
                     }`}
                   >

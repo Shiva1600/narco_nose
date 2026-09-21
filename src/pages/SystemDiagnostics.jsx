@@ -69,7 +69,7 @@ export default function SystemDiagnostics() {
           <div>
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-3">
-                <div className="w-11 h-11 rounded-2xl bg-teal-50 border border-teal-100 flex items-center justify-center text-primary shadow-sm">
+                <div className="w-11 h-11 rounded-2xl bg-blue-50 border border-blue-100 flex items-center justify-center text-primary shadow-sm">
                   <span className="material-symbols-outlined text-2xl">memory</span>
                 </div>
                 <div>
@@ -77,7 +77,7 @@ export default function SystemDiagnostics() {
                   <p className="text-xs font-semibold text-slate-600">Broadcom BCM2712</p>
                 </div>
               </div>
-              <span className="px-2.5 py-1 rounded-full text-xs font-bold font-mono bg-teal-50 text-teal-800 border border-teal-200">
+              <span className="px-2.5 py-1 rounded-full text-xs font-bold font-mono bg-blue-50 text-blue-800 border border-blue-200">
                 4 Cores @ 2.4GHz
               </span>
             </div>
@@ -92,7 +92,7 @@ export default function SystemDiagnostics() {
                     cy="50"
                     fill="none"
                     r="38"
-                    stroke="#00685f"
+                    stroke="#2563eb"
                     strokeDasharray={strokeDash}
                     strokeDashoffset={cpuOffset}
                     strokeLinecap="round"
@@ -102,7 +102,7 @@ export default function SystemDiagnostics() {
                 </svg>
                 <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
                   <span className="text-3xl font-black text-slate-950">{cpuPercent}%</span>
-                  <span className="text-[11px] font-extrabold uppercase tracking-widest text-teal-800 mt-0.5">
+                  <span className="text-[11px] font-extrabold uppercase tracking-widest text-blue-800 mt-0.5">
                     Active Load
                   </span>
                 </div>
@@ -208,7 +208,7 @@ export default function SystemDiagnostics() {
                     cy="50"
                     fill="none"
                     r="38"
-                    stroke={tempC > 65 ? '#ba1a1a' : '#00685f'}
+                    stroke={tempC > 65 ? '#ba1a1a' : '#2563eb'}
                     strokeDasharray={strokeDash}
                     strokeDashoffset={tempOffset}
                     strokeLinecap="round"
@@ -228,9 +228,9 @@ export default function SystemDiagnostics() {
 
           <div className="pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
             <div className="flex items-center gap-2 text-slate-700">
-              <span className={`w-2 h-2 rounded-full ${diagnostics.fanRpm > 0 ? 'bg-teal-500 animate-spin' : 'bg-slate-400'}`} />
+              <span className={`w-2 h-2 rounded-full ${diagnostics.fanRpm > 0 ? 'bg-blue-500 animate-spin' : 'bg-slate-400'}`} />
               <span className="font-bold">Chamber Fan:</span>
-              <span className="font-mono font-bold text-teal-700">{diagnostics.fanRpm} RPM</span>
+              <span className="font-mono font-bold text-blue-700">{diagnostics.fanRpm} RPM</span>
             </div>
             <span className="font-mono text-xs font-bold text-slate-700 bg-slate-100 px-2 py-0.5 rounded">
               Throttle: 0x0

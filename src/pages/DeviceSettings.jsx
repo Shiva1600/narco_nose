@@ -109,7 +109,7 @@ export default function DeviceSettings() {
           <div>
             <div className="flex items-start justify-between mb-6">
               <div className="flex items-center space-x-3.5">
-                <div className="w-12 h-12 rounded-2xl bg-teal-50 flex items-center justify-center text-primary">
+                <div className="w-12 h-12 rounded-2xl bg-blue-50 flex items-center justify-center text-primary">
                   <span className="material-symbols-outlined text-2xl">tune</span>
                 </div>
                 <div>
@@ -128,7 +128,7 @@ export default function DeviceSettings() {
             <div className="mb-5 pb-4 border-b border-surface-container">
               <div className="flex justify-between items-center mb-1.5">
                 <span className="text-sm font-bold text-on-surface">MQ-2 Combustible Gas Alert Limit</span>
-                <span className="font-mono font-extrabold text-primary text-base bg-teal-50 px-3 py-1 rounded-xl border border-teal-200">
+                <span className="font-mono font-extrabold text-primary text-base bg-blue-50 px-3 py-1 rounded-xl border border-blue-200">
                   {mq2Thresh} ppm
                 </span>
               </div>
@@ -229,7 +229,7 @@ export default function DeviceSettings() {
           <div>
             <div className="flex items-start justify-between mb-6">
               <div className="flex items-center space-x-3.5">
-                <div className="w-12 h-12 rounded-2xl bg-teal-50 flex items-center justify-center text-primary">
+                <div className="w-12 h-12 rounded-2xl bg-blue-50 flex items-center justify-center text-primary">
                   <span className="material-symbols-outlined text-2xl">precision_manufacturing</span>
                 </div>
                 <div>
@@ -333,7 +333,7 @@ export default function DeviceSettings() {
 
               <div className="flex flex-wrap items-center gap-2 pt-2 border-t border-outline-variant/20 text-xs">
                 <span className="font-semibold text-secondary">Pattern:</span>
-                {['PULSE_TEAL', 'ALERT_RED', 'WARN_AMBER', 'OFF'].map(pattern => (
+                {['PULSE_BLUE', 'ALERT_RED', 'WARN_AMBER', 'OFF'].map(pattern => (
                   <button
                     key={pattern}
                     onClick={() => setActuator('leds', null, pattern)}

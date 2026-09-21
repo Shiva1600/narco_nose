@@ -49,7 +49,7 @@ export default function SimulationBar() {
 
           <button
             onClick={() => triggerScenario('purge')}
-            className="bg-teal-50 hover:bg-teal-100 text-teal-800 border border-teal-300 px-3 py-1 rounded-full font-semibold transition-all flex items-center gap-1 active:scale-95"
+            className="bg-blue-50 hover:bg-blue-100 text-blue-800 border border-blue-300 px-3 py-1 rounded-full font-semibold transition-all flex items-center gap-1 active:scale-95"
           >
             <span className="material-symbols-outlined text-xs">air</span>
             <span>Chamber Purge (Dissipate Gas)</span>

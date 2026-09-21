@@ -24,7 +24,7 @@ export function AppProvider({ children }) {
       fanMode: 'AUTO',
       fanState: 'OFF',
       buzzerState: 'ARMED',
-      ledMode: 'PULSE_TEAL'
+      ledMode: 'PULSE_BLUE'
     }
   });
 
@@ -36,7 +36,7 @@ export function AppProvider({ children }) {
     fanMode: 'AUTO',
     fanState: 'OFF',
     buzzerState: 'ARMED',
-    ledMode: 'PULSE_TEAL'
+    ledMode: 'PULSE_BLUE'
   });
 
   // GPS coordinates & tracking
