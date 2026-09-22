@@ -34,20 +34,24 @@ function DashboardContent() {
 
       {/* Homepage Top Background Video - Google Flow Vintage Railway Station ("No Drugs Only Bugs") */}
       {isHomePage && (
-        <div className="absolute top-0 left-0 right-0 h-[380px] sm:h-[440px] lg:h-[490px] xl:h-[530px] pointer-events-none z-0 overflow-hidden select-none">
+        <div
+          className="absolute top-0 left-0 right-0 h-[460px] sm:h-[520px] lg:h-[580px] xl:h-[630px] pointer-events-none z-0 overflow-hidden select-none"
+          style={{
+            maskImage: 'linear-gradient(to bottom, rgba(0,0,0,1) 82%, rgba(0,0,0,0) 100%)',
+            WebkitMaskImage: 'linear-gradient(to bottom, rgba(0,0,0,1) 82%, rgba(0,0,0,0) 100%)'
+          }}
+        >
           <video
             autoPlay
             loop
             muted
             playsInline
             src="/videos/homepage_train.mp4"
-            className="w-full h-full object-cover object-[center_32%]"
+            className="w-full h-full object-cover object-[center_70%]"
           />
-          {/* Subtle cinematic gradient overlays to blend into page background and preserve legibility */}
-          <div className="absolute inset-0 bg-gradient-to-b from-slate-950/15 via-transparent to-slate-50" />
-          <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-slate-50 via-slate-50/80 to-transparent" />
-          <div className="absolute inset-y-0 left-0 w-20 bg-gradient-to-r from-slate-50/20 to-transparent" />
-          <div className="absolute inset-y-0 right-0 w-20 bg-gradient-to-l from-slate-50/20 to-transparent" />
+          {/* Subtle cinematic top tint and compact bottom blend situated low at the bottom edge */}
+          <div className="absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-slate-950/20 to-transparent" />
+          <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-slate-50 to-transparent" />
         </div>
       )}
 
