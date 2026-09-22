@@ -5,7 +5,7 @@ export default function HomeHub() {
   const { setActiveTab, telemetry, diagnostics, detections, anomalies } = useApp();
 
   return (
-    <div className="flex-1 w-full max-w-[1720px] mx-auto px-6 sm:px-10 lg:px-12 pb-8 pt-4 flex flex-col justify-end">
+    <div className="flex-1 w-full max-w-[1720px] mx-auto px-6 sm:px-10 lg:px-12 pb-8 pt-4 flex flex-col justify-end home-hub-page">
       {/* 2-Column Command Center Grid: Left Brand & Hardware Hub, Right Module Bento */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 xl:gap-14 items-center w-full mt-auto mb-2">
         
@@ -123,9 +123,9 @@ export default function HomeHub() {
             <button
               onClick={() => setActiveTab('history')}
               aria-label="View History and logs"
-              className="squircle-card hover-pop-purple bg-surface-container-lowest w-full min-h-[190px] sm:min-h-[200px] flex flex-col justify-between p-5 text-left group cursor-pointer active:scale-98 relative shadow-xs"
+              className="squircle-card edge-light-purple bg-surface-container-lowest w-full min-h-[190px] sm:min-h-[200px] flex flex-col justify-between p-5 text-left group cursor-pointer active:scale-98 relative shadow-xs"
             >
-              <div className="flex justify-between items-start w-full">
+              <div className="flex justify-between items-start w-full relative z-[2]">
                 <div className="w-11 h-11 rounded-2xl bg-purple-50 border border-purple-100 flex items-center justify-center text-purple-700 group-hover:scale-110 transition-transform">
                   <span className="material-symbols-outlined text-2xl">history</span>
                 </div>
@@ -134,7 +134,7 @@ export default function HomeHub() {
                 </span>
               </div>
 
-              <div className="my-1">
+              <div className="my-1 relative z-[2]">
                 <h3 className="text-lg font-black text-slate-900 group-hover:text-purple-700 transition-colors tracking-tight">
                   History
                 </h3>
@@ -143,7 +143,7 @@ export default function HomeHub() {
                 </p>
               </div>
 
-              <div className="flex items-center gap-1 text-[11px] font-bold text-purple-700 pt-1.5 border-t border-surface-container/60">
+              <div className="flex items-center gap-1 text-[11px] font-bold text-purple-700 pt-1.5 border-t border-surface-container/60 relative z-[2]">
                 <span>Query SQLite</span>
                 <span className="material-symbols-outlined text-xs group-hover:translate-x-1 transition-transform">arrow_forward</span>
               </div>
@@ -153,9 +153,9 @@ export default function HomeHub() {
             <button
               onClick={() => setActiveTab('diagnostics')}
               aria-label="Run System Diagnostics"
-              className="squircle-card hover-pop-teal bg-surface-container-lowest w-full min-h-[190px] sm:min-h-[200px] flex flex-col justify-between p-5 text-left group cursor-pointer active:scale-98 relative shadow-xs"
+              className="squircle-card edge-light-blue bg-surface-container-lowest w-full min-h-[190px] sm:min-h-[200px] flex flex-col justify-between p-5 text-left group cursor-pointer active:scale-98 relative shadow-xs"
             >
-              <div className="flex justify-between items-start w-full">
+              <div className="flex justify-between items-start w-full relative z-[2]">
                 <div className="w-11 h-11 rounded-2xl bg-blue-50 border border-blue-100 flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
                   <span className="material-symbols-outlined text-2xl">memory</span>
                 </div>
@@ -164,7 +164,7 @@ export default function HomeHub() {
                 </span>
               </div>
 
-              <div className="my-1">
+              <div className="my-1 relative z-[2]">
                 <h3 className="text-lg font-black text-slate-900 group-hover:text-primary transition-colors tracking-tight">
                   System Diagnostics
                 </h3>
@@ -173,7 +173,7 @@ export default function HomeHub() {
                 </p>
               </div>
 
-              <div className="flex items-center gap-1 text-[11px] font-bold text-primary pt-1.5 border-t border-surface-container/60">
+              <div className="flex items-center gap-1 text-[11px] font-bold text-primary pt-1.5 border-t border-surface-container/60 relative z-[2]">
                 <span>Inspect Health</span>
                 <span className="material-symbols-outlined text-xs group-hover:translate-x-1 transition-transform">arrow_forward</span>
               </div>
@@ -183,9 +183,9 @@ export default function HomeHub() {
             <button
               onClick={() => setActiveTab('settings')}
               aria-label="Configure Settings"
-              className="squircle-card hover-pop-amber bg-surface-container-lowest w-full min-h-[190px] sm:min-h-[200px] flex flex-col justify-between p-5 text-left group cursor-pointer active:scale-98 relative shadow-xs"
+              className="squircle-card edge-light-amber bg-surface-container-lowest w-full min-h-[190px] sm:min-h-[200px] flex flex-col justify-between p-5 text-left group cursor-pointer active:scale-98 relative shadow-xs"
             >
-              <div className="flex justify-between items-start w-full">
+              <div className="flex justify-between items-start w-full relative z-[2]">
                 <div className="w-11 h-11 rounded-2xl bg-amber-50 border border-amber-100 flex items-center justify-center text-amber-700 group-hover:scale-110 transition-transform">
                   <span className="material-symbols-outlined text-2xl">tune</span>
                 </div>
@@ -194,7 +194,7 @@ export default function HomeHub() {
                 </span>
               </div>
 
-              <div className="my-1">
+              <div className="my-1 relative z-[2]">
                 <h3 className="text-lg font-black text-slate-900 group-hover:text-amber-700 transition-colors tracking-tight">
                   Settings
                 </h3>
@@ -203,7 +203,7 @@ export default function HomeHub() {
                 </p>
               </div>
 
-              <div className="flex items-center gap-1 text-[11px] font-bold text-amber-700 pt-1.5 border-t border-surface-container/60">
+              <div className="flex items-center gap-1 text-[11px] font-bold text-amber-700 pt-1.5 border-t border-surface-container/60 relative z-[2]">
                 <span>Configure I/O</span>
                 <span className="material-symbols-outlined text-xs group-hover:translate-x-1 transition-transform">arrow_forward</span>
               </div>
