@@ -208,6 +208,11 @@ async function processThreatPayload(rawPayload) {
 // REST API ROUTES
 // -------------------------------------------------------------
 
+// Health check endpoint for cloud deployment (Render, AWS, etc.)
+app.get('/healthz', (req, res) => {
+  res.status(200).send('OK');
+});
+
 // System Status
 app.get('/api/status', (req, res) => {
   res.json({
