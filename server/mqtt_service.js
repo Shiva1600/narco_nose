@@ -6,8 +6,8 @@ class MqttService extends EventEmitter {
     super();
     this.client = null;
     this.isConnected = false;
-    this.brokerUrl = 'mqtt://127.0.0.1:1883';
-    this.topicPrefix = 'narconose/';
+    this.brokerUrl = process.env.MQTT_BROKER_URL || process.env.MQTT_URL || 'mqtt://127.0.0.1:1883';
+    this.topicPrefix = process.env.MQTT_TOPIC_PREFIX || 'narconose/';
     this.lastPing = Date.now();
     this.reconnectAttempts = 0;
   }

@@ -22,7 +22,7 @@ export default function HomeHub() {
             </h1>
             
             <p className="text-base sm:text-lg text-slate-600 font-normal leading-relaxed max-w-lg">
-              Real-Time Chemical Threat Proxy Detection &amp; Edge Machine Learning Interface. Multi-gas proxy fusion with optical YOLO vision streaming.
+              Real-Time Chemical Threat Proxy Detection &amp; Edge Machine Learning Interface. Multi-gas proxy fusion with automated OpenCV threat photo capture and GPS tracking.
             </p>
           </div>
 
@@ -31,18 +31,24 @@ export default function HomeHub() {
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2.5">
                 <span className="flex h-3 w-3 relative">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-3 w-3 bg-primary"></span>
+                  <span className={`animate-ping absolute inline-flex h-full w-full rounded-full ${telemetry.hardware_online ? 'bg-emerald-500' : 'bg-amber-500'} opacity-75`}></span>
+                  <span className={`relative inline-flex rounded-full h-3 w-3 ${telemetry.hardware_online ? 'bg-emerald-500' : 'bg-amber-500'}`}></span>
                 </span>
                 <span className="font-extrabold text-sm text-on-surface">Raspberry Pi 5 Hub</span>
               </div>
-              <span className="font-mono text-xs font-bold text-slate-700 bg-surface-container px-2 py-0.5 rounded">
-                Node SN-9021-TX
+              <span className={`font-mono text-xs font-bold px-2 py-0.5 rounded border ${
+                telemetry.hardware_online
+                  ? 'bg-emerald-50 text-emerald-800 border-emerald-300'
+                  : 'bg-amber-50 text-amber-900 border-amber-300'
+              }`}>
+                {telemetry.hardware_online ? 'LIVE HARDWARE' : 'SIMULATION MODE'}
               </span>
             </div>
 
             <div className="flex items-center justify-between text-xs font-semibold text-secondary pt-2 border-t border-surface-container/60">
-              <span className="text-primary font-bold">100% Sensors Active</span>
+              <span className={telemetry.hardware_online ? "text-emerald-700 font-bold" : "text-amber-700 font-bold"}>
+                {telemetry.hardware_online ? 'Real MQTT Telemetry' : 'Mock Physics Engine'}
+              </span>
               <span>•</span>
               <span>{diagnostics.tempC}°C Core Temp</span>
               <span>•</span>
@@ -53,7 +59,7 @@ export default function HomeHub() {
 
         {/* Right Column: 5 Interactive Navigation Cards in Balanced Bento Grid (Spans 7 to 8 cols) */}
         <div className="lg:col-span-7 xl:col-span-8 flex flex-col gap-5 sm:gap-6 w-full">
-          {/* Row 1: 2 Flagship Modules (Sensor Data & Camera YOLO) */}
+          {/* Row 1: 2 Flagship Modules (Sensor Data & Optical Evidence) */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 sm:gap-6">
             {/* Card 1: Sensor Data */}
             <button
@@ -75,7 +81,7 @@ export default function HomeHub() {
                   Sensor Data
                 </h3>
                 <p className="text-xs sm:text-sm font-medium text-slate-500 mt-1">
-                  Real-time MQ-2, MQ-3, MQ-135 &amp; DHT22 environmental telemetry
+                  Real-time MQ-2, MQ-3, MQ-135 &amp; DHT11 environmental telemetry
                 </p>
               </div>
 
@@ -85,33 +91,33 @@ export default function HomeHub() {
               </div>
             </button>
 
-            {/* Card 2: Edge Camera (OpenCV) */}
+            {/* Card 2: Optical Evidence (OpenCV) */}
             <button
               onClick={() => setActiveTab('camera')}
-              aria-label="Open Edge Camera optical view"
+              aria-label="Open Optical Threat Evidence"
               className="squircle-card hover-pop-blue bg-surface-container-lowest w-full min-h-[220px] sm:min-h-[240px] flex flex-col justify-between p-6 sm:p-7 text-left group cursor-pointer active:scale-98 relative shadow-xs"
             >
               <div className="flex justify-between items-start w-full">
                 <div className="w-14 h-14 rounded-2xl bg-blue-50 border border-blue-100 flex items-center justify-center text-tertiary group-hover:scale-110 transition-transform">
-                  <span className="material-symbols-outlined text-3xl">center_focus_strong</span>
+                  <span className="material-symbols-outlined text-3xl">photo_camera</span>
                 </div>
                 <span className="text-xs font-extrabold px-3 py-1 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200 flex items-center gap-1.5">
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
-                  OPTICAL CAM
+                  EVIDENCE CAM
                 </span>
               </div>
 
               <div className="my-2">
                 <h3 className="text-2xl font-black text-slate-900 group-hover:text-tertiary transition-colors tracking-tight">
-                  Edge Camera
+                  Optical Evidence
                 </h3>
                 <p className="text-xs sm:text-sm font-medium text-slate-500 mt-1">
-                  OpenCV optical capture triggered on threat detection &amp; snapshot inspection
+                  OpenCV incident photo verification &amp; GPS location mapping
                 </p>
               </div>
 
               <div className="flex items-center gap-1.5 text-xs font-bold text-tertiary pt-2 border-t border-surface-container/60">
-                <span>View Camera &amp; Evidence</span>
+                <span>View Threat Photos &amp; Map</span>
                 <span className="material-symbols-outlined text-sm group-hover:translate-x-1.5 transition-transform">arrow_forward</span>
               </div>
             </button>

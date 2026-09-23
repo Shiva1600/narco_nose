@@ -180,6 +180,9 @@ class SimulationEngine extends EventEmitter {
     // Telemetry payload
     const telemetryPayload = {
       timestamp: new Date().toISOString(),
+      is_simulation: true,
+      source: 'simulation',
+      hardware_online: false,
       mq2: Math.round(this.current.mq2),
       mq3: Math.round(this.current.mq3),
       mq135: Math.round(this.current.mq135),
@@ -188,6 +191,8 @@ class SimulationEngine extends EventEmitter {
       heat_index: heatIndex,
       threat_level: this.threatLevel,
       ml_confidence: this.mlConfidence,
+      prediction: this.threatScenarioName || (this.threatLevel === 'THREAT' ? 'Threat Detected' : this.threatLevel === 'WARNING' ? 'Not Harmful' : 'Normal'),
+      captured_image: this.latestSnapshot || null,
       actuators: this.actuators
     };
 
@@ -216,30 +221,24 @@ class SimulationEngine extends EventEmitter {
     console.log('[SimEngine] Injected scenario:', scenarioType);
     this.activeThreatScenario = scenarioType;
 
+    // Ensure timer is running
+    if (!this.timer) {
+      this.start(1200);
+    }
+
     let anomalyRecord = null;
 
     if (scenarioType === 'vapors') {
       // Alcohol / Ethanol vapor leak
       this.threatTarget = { mq2: 440, mq3: 880, mq135: 690 };
-      cameraService.updateDetections([
-        {
-          id: 'det-vapor-1',
-          label: 'Vapor Plume / Ethanol Derivative',
-          confidence: 97.4,
-          box: { x: 260, y: 110, width: 290, height: 210 },
-          threatLevel: 'THREAT',
-          color: '#ba1a1a'
-        },
-        {
-          id: 'det-cont-1',
-          label: 'Unsealed Chemical Vessel',
-          confidence: 93.1,
-          box: { x: 140, y: 180, width: 150, height: 180 },
-          threatLevel: 'THREAT',
-          color: '#ba1a1a'
-        }
-      ]);
+      this.current.mq2 = 440;
+      this.current.mq3 = 880;
+      this.current.mq135 = 690;
+      this.threatLevel = 'THREAT';
+      this.mlConfidence = 97.4;
+      this.threatScenarioName = 'Vapor Plume / Ethanol Derivative';
       const snap = cameraService.captureSnapshot({ threat_type: 'Vapor Plume / Ethanol Derivative' });
+      this.latestSnapshot = snap.url;
       anomalyRecord = {
         threat_type: 'Vapor Plume / Ethanol Derivative',
         severity: 'CRITICAL',
@@ -254,17 +253,14 @@ class SimulationEngine extends EventEmitter {
     } else if (scenarioType === 'combustion') {
       // Combustion / LPG Gas leak
       this.threatTarget = { mq2: 920, mq3: 310, mq135: 640 };
-      cameraService.updateDetections([
-        {
-          id: 'det-comb-1',
-          label: 'High Concentration LPG/Smoke Jet',
-          confidence: 95.8,
-          box: { x: 180, y: 70, width: 320, height: 260 },
-          threatLevel: 'THREAT',
-          color: '#ba1a1a'
-        }
-      ]);
+      this.current.mq2 = 920;
+      this.current.mq3 = 310;
+      this.current.mq135 = 640;
+      this.threatLevel = 'THREAT';
+      this.mlConfidence = 95.8;
+      this.threatScenarioName = 'Combustion Trace / LPG Anomaly';
       const snap = cameraService.captureSnapshot({ threat_type: 'Combustion Trace / LPG Anomaly' });
+      this.latestSnapshot = snap.url;
       anomalyRecord = {
         threat_type: 'Combustion Trace / LPG Anomaly',
         severity: 'CRITICAL',
@@ -277,32 +273,28 @@ class SimulationEngine extends EventEmitter {
         lon: this.gps.lon
       };
     } else if (scenarioType === 'powder') {
-      // Suspicious powder object detected via YOLO
-      this.threatTarget = { mq2: 380, mq3: 360, mq135: 580 };
-      cameraService.updateDetections([
-        {
-          id: 'det-pwd-1',
-          label: 'Suspicious Chemical Powder / Trace',
-          confidence: 91.5,
-          box: { x: 340, y: 150, width: 220, height: 170 },
-          threatLevel: 'WARNING',
-          color: '#007bb9'
-        }
-      ]);
-      const snap = cameraService.captureSnapshot({ threat_type: 'Suspicious Chemical Powder Package' });
+      // Chemical Threat trigger
+      this.threatTarget = { mq2: 410, mq3: 380, mq135: 620 };
+      this.current.mq2 = 410;
+      this.current.mq3 = 380;
+      this.current.mq135 = 620;
+      this.threatLevel = 'THREAT';
+      this.mlConfidence = 91.5;
+      this.threatScenarioName = 'Chemical Threat Detected';
+      const snap = cameraService.captureSnapshot({ threat_type: 'Chemical Threat Detected' });
+      this.latestSnapshot = snap.url;
       anomalyRecord = {
-        threat_type: 'Suspicious Chemical Powder Package',
+        threat_type: 'Chemical Threat Detected',
         severity: 'WARNING',
         confidence: 91.5,
-        mq2: 380,
-        mq3: 360,
-        mq135: 580,
+        mq2: 410,
+        mq3: 380,
+        mq135: 620,
         snapshot_url: snap.url,
         lat: this.gps.lat,
         lon: this.gps.lon
       };
     } else if (scenarioType === 'purge') {
-      // Purge and restore normal baseline
       this.purgeChamber();
       return;
     }
@@ -312,35 +304,34 @@ class SimulationEngine extends EventEmitter {
         this.emit('anomaly_created', { id: res.id, ...anomalyRecord, timestamp: new Date().toISOString() });
       });
     }
+
+    // Immediately tick so UI updates instantly!
+    this.tick();
   }
 
   purgeChamber() {
     console.log('[SimEngine] Purging sensor chamber...');
     this.actuators.fanState = 'ON';
     this.piMetrics.fanRpm = 5200;
-    this.threatTarget = { ...this.baseline };
+    this.threatTarget = null;
+    this.threatScenarioName = 'Normal';
+    this.latestSnapshot = null;
+    this.current = { ...this.baseline };
+    this.threatLevel = 'SAFE';
+    this.mlConfidence = 21.0;
     
-    cameraService.updateDetections([
-      {
-        id: 'det-safe-1',
-        label: 'Laboratory Workspace (Cleared)',
-        confidence: 98.2,
-        box: { x: 160, y: 120, width: 240, height: 220 },
-        threatLevel: 'SAFE',
-        color: '#008378'
-      }
-    ]);
+    if (!this.timer) {
+      this.start(1200);
+    }
+    this.tick();
 
     setTimeout(() => {
-      this.current = { ...this.baseline };
-      this.threatTarget = null;
-      this.activeThreatScenario = null;
       if (this.actuators.fanMode === 'AUTO') {
         this.actuators.fanState = 'OFF';
         this.piMetrics.fanRpm = 0;
       }
       this.tick();
-    }, 3500);
+    }, 3000);
   }
 
   calibrateSensors() {

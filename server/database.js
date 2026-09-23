@@ -111,7 +111,7 @@ function seedInitialHistory() {
     },
     {
       offsetMin: 185,
-      threat_type: "Chemical Container Detected (YOLO Object)",
+      threat_type: "Chemical Container Detected (Optical Capture)",
       severity: "WARNING",
       confidence: 88.7,
       mq2: 340,

@@ -45,7 +45,7 @@
         <line x1="375" y1="225" x2="405" y2="225"/>
       </g>
 
-      <!-- YOLO Detections -->
+      <!-- OpenCV Detections -->
       
       <!-- Bounding Box -->
       <g>
@@ -71,7 +71,7 @@
         <animate attributeName="opacity" values="1;0.2;1" dur="1.5s" repeatCount="indefinite"/>
       </circle>
       <text x="46" y="38" fill="#ffffff" font-family="'Plus Jakarta Sans', sans-serif" font-weight="700" font-size="12" letter-spacing="0.05em">LIVE REC</text>
-      <text x="130" y="38" fill="#89f5e7" font-family="'Plus Jakarta Sans', sans-serif" font-weight="600" font-size="12">YOLOv8n-Chemical-V4</text>
+      <text x="130" y="38" fill="#89f5e7" font-family="'Plus Jakarta Sans', sans-serif" font-weight="600" font-size="12">OpenCV cv2</text>
       <text x="360" y="38" fill="#dae2fd" font-family="'Inter', sans-serif" font-size="12">2026-09-17 09:08:17</text>
       <text x="600" y="38" fill="#6bd8cb" font-family="'Inter', sans-serif" font-weight="600" font-size="12">FPS: 29.8</text>
 

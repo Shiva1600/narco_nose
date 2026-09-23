@@ -264,8 +264,14 @@ export default function SensorData() {
                 <p className="text-xs sm:text-sm text-rose-800/80 mt-0.5 max-w-xl">
                   Confidence &ge; 80% threshold reached. Instant optical frame automatically captured by Raspberry Pi 5 camera pipeline.
                 </p>
-                <div className="text-[11px] text-rose-700/70 font-mono mt-1">
-                  Captured at: {new Date(telemetry.timestamp || Date.now()).toLocaleTimeString()}
+                <div className="flex flex-wrap items-center gap-3 text-[11px] text-rose-700/80 font-mono mt-1">
+                  <span>Captured: {new Date(telemetry.timestamp || Date.now()).toLocaleTimeString()}</span>
+                  {(telemetry.lat || telemetry.gps?.lat) && (
+                    <span className="flex items-center gap-1 font-bold text-rose-900 bg-rose-200/60 px-2 py-0.5 rounded-md">
+                      <span className="material-symbols-outlined text-[13px]">location_on</span>
+                      GPS: {(telemetry.lat || telemetry.gps?.lat).toFixed(5)}°, {(telemetry.lon || telemetry.gps?.lon).toFixed(5)}°
+                    </span>
+                  )}
                 </div>
               </div>
             </div>
@@ -276,8 +282,11 @@ export default function SensorData() {
                   url: telemetry.captured_image,
                   captured_image: telemetry.captured_image,
                   timestamp: telemetry.timestamp || new Date().toISOString(),
-                  threat_type: telemetry.prediction || 'Harmful Gas Detected',
-                  confidence: telemetry.confidence
+                  threat_type: telemetry.prediction || 'Threat Detected',
+                  confidence: telemetry.confidence,
+                  lat: telemetry.lat || telemetry.gps?.lat,
+                  lon: telemetry.lon || telemetry.gps?.lon,
+                  severity: 'CRITICAL'
                 })}
                 className="bg-rose-600 hover:bg-rose-700 text-white px-4 py-2 rounded-xl font-bold text-xs shadow-sm flex items-center gap-1.5 transition-all active:scale-95 cursor-pointer"
               >

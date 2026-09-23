@@ -26,7 +26,7 @@ export default function Navbar() {
   const tabs = [
     { id: 'home', label: 'Home', icon: 'hub' },
     { id: 'sensors', label: 'Sensor Data', icon: 'monitoring' },
-    { id: 'camera', label: 'Camera & Vision', icon: 'videocam' },
+    { id: 'camera', label: 'Optical Evidence', icon: 'photo_camera' },
     { id: 'history', label: 'History', icon: 'history' },
     { id: 'diagnostics', label: 'Diagnostics', icon: 'memory' },
     { id: 'settings', label: 'Settings', icon: 'settings' }
@@ -170,15 +170,37 @@ export default function Navbar() {
 
         {/* Trailing Action Cluster - Pushed to Far Right Corner */}
         <div className="flex items-center gap-3 shrink-0">
-          {/* Hardware Connection Pill */}
-          <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full bg-surface-container text-xs font-semibold text-secondary">
-            <span
-              className={`w-2.5 h-2.5 rounded-full ${
-                connected ? 'bg-emerald-500 animate-pulse' : 'bg-rose-500'
-              }`}
-            />
-            <span>{connected ? 'RPi 5 Online' : 'Connecting...'}</span>
-          </div>
+          {/* Hardware Connection / Simulation Indicator Pill */}
+          {!connected ? (
+            <div 
+              title="Connecting to local backend server..."
+              className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-rose-50 text-rose-800 border border-rose-200 text-xs font-bold"
+            >
+              <span className="w-2 h-2 rounded-full bg-rose-500 animate-ping" />
+              <span>Offline</span>
+            </div>
+          ) : telemetry.hardware_online ? (
+            <div 
+              title="Real-time telemetry streaming from Raspberry Pi 5"
+              className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-300 text-xs font-bold tracking-wide shadow-2xs"
+            >
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+              </span>
+              <span className="material-symbols-outlined text-sm">memory</span>
+              <span>LIVE RPi 5</span>
+            </div>
+          ) : (
+            <div 
+              title="Simulation Mode: Real hardware is offline. Showing simulated ambient data."
+              className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-amber-50 text-amber-900 border border-amber-300 text-xs font-bold tracking-wide shadow-2xs"
+            >
+              <span className="w-2 h-2 rounded-full bg-amber-500 animate-pulse" />
+              <span className="material-symbols-outlined text-sm">science</span>
+              <span>SIMULATION MODE</span>
+            </div>
+          )}
 
           {/* Quick Threat Status Badge */}
           <div

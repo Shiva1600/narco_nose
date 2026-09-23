@@ -5,7 +5,7 @@ import SimulationBar from './components/SimulationBar';
 import SnapshotModal from './components/SnapshotModal';
 import HomeHub from './pages/HomeHub';
 import SensorData from './pages/SensorData';
-import CameraYolo from './pages/CameraYolo';
+import OpticalEvidence from './pages/OpticalEvidence';
 import HistoryLogs from './pages/HistoryLogs';
 import SystemDiagnostics from './pages/SystemDiagnostics';
 import DeviceSettings from './pages/DeviceSettings';
@@ -81,7 +81,7 @@ function DashboardContent() {
           >
             {activeTab === 'home' && <HomeHub />}
             {activeTab === 'sensors' && <SensorData />}
-            {activeTab === 'camera' && <CameraYolo />}
+            {activeTab === 'camera' && <OpticalEvidence />}
             {activeTab === 'history' && <HistoryLogs />}
             {activeTab === 'diagnostics' && <SystemDiagnostics />}
             {activeTab === 'settings' && <DeviceSettings />}

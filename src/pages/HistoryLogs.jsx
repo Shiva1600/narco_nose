@@ -187,7 +187,7 @@ export default function HistoryLogs() {
         </div>
       </section>
 
-      {/* Section 2: Chronological Threat Event Log & YOLO Snapshots */}
+      {/* Section 2: Chronological Threat Event Log & Photo Evidence */}
       <section className="bg-surface-container-lowest squircle-card hover-pop-rose p-6 sm:p-8 space-y-6">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-surface-container">
           <div>
@@ -196,11 +196,11 @@ export default function HistoryLogs() {
                 <span className="material-symbols-outlined text-xl font-bold">crisis_alert</span>
               </span>
               <h2 className="text-xl sm:text-2xl font-extrabold text-on-surface tracking-tight">
-                Chronological Threat Events &amp; YOLO Snapshots
+                Chronological Threat Events &amp; Photo Evidence
               </h2>
             </div>
             <p className="text-xs sm:text-sm font-semibold text-secondary mt-1">
-              Recorded proxy detections with optical snapshot captures and sensor peak measurements
+              Recorded proxy detections with optical camera captures and sensor peak measurements
             </p>
           </div>
 
@@ -303,7 +303,7 @@ export default function HistoryLogs() {
                         />
                       </div>
                       <div className="text-left text-xs font-extrabold text-primary flex items-center gap-1">
-                        <span>View YOLO Frame</span>
+                        <span>View Threat Photo</span>
                         <span className="material-symbols-outlined text-sm">open_in_new</span>
                       </div>
                     </button>

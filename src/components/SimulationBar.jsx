@@ -7,12 +7,27 @@ export default function SimulationBar() {
 
   return (
     <div className="bg-transparent text-xs px-4 sm:px-6 lg:px-8 xl:px-10 py-1 transition-all w-full">
-      <div className="w-full flex items-center justify-end">
+      <div className="w-full flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <span className="text-[11px] font-semibold text-secondary">Data Stream:</span>
+          {telemetry.hardware_online ? (
+            <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-emerald-50 text-emerald-800 border border-emerald-300">
+              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
+              Real Pi 5 Hardware Active
+            </span>
+          ) : (
+            <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-amber-50 text-amber-900 border border-amber-300">
+              <span className="w-2 h-2 rounded-full bg-amber-500"></span>
+              Simulation Mode (Pi 5 Offline)
+            </span>
+          )}
+        </div>
+
         <button
           onClick={() => setCollapsed(!collapsed)}
           className="text-secondary hover:text-on-surface font-semibold flex items-center gap-1 text-[11px] transition-colors"
         >
-          <span>{collapsed ? 'Show Test Scenarios' : 'Hide'}</span>
+          <span>{collapsed ? 'Test Scenarios' : 'Hide Scenarios'}</span>
           <span className="material-symbols-outlined text-sm">
             {collapsed ? 'expand_more' : 'expand_less'}
           </span>
@@ -43,8 +58,8 @@ export default function SimulationBar() {
             onClick={() => triggerScenario('powder')}
             className="bg-blue-50 hover:bg-blue-100 text-blue-800 border border-blue-200 px-3 py-1 rounded-full font-semibold transition-all flex items-center gap-1 active:scale-95"
           >
-            <span className="material-symbols-outlined text-xs">category</span>
-            <span>YOLO Powder Object Detect</span>
+            <span className="material-symbols-outlined text-xs">photo_camera</span>
+            <span>Simulate Threat (Trigger Camera)</span>
           </button>
 
           <button

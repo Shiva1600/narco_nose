@@ -17,7 +17,7 @@ export default function SnapshotModal() {
             </span>
             <div>
               <h3 className="font-extrabold text-lg text-on-surface">
-                YOLO Snapshot Capture
+                Threat Photo Evidence
               </h3>
               <p className="text-xs text-secondary">
                 Timestamp: {new Date(selectedSnapshot.timestamp).toLocaleString()}
@@ -36,7 +36,7 @@ export default function SnapshotModal() {
         <div className="mt-4 rounded-2xl overflow-hidden border border-outline-variant/40 bg-surface-container-highest flex items-center justify-center relative min-h-[300px]">
           <img
             src={selectedSnapshot.url || selectedSnapshot.snapshot_url || selectedSnapshot.captured_image}
-            alt="YOLO Snapshot"
+            alt="Threat Incident Photo"
             className="w-full h-auto object-contain max-h-[500px]"
             onError={(e) => {
               // Fallback if local svg / image isn't available

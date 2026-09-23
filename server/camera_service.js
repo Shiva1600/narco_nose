@@ -53,7 +53,7 @@ function handleStream(req, res) {
   });
 }
 
-// Generate dynamic SVG representation of camera feed with YOLO bounding boxes and military/industrial HUD
+// Generate dynamic SVG representation of camera feed with OpenCV optical HUD
 function generateFrameSVG() {
   const timeStr = new Date().toISOString().replace('T', ' ').substring(0, 19);
   const boxes = detectionState.boundingBoxesEnabled ? detectionState.activeDetections : [];
@@ -130,7 +130,7 @@ function generateFrameSVG() {
         <line x1="375" y1="225" x2="405" y2="225"/>
       </g>
 
-      <!-- YOLO Detections -->
+      <!-- Optical Detections -->
       ${boxesSvg}
 
       <!-- Top Overlay HUD -->
@@ -139,7 +139,7 @@ function generateFrameSVG() {
         <animate attributeName="opacity" values="1;0.2;1" dur="1.5s" repeatCount="indefinite"/>
       </circle>
       <text x="46" y="38" fill="#ffffff" font-family="'Plus Jakarta Sans', sans-serif" font-weight="700" font-size="12" letter-spacing="0.05em">LIVE REC</text>
-      <text x="130" y="38" fill="#89f5e7" font-family="'Plus Jakarta Sans', sans-serif" font-weight="600" font-size="12">YOLOv8n-Chemical-V4</text>
+      <text x="130" y="38" fill="#89f5e7" font-family="'Plus Jakarta Sans', sans-serif" font-weight="600" font-size="12">OpenCV cv2</text>
       <text x="360" y="38" fill="#dae2fd" font-family="'Inter', sans-serif" font-size="12">${timeStr}</text>
       <text x="600" y="38" fill="#6bd8cb" font-family="'Inter', sans-serif" font-weight="600" font-size="12">FPS: ${detectionState.fps.toFixed(1)}</text>
 

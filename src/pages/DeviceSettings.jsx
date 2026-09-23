@@ -413,7 +413,7 @@ export default function DeviceSettings() {
               <div className="p-3.5 rounded-2xl bg-surface-container-low border border-outline-variant/30 text-xs space-y-1.5">
                 <div className="flex justify-between">
                   <span className="text-secondary font-semibold">Subscribed:</span>
-                  <span className="font-mono font-bold text-on-surface">narconose/telemetry, camera/yolo</span>
+                  <span className="font-mono font-bold text-on-surface">narconose/telemetry, narconose/gps</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-secondary font-semibold">Published:</span>
@@ -442,9 +442,9 @@ export default function DeviceSettings() {
                   <span className="material-symbols-outlined text-2xl">neurology</span>
                 </div>
                 <div>
-                  <h2 className="text-xl font-bold text-on-surface">ML &amp; YOLO Vision Tuning</h2>
+                  <h2 className="text-xl font-bold text-on-surface">ML &amp; Camera Trigger Tuning</h2>
                   <p className="text-xs sm:text-sm font-medium text-secondary">
-                    LightGBM classifier weights &amp; YOLOv8-Nano NPU inference
+                    Chemical sensor classifier &amp; OpenCV camera capture threshold
                   </p>
                 </div>
               </div>

@@ -12,6 +12,9 @@ export function AppProvider({ children }) {
   // Live Telemetry
   const [telemetry, setTelemetry] = useState({
     timestamp: new Date().toISOString(),
+    is_simulation: true,
+    source: 'simulation',
+    hardware_online: false,
     mq2: 210,
     mq3: 185,
     mq135: 230,
@@ -75,7 +78,7 @@ export function AppProvider({ children }) {
     }
   });
 
-  // YOLO Camera Detections
+  // Optical Detections
   const [detections, setDetections] = useState([]);
   const [boundingBoxesEnabled, setBoundingBoxesEnabled] = useState(true);
 
@@ -137,8 +140,14 @@ export function AppProvider({ children }) {
         }
       }
 
+      const isSim = data.is_simulation !== undefined ? Boolean(data.is_simulation) : (data.source !== 'hardware');
+      const isHw = Boolean(data.hardware_online) || (data.source === 'hardware');
+
       const normalizedData = {
         ...data,
+        is_simulation: isSim,
+        source: isHw ? 'hardware' : 'simulation',
+        hardware_online: isHw,
         mq2: Number(data.mq2 ?? sensors.mq2 ?? 0),
         mq3: Number(data.mq3 ?? sensors.mq3 ?? 0),
         mq135: Number(data.mq135 ?? sensors.mq135 ?? 0),
@@ -181,7 +190,7 @@ export function AppProvider({ children }) {
       setActuators(data);
     });
 
-    socket.on('yolo_update', (data) => {
+    socket.on('camera_update', (data) => {
       if (data && data.activeDetections) {
         setDetections(data.activeDetections);
       }
@@ -257,7 +266,7 @@ export function AppProvider({ children }) {
       setNotification({
         type: 'info',
         title: 'Snapshot Captured',
-        message: `Saved snapshot frame with YOLO tags`,
+        message: `Saved incident photo from edge camera`,
         timestamp: new Date().toLocaleTimeString()
       });
       return data;
@@ -266,7 +275,7 @@ export function AppProvider({ children }) {
     }
   };
 
-  // Toggle YOLO Bounding Boxes
+  // Toggle Camera View Overlays
   const toggleBoundingBoxes = () => {
     const nextVal = !boundingBoxesEnabled;
     setBoundingBoxesEnabled(nextVal);

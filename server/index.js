@@ -114,8 +114,28 @@ async function processThreatPayload(rawPayload) {
 
   const timestamp = rawPayload.timestamp || new Date().toISOString();
 
+  // 4. GPS Location Extraction (supports nested "gps" object or root lat/lon)
+  const gpsData = rawPayload.gps || {};
+  const lat = Number(rawPayload.lat ?? rawPayload.latitude ?? gpsData.lat ?? gpsData.latitude ?? simEngine.gps?.lat ?? 37.774929);
+  const lon = Number(rawPayload.lon ?? rawPayload.lng ?? rawPayload.longitude ?? gpsData.lon ?? gpsData.lng ?? gpsData.longitude ?? simEngine.gps?.lon ?? -122.419416);
+
+  if (rawPayload.lat !== undefined || rawPayload.latitude !== undefined || rawPayload.gps) {
+    io.emit('gps_update', {
+      lat,
+      lon,
+      altitude: Number(rawPayload.altitude ?? gpsData.altitude ?? 42.5),
+      speed: Number(rawPayload.speed ?? gpsData.speed ?? 0.0),
+      satellites: Number(rawPayload.satellites ?? gpsData.satellites ?? 9),
+      fix: '3D Fix',
+      timestamp
+    });
+  }
+
   const normalized = {
     timestamp,
+    is_simulation: false,
+    source: 'hardware',
+    hardware_online: true,
     mq2,
     mq3,
     mq135,
@@ -128,13 +148,16 @@ async function processThreatPayload(rawPayload) {
     confidence,
     probabilities: rawPayload.probabilities || { safe: +(100 - confidence).toFixed(1), [formattedPrediction]: confidence },
     captured_image: snapshotUrl,
+    lat,
+    lon,
+    gps: { lat, lon },
     actuators: rawPayload.actuators || {
       ...simEngine.actuators,
       buzzerState: isThreat ? 'ALARMING' : 'ARMED'
     }
   };
 
-  // 4. Log to SQLite anomalies table if threat or snapshot captured
+  // 5. Log to SQLite anomalies table if threat or snapshot captured
   if (isThreat || snapshotUrl) {
     try {
       const threatType = (formattedPrediction || 'Chemical Threat Detected')
@@ -149,14 +172,14 @@ async function processThreatPayload(rawPayload) {
         mq3,
         mq135,
         snapshot_url: snapshotUrl,
-        lat: simEngine.gps?.lat || 37.774929,
-        lon: simEngine.gps?.lon || -122.419416
+        lat,
+        lon
       };
 
       const dbRes = await database.logAnomaly(anomalyRecord);
-      const alertEvent = { id: dbRes.id, ...anomalyRecord, timestamp, url: snapshotUrl };
+      const alertEvent = { id: dbRes.id, ...anomalyRecord, timestamp, url: snapshotUrl, lat, lon };
       io.emit('threat_alert', alertEvent);
-      console.log(`[Anomaly Logged] Threat event recorded in SQLite (ID #${dbRes.id})`);
+      console.log(`[Anomaly Logged] Threat event recorded in SQLite (ID #${dbRes.id}) at GPS: ${lat.toFixed(5)}, ${lon.toFixed(5)}`);
     } catch (dbErr) {
       console.error('[Database] Failed to record anomaly:', dbErr.message);
     }
@@ -213,15 +236,24 @@ app.get('/api/telemetry/recent', async (req, res) => {
 // HARDWARE INGESTION ENDPOINTS (Push data from Raspberry Pi to Website)
 // -------------------------------------------------------------
 
+let lastRealPiTime = 0;
+
+// Auto-recovery Watchdog: Ensures web dashboard never stays frozen/static when hardware stops streaming
+setInterval(() => {
+  if (Date.now() - lastRealPiTime > 6000 && !simEngine.timer && !mqttService.isConnected) {
+    simEngine.start(1200);
+  }
+}, 3000);
+
 // Ingestion API: Receive real hardware telemetry from external Raspberry Pi
 app.post('/api/telemetry', async (req, res) => {
   try {
     const raw = req.body || {};
+    lastRealPiTime = Date.now();
 
-    // When real telemetry arrives from Pi, pause the mock simulation
+    // Pause mock simulator while real hardware packets arrive
     if (simEngine.timer) {
       simEngine.stop();
-      console.log('[Hardware Ingest] Real Pi Telemetry detected — stopped mock simulator.');
     }
 
     const telemetryData = await processThreatPayload(raw);
@@ -341,6 +373,10 @@ app.post('/api/calibrate', (req, res) => {
 // Simulate Threat Injection
 app.post('/api/simulate', (req, res) => {
   const { scenario } = req.body;
+  lastRealPiTime = 0;
+  if (!simEngine.timer) {
+    simEngine.start(1200);
+  }
   simEngine.injectScenario(scenario);
   res.json({ success: true, scenario });
 });
@@ -434,8 +470,12 @@ io.on('connection', (socket) => {
   console.log('[Socket.IO] Client connected:', socket.id);
 
   // Send initial handshake state
+  const isReal = (Date.now() - lastRealPiTime < 6000);
   socket.emit('sensor_update', {
     timestamp: new Date().toISOString(),
+    is_simulation: !isReal,
+    source: isReal ? 'hardware' : 'simulation',
+    hardware_online: isReal,
     mq2: Math.round(simEngine.current.mq2),
     mq3: Math.round(simEngine.current.mq3),
     mq135: Math.round(simEngine.current.mq135),
@@ -475,6 +515,10 @@ io.on('connection', (socket) => {
   });
 
   socket.on('trigger_scenario', (scenario) => {
+    lastRealPiTime = 0;
+    if (!simEngine.timer) {
+      simEngine.start(1200);
+    }
     simEngine.injectScenario(scenario);
   });
 
@@ -508,6 +552,7 @@ simEngine.on('anomaly_created', (anomaly) => {
 
 // Wire MQTT messages from external hardware into system
 mqttService.on('telemetry', async (data) => {
+  lastRealPiTime = Date.now();
   if (simEngine.timer) {
     simEngine.stop();
     console.log('[Hardware Ingest] Real Pi MQTT Telemetry detected — stopped mock simulator.');
@@ -519,10 +564,12 @@ mqttService.on('telemetry', async (data) => {
 });
 
 mqttService.on('gps', (data) => {
+  lastRealPiTime = Date.now();
   io.emit('gps_update', data);
 });
 
 mqttService.on('diagnostics', (data) => {
+  lastRealPiTime = Date.now();
   io.emit('pi_diagnostics', data);
 });
 
