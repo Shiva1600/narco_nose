@@ -117,13 +117,54 @@ export function AppProvider({ children }) {
     });
 
     socket.on('sensor_update', (data) => {
-      setTelemetry(data);
+      // Normalize data safely (supports nested sensors, confidence, and prediction)
+      const sensors = data.sensors || {};
+      const pred = String(data.prediction || data.output || data.status || '').toLowerCase().trim();
+      let threatLevel = data.threat_level;
+      if (!threatLevel) {
+        if (
+          pred === 'threat' ||
+          pred.includes('threat_detected') ||
+          pred.includes('threat detected') ||
+          (pred.includes('threat') && !pred.includes('no threat')) ||
+          (pred.includes('harmful') && !pred.includes('not harmful') && !pred.includes('not_harmful'))
+        ) {
+          threatLevel = 'THREAT';
+        } else if (pred === 'not harmful' || pred === 'not_harmful' || pred.includes('warning') || pred.includes('caution')) {
+          threatLevel = 'WARNING';
+        } else {
+          threatLevel = 'SAFE';
+        }
+      }
+
+      const normalizedData = {
+        ...data,
+        mq2: Number(data.mq2 ?? sensors.mq2 ?? 0),
+        mq3: Number(data.mq3 ?? sensors.mq3 ?? 0),
+        mq135: Number(data.mq135 ?? sensors.mq135 ?? 0),
+        temp: Number(data.temp ?? data.temperature ?? sensors.temperature ?? sensors.temp ?? 24.0),
+        humidity: Number(data.humidity ?? sensors.humidity ?? 45.0),
+        ml_confidence: Number(data.confidence ?? data.ml_confidence ?? (threatLevel === 'THREAT' ? 88 : threatLevel === 'WARNING' ? 65 : 20)),
+        threat_level: threatLevel,
+        prediction: data.prediction || (threatLevel === 'THREAT' ? 'Threat Detected' : threatLevel === 'WARNING' ? 'Not Harmful' : 'Normal')
+      };
+
+      setTelemetry(prev => ({
+        ...normalizedData,
+        captured_image: normalizedData.captured_image !== undefined 
+          ? normalizedData.captured_image 
+          : prev.captured_image
+      }));
       if (data.actuators) {
         setActuators(data.actuators);
       }
+
+      // Memory & Canvas Guardrail:
+      // Exclude heavy captured_image strings from the rolling 25-point chart stream
+      const { captured_image, ...chartPoint } = normalizedData;
       setTelemetryStream(prev => {
-        const timeLabel = new Date(data.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-        const next = [...prev, { ...data, timeLabel }];
+        const timeLabel = new Date(data.timestamp || Date.now()).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+        const next = [...prev, { ...chartPoint, timeLabel }];
         return next.slice(-25); // keep last 25 ticks
       });
     });
@@ -148,11 +189,20 @@ export function AppProvider({ children }) {
 
     socket.on('threat_alert', (anomaly) => {
       setAnomalies(prev => [anomaly, ...prev]);
+      if (anomaly.snapshot_url || anomaly.url) {
+        setTelemetry(prev => ({
+          ...prev,
+          captured_image: anomaly.snapshot_url || anomaly.url,
+          prediction: anomaly.threat_type || prev.prediction,
+          confidence: anomaly.confidence || prev.confidence
+        }));
+      }
       setNotification({
         type: 'threat',
         title: `${anomaly.threat_type}`,
         message: `Severity: ${anomaly.severity} | Confidence: ${anomaly.confidence}%`,
-        timestamp: new Date().toLocaleTimeString()
+        timestamp: new Date().toLocaleTimeString(),
+        snapshot_url: anomaly.snapshot_url || anomaly.url
       });
     });
 
@@ -225,6 +275,10 @@ export function AppProvider({ children }) {
     }
   };
 
+  const dismissThreatSnapshot = () => {
+    setTelemetry(prev => ({ ...prev, captured_image: null }));
+  };
+
   return (
     <AppContext.Provider
       value={{
@@ -250,7 +304,8 @@ export function AppProvider({ children }) {
         setNotification,
         calibrate,
         triggerScenario,
-        captureSnapshot
+        captureSnapshot,
+        dismissThreatSnapshot
       }}
     >
       {children}

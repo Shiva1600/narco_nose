@@ -26,7 +26,7 @@ export default function Navbar() {
   const tabs = [
     { id: 'home', label: 'Home', icon: 'hub' },
     { id: 'sensors', label: 'Sensor Data', icon: 'monitoring' },
-    { id: 'camera', label: 'Camera YOLO', icon: 'videocam' },
+    { id: 'camera', label: 'Camera & Vision', icon: 'videocam' },
     { id: 'history', label: 'History', icon: 'history' },
     { id: 'diagnostics', label: 'Diagnostics', icon: 'memory' },
     { id: 'settings', label: 'Settings', icon: 'settings' }

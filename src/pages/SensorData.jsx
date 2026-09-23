@@ -32,7 +32,9 @@ export default function SensorData() {
     sensorViewMode,
     setSensorViewMode,
     calibrate,
-    triggerScenario
+    triggerScenario,
+    setSelectedSnapshot,
+    dismissThreatSnapshot
   } = useApp();
 
   const isThreat = telemetry.threat_level === 'THREAT';
@@ -221,6 +223,80 @@ export default function SensorData() {
         </div>
       </div>
 
+      {/* Live Threat Optical Evidence Card (Triggered by Pi 5 Camera on >=80% Threat) */}
+      {telemetry.captured_image && (
+        <div className="w-full p-4 sm:p-5 squircle-card border border-rose-300/80 bg-rose-50/80 shadow-lg ring-1 ring-rose-400/40 backdrop-blur-sm animate-in fade-in slide-in-from-top-4 duration-300">
+          <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+            <div className="flex items-start sm:items-center gap-4">
+              <div
+                onClick={() => setSelectedSnapshot({
+                  url: telemetry.captured_image,
+                  captured_image: telemetry.captured_image,
+                  timestamp: telemetry.timestamp || new Date().toISOString(),
+                  threat_type: telemetry.prediction || 'Harmful Gas Detected',
+                  confidence: telemetry.confidence
+                })}
+                className="relative group cursor-pointer w-20 h-20 sm:w-24 sm:h-24 rounded-2xl overflow-hidden border-2 border-rose-400 shrink-0 shadow-md bg-black/40 flex items-center justify-center"
+                title="Click to inspect full resolution evidence"
+              >
+                <img
+                  src={telemetry.captured_image}
+                  alt="Triggered Optical Threat Evidence"
+                  className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+                />
+                <div className="absolute inset-0 bg-black/25 group-hover:bg-black/10 transition-colors flex items-center justify-center">
+                  <span className="material-symbols-outlined text-white text-2xl drop-shadow-md">zoom_in</span>
+                </div>
+              </div>
+              <div>
+                <div className="flex flex-wrap items-center gap-2 mb-1">
+                  <span className="px-2.5 py-0.5 rounded-full text-xs font-black uppercase tracking-wider bg-rose-600 text-white flex items-center gap-1 shadow-xs">
+                    <span className="material-symbols-outlined text-sm animate-pulse">photo_camera</span>
+                    Camera Triggered
+                  </span>
+                  <span className="px-2 py-0.5 rounded-full text-xs font-bold bg-rose-200 text-rose-900">
+                    Confidence: {Number(telemetry.confidence || 0).toFixed(1)}%
+                  </span>
+                </div>
+                <h3 className="text-base sm:text-lg font-black text-rose-950">
+                  Visual Evidence Captured: {telemetry.prediction || 'Threat Event'}
+                </h3>
+                <p className="text-xs sm:text-sm text-rose-800/80 mt-0.5 max-w-xl">
+                  Confidence &ge; 80% threshold reached. Instant optical frame automatically captured by Raspberry Pi 5 camera pipeline.
+                </p>
+                <div className="text-[11px] text-rose-700/70 font-mono mt-1">
+                  Captured at: {new Date(telemetry.timestamp || Date.now()).toLocaleTimeString()}
+                </div>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-2 w-full md:w-auto justify-end">
+              <button
+                onClick={() => setSelectedSnapshot({
+                  url: telemetry.captured_image,
+                  captured_image: telemetry.captured_image,
+                  timestamp: telemetry.timestamp || new Date().toISOString(),
+                  threat_type: telemetry.prediction || 'Harmful Gas Detected',
+                  confidence: telemetry.confidence
+                })}
+                className="bg-rose-600 hover:bg-rose-700 text-white px-4 py-2 rounded-xl font-bold text-xs shadow-sm flex items-center gap-1.5 transition-all active:scale-95 cursor-pointer"
+              >
+                <span className="material-symbols-outlined text-sm">visibility</span>
+                <span>Inspect Snapshot</span>
+              </button>
+              <button
+                onClick={dismissThreatSnapshot}
+                className="bg-rose-200/80 hover:bg-rose-300 text-rose-900 px-3 py-2 rounded-xl font-bold text-xs transition-all active:scale-95 flex items-center gap-1 cursor-pointer"
+                title="Dismiss snapshot banner"
+              >
+                <span className="material-symbols-outlined text-sm">close</span>
+                <span>Dismiss</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Dynamic System Status Banner based on ML confidence */}
       <div
         className={`w-full p-5 sm:p-6 squircle-card border flex flex-col md:flex-row items-start md:items-center justify-between gap-4 transition-all duration-300 ${
@@ -264,15 +340,14 @@ export default function SensorData() {
             </div>
             <h2 className="text-xl sm:text-2xl font-black text-on-surface mt-0.5">
               {isThreat
-                ? 'Chemical Threat Detected — Active Plume Warning'
+                ? `Threat Detected — ${telemetry.prediction || 'Critical Chemical Warning'}`
                 : isWarning
-                ? 'Elevated Gas Concentration — Monitoring Deviation'
-                : 'Atmospheric Proxy Baseline — Clean Air Conditions'}
+                ? `Classification: ${telemetry.prediction || 'Not Harmful (Elevated Gas)'}`
+                : `Classification: ${telemetry.prediction || 'Normal (Clean Air)'}`}
             </h2>
             <p className="text-sm text-secondary mt-1">
               ML Inference Confidence:{' '}
-              <strong className="text-on-surface">{telemetry.ml_confidence}%</strong> | Multi-sensor
-              fusion vector: MQ-2 ({telemetry.mq2} ppm), MQ-3 ({telemetry.mq3} ppm), MQ-135 ({telemetry.mq135} ppm).
+              <strong className="text-on-surface">{telemetry.ml_confidence}%</strong> | DHT11 ({telemetry.temp}°C, {telemetry.humidity}%) | Sensors: MQ-2 ({telemetry.mq2} ppm), MQ-3 ({telemetry.mq3} ppm), MQ-135 ({telemetry.mq135} ppm).
             </p>
           </div>
         </div>

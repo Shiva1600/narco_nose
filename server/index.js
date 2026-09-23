@@ -3,6 +3,7 @@ const http = require('http');
 const { Server } = require('socket.io');
 const cors = require('cors');
 const path = require('path');
+const fs = require('fs');
 
 const database = require('./database');
 const mqttService = require('./mqtt_service');
@@ -15,16 +16,170 @@ const io = new Server(server, {
   cors: {
     origin: '*',
     methods: ['GET', 'POST']
-  }
+  },
+  maxHttpBufferSize: 1e7 // 10 MB payload limit to safely accommodate camera frames
 });
 
 const PORT = process.env.PORT || 5000;
 
+// Ensure snapshots directory exists
+const snapshotsDir = path.join(__dirname, '../public/snapshots');
+if (!fs.existsSync(snapshotsDir)) {
+  fs.mkdirSync(snapshotsDir, { recursive: true });
+}
+
 app.use(cors());
-app.use(express.json());
+app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({ limit: '10mb', extended: true }));
 app.use('/snapshots', express.static(path.join(__dirname, '../public/snapshots')));
 app.use(express.static(path.join(__dirname, '../dist')));
 app.use(express.static(path.join(__dirname, '../public')));
+
+// -------------------------------------------------------------
+// TELEMETRY & THREAT CAMERA INGESTION PIPELINE
+// -------------------------------------------------------------
+
+/**
+ * Normalizes telemetry from Pi (supports both flat and nested schemas),
+ * decodes Base64 images to static files on disk, logs threats to SQLite,
+ * and returns a lightweight payload safe for WebSockets and React charts.
+ */
+async function processThreatPayload(rawPayload) {
+  if (!rawPayload || typeof rawPayload !== 'object') return null;
+
+  // 1. Unpack sensor readings (support both nested "sensors" object and flat keys, DHT11 temp/humidity)
+  const sensors = rawPayload.sensors || {};
+  const mq2 = Number(rawPayload.mq2 ?? sensors.mq2 ?? rawPayload.mq2_smoke ?? 0);
+  const mq3 = Number(rawPayload.mq3 ?? sensors.mq3 ?? rawPayload.mq3_alcohol ?? 0);
+  const mq135 = Number(rawPayload.mq135 ?? sensors.mq135 ?? rawPayload.mq135_air ?? 0);
+  const temp = Number(rawPayload.temp ?? rawPayload.temperature ?? sensors.temperature ?? sensors.temp ?? 24.0);
+  const humidity = Number(rawPayload.humidity ?? sensors.humidity ?? 45.0);
+  const heat_index = Number(rawPayload.heat_index ?? (temp + 0.4));
+
+  // 2. ML Prediction & Threat Classification (supports explicit "threat", "not harmful", "normal")
+  const rawPred = String(rawPayload.prediction || rawPayload.output || rawPayload.status || '').toLowerCase().trim();
+  const confidence = Number(rawPayload.confidence ?? rawPayload.ml_confidence ?? (rawPred.includes('threat') ? 88.5 : 15.0));
+
+  let threat_level = 'SAFE';
+  let formattedPrediction = rawPayload.prediction || 'normal';
+
+  if (
+    rawPred === 'threat' ||
+    rawPred.includes('threat_detected') ||
+    rawPred.includes('threat detected') ||
+    (rawPred.includes('threat') && !rawPred.includes('no threat')) ||
+    (rawPred.includes('harmful') && !rawPred.includes('not harmful') && !rawPred.includes('not_harmful')) ||
+    rawPayload.threat_level === 'THREAT'
+  ) {
+    threat_level = 'THREAT';
+    formattedPrediction = rawPayload.prediction || 'Threat Detected';
+  } else if (
+    rawPred === 'not harmful' ||
+    rawPred === 'not_harmful' ||
+    rawPred === 'warning' ||
+    rawPred.includes('caution') ||
+    rawPayload.threat_level === 'WARNING'
+  ) {
+    threat_level = 'WARNING';
+    formattedPrediction = rawPayload.prediction || 'Not Harmful';
+  } else {
+    threat_level = 'SAFE';
+    formattedPrediction = rawPayload.prediction || 'Normal';
+  }
+
+  const isThreat = threat_level === 'THREAT';
+  const ml_confidence = confidence;
+
+  // 3. Process captured camera image if present from OpenCV cv2 (Base64 -> disk file -> static URL)
+  let snapshotUrl = null;
+  const rawImg = rawPayload.captured_image || rawPayload.image || rawPayload.photo;
+  if (rawImg && typeof rawImg === 'string') {
+    const imgStr = rawImg.trim();
+    if (imgStr.startsWith('/snapshots') || imgStr.startsWith('http')) {
+      snapshotUrl = imgStr;
+    } else {
+      try {
+        const base64Data = imgStr.replace(/^data:image\/\w+;base64,/, '');
+        const buffer = Buffer.from(base64Data, 'base64');
+        const filename = `threat_${Date.now()}_${Math.random().toString(36).substring(2, 6)}.jpg`;
+        const filepath = path.join(snapshotsDir, filename);
+        await fs.promises.writeFile(filepath, buffer);
+        snapshotUrl = `/snapshots/${filename}`;
+        console.log(`[OpenCV Camera Trigger] Saved threat snapshot: ${snapshotUrl} (${(buffer.length / 1024).toFixed(1)} KB)`);
+      } catch (err) {
+        console.error('[OpenCV Camera Trigger] Failed to save base64 image to disk:', err.message);
+      }
+    }
+  }
+
+  const timestamp = rawPayload.timestamp || new Date().toISOString();
+
+  const normalized = {
+    timestamp,
+    mq2,
+    mq3,
+    mq135,
+    temp,
+    humidity,
+    heat_index: +heat_index.toFixed(1),
+    threat_level,
+    ml_confidence,
+    prediction: formattedPrediction,
+    confidence,
+    probabilities: rawPayload.probabilities || { safe: +(100 - confidence).toFixed(1), [formattedPrediction]: confidence },
+    captured_image: snapshotUrl,
+    actuators: rawPayload.actuators || {
+      ...simEngine.actuators,
+      buzzerState: isThreat ? 'ALARMING' : 'ARMED'
+    }
+  };
+
+  // 4. Log to SQLite anomalies table if threat or snapshot captured
+  if (isThreat || snapshotUrl) {
+    try {
+      const threatType = (formattedPrediction || 'Chemical Threat Detected')
+        .replace(/_/g, ' ')
+        .replace(/\b\w/g, c => c.toUpperCase());
+
+      const anomalyRecord = {
+        threat_type: threatType,
+        severity: confidence >= 90 ? 'CRITICAL' : 'WARNING',
+        confidence: ml_confidence,
+        mq2,
+        mq3,
+        mq135,
+        snapshot_url: snapshotUrl,
+        lat: simEngine.gps?.lat || 37.774929,
+        lon: simEngine.gps?.lon || -122.419416
+      };
+
+      const dbRes = await database.logAnomaly(anomalyRecord);
+      const alertEvent = { id: dbRes.id, ...anomalyRecord, timestamp, url: snapshotUrl };
+      io.emit('threat_alert', alertEvent);
+      console.log(`[Anomaly Logged] Threat event recorded in SQLite (ID #${dbRes.id})`);
+    } catch (dbErr) {
+      console.error('[Database] Failed to record anomaly:', dbErr.message);
+    }
+  }
+
+  // 5. Save standard telemetry tick to SQLite
+  try {
+    await database.logTelemetry({
+      mq2_smoke: mq2,
+      mq3_alcohol: mq3,
+      mq135_air: mq135,
+      temp,
+      humidity,
+      heat_index: +heat_index.toFixed(1),
+      threat_level,
+      ml_confidence
+    });
+  } catch (err) {
+    // Non-fatal telemetry log error
+  }
+
+  return normalized;
+}
 
 // -------------------------------------------------------------
 // REST API ROUTES
@@ -61,7 +216,7 @@ app.get('/api/telemetry/recent', async (req, res) => {
 // Ingestion API: Receive real hardware telemetry from external Raspberry Pi
 app.post('/api/telemetry', async (req, res) => {
   try {
-    const payload = req.body || {};
+    const raw = req.body || {};
 
     // When real telemetry arrives from Pi, pause the mock simulation
     if (simEngine.timer) {
@@ -69,44 +224,12 @@ app.post('/api/telemetry', async (req, res) => {
       console.log('[Hardware Ingest] Real Pi Telemetry detected — stopped mock simulator.');
     }
 
-    const mq2 = Number(payload.mq2 ?? payload.mq2_smoke ?? 0);
-    const mq3 = Number(payload.mq3 ?? payload.mq3_alcohol ?? 0);
-    const mq135 = Number(payload.mq135 ?? payload.mq135_air ?? 0);
-    const temp = Number(payload.temp ?? 24.0);
-    const humidity = Number(payload.humidity ?? 45.0);
-    const heat_index = Number(payload.heat_index ?? (temp + 0.4));
-    const threat_level = payload.threat_level || (mq2 > 420 || mq3 > 380 ? 'THREAT' : 'SAFE');
-    const ml_confidence = Number(payload.ml_confidence ?? (threat_level === 'THREAT' ? 95 : 20));
+    const telemetryData = await processThreatPayload(raw);
+    if (telemetryData) {
+      io.emit('sensor_update', telemetryData);
+    }
 
-    const telemetryData = {
-      timestamp: payload.timestamp || new Date().toISOString(),
-      mq2,
-      mq3,
-      mq135,
-      temp,
-      humidity,
-      heat_index: +heat_index.toFixed(1),
-      threat_level,
-      ml_confidence,
-      actuators: payload.actuators || simEngine.actuators
-    };
-
-    // Broadcast immediately to all connected browsers via WebSocket
-    io.emit('sensor_update', telemetryData);
-
-    // Save to SQLite
-    await database.logTelemetry({
-      mq2_smoke: mq2,
-      mq3_alcohol: mq3,
-      mq135_air: mq135,
-      temp,
-      humidity,
-      heat_index: +heat_index.toFixed(1),
-      threat_level,
-      ml_confidence
-    });
-
-    res.json({ success: true, message: 'Telemetry received and live streamed' });
+    res.json({ success: true, message: 'Telemetry processed', captured_image: telemetryData?.captured_image });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -384,8 +507,15 @@ simEngine.on('anomaly_created', (anomaly) => {
 });
 
 // Wire MQTT messages from external hardware into system
-mqttService.on('telemetry', (data) => {
-  io.emit('sensor_update', data);
+mqttService.on('telemetry', async (data) => {
+  if (simEngine.timer) {
+    simEngine.stop();
+    console.log('[Hardware Ingest] Real Pi MQTT Telemetry detected — stopped mock simulator.');
+  }
+  const telemetryData = await processThreatPayload(data);
+  if (telemetryData) {
+    io.emit('sensor_update', telemetryData);
+  }
 });
 
 mqttService.on('gps', (data) => {

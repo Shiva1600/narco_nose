@@ -85,10 +85,10 @@ export default function HomeHub() {
               </div>
             </button>
 
-            {/* Card 2: Camera YOLO */}
+            {/* Card 2: Edge Camera (OpenCV) */}
             <button
               onClick={() => setActiveTab('camera')}
-              aria-label="Open Camera YOLO detection"
+              aria-label="Open Edge Camera optical view"
               className="squircle-card hover-pop-blue bg-surface-container-lowest w-full min-h-[220px] sm:min-h-[240px] flex flex-col justify-between p-6 sm:p-7 text-left group cursor-pointer active:scale-98 relative shadow-xs"
             >
               <div className="flex justify-between items-start w-full">
@@ -97,21 +97,21 @@ export default function HomeHub() {
                 </div>
                 <span className="text-xs font-extrabold px-3 py-1 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200 flex items-center gap-1.5">
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
-                  LIVE FEED
+                  OPTICAL CAM
                 </span>
               </div>
 
               <div className="my-2">
                 <h3 className="text-2xl font-black text-slate-900 group-hover:text-tertiary transition-colors tracking-tight">
-                  Camera YOLO
+                  Edge Camera
                 </h3>
                 <p className="text-xs sm:text-sm font-medium text-slate-500 mt-1">
-                  YOLOv8-Nano optical threat proxy classification &amp; GPS rover trail
+                  OpenCV optical capture triggered on threat detection &amp; snapshot inspection
                 </p>
               </div>
 
               <div className="flex items-center gap-1.5 text-xs font-bold text-tertiary pt-2 border-t border-surface-container/60">
-                <span>View Optical Stream</span>
+                <span>View Camera &amp; Evidence</span>
                 <span className="material-symbols-outlined text-sm group-hover:translate-x-1.5 transition-transform">arrow_forward</span>
               </div>
             </button>

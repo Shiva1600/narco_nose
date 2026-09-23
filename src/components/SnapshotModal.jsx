@@ -35,7 +35,7 @@ export default function SnapshotModal() {
         {/* Image Display */}
         <div className="mt-4 rounded-2xl overflow-hidden border border-outline-variant/40 bg-surface-container-highest flex items-center justify-center relative min-h-[300px]">
           <img
-            src={selectedSnapshot.url || selectedSnapshot.snapshot_url}
+            src={selectedSnapshot.url || selectedSnapshot.snapshot_url || selectedSnapshot.captured_image}
             alt="YOLO Snapshot"
             className="w-full h-auto object-contain max-h-[500px]"
             onError={(e) => {
@@ -67,9 +67,8 @@ export default function SnapshotModal() {
           </div>
           <div>
             <span className="text-secondary block font-medium">Sensor Severity</span>
-            <span className={`font-bold ${
-              selectedSnapshot.severity === 'CRITICAL' ? 'text-rose-600' : 'text-amber-600'
-            }`}>
+            <span className={`font-bold ${selectedSnapshot.severity === 'CRITICAL' ? 'text-rose-600' : 'text-amber-600'
+              }`}>
               {selectedSnapshot.severity || 'EVALUATING'}
             </span>
           </div>
