@@ -337,7 +337,15 @@ app.post('/api/settings', async (req, res) => {
     if (updates.thresholds) {
       simEngine.setThresholds(updates.thresholds);
     }
-    res.json({ success: true });
+    if (updates.mqtt_host) {
+      console.log(`[Settings] User re-bound MQTT broker to Pi 5 IP: ${updates.mqtt_host}:${updates.mqtt_port || 1883}`);
+      mqttService.reconnect({
+        host: updates.mqtt_host,
+        port: updates.mqtt_port || 1883,
+        topicPrefix: updates.mqtt_topic_prefix || 'narconose/'
+      });
+    }
+    res.json({ success: true, mqtt: mqttService.getStatus() });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -552,6 +560,11 @@ simEngine.on('anomaly_created', (anomaly) => {
 
 // Wire MQTT messages from external hardware into system
 mqttService.on('telemetry', async (data) => {
+  // Ignore echo of internal simulation broadcasts
+  if (data && (data.is_simulation || data.source === 'simulation')) {
+    return;
+  }
+
   lastRealPiTime = Date.now();
   if (simEngine.timer) {
     simEngine.stop();
@@ -573,15 +586,64 @@ mqttService.on('diagnostics', (data) => {
   io.emit('pi_diagnostics', data);
 });
 
-// Start services
-mqttService.init();
-simEngine.start(1200);
+// Start services and MQTT client
+async function startServer() {
+  // 1. Check if user configured a remote Raspberry Pi 5 IP
+  const dbSettings = await database.getSettings().catch(() => ({}));
+  const customHost = process.env.PI_IP || process.env.MQTT_HOST || dbSettings?.mqtt_host;
+  const isRemoteHost = customHost && customHost !== '127.0.0.1' && customHost !== 'localhost';
 
-// Start HTTP server
-server.listen(PORT, () => {
-  console.log(`====================================================`);
-  console.log(`Narco Nose Full-Stack Server listening on port ${PORT}`);
-  console.log(`MJPEG Video Stream: http://localhost:${PORT}/stream/video.mjpg`);
-  console.log(`REST API:          http://localhost:${PORT}/api/status`);
-  console.log(`====================================================`);
-});
+  if (isRemoteHost) {
+    console.log(`[MQTT] Configured for Raspberry Pi 5 IP: ${customHost}:${dbSettings?.mqtt_port || 1883}`);
+    mqttService.init({
+      host: customHost,
+      port: dbSettings?.mqtt_port || 1883,
+      topicPrefix: dbSettings?.mqtt_topic_prefix || 'narconose/'
+    });
+  } else {
+    // If no remote Pi 5 IP configured yet, run embedded broker so it works standalone
+    const { createServer: createNetServer } = require('node:net');
+    try {
+      const { Aedes } = require('aedes');
+      const aedesBroker = await Aedes.createBroker();
+      const mqttBrokerServer = createNetServer(aedesBroker.handle);
+
+      mqttBrokerServer.listen(1883, () => {
+        console.log('[MQTT Broker] Embedded broker active on port 1883 (Connect your Pi or set Pi IP in Settings)');
+        mqttService.init();
+      });
+
+      mqttBrokerServer.on('error', (err) => {
+        console.warn('[MQTT Broker] Port 1883 note (external broker active):', err.message);
+        mqttService.init();
+      });
+
+      aedesBroker.on('client', (client) => {
+        console.log(`[MQTT Broker] Hardware client connected: ${client ? client.id : 'unknown'}`);
+      });
+    } catch (e) {
+      console.warn('[MQTT Broker] Embedded broker init notice:', e.message);
+      mqttService.init();
+    }
+  }
+
+  // Forward MQTT connection updates to WebSockets
+  mqttService.on('connection_change', (status) => {
+    io.emit('mqtt_status', status);
+  });
+
+  simEngine.start(1200);
+
+  // Start HTTP server
+  server.listen(PORT, () => {
+    console.log(`====================================================`);
+    console.log(`Narco Nose Full-Stack Server listening on port ${PORT}`);
+    console.log(`MJPEG Video Stream: http://localhost:${PORT}/stream/video.mjpg`);
+    console.log(`REST API:          http://localhost:${PORT}/api/status`);
+    console.log(`MQTT Broker:       mqtt://0.0.0.0:1883 (Built-in)`);
+    console.log(`====================================================`);
+  });
+}
+
+startServer();
+

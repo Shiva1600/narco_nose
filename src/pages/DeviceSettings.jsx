@@ -375,14 +375,18 @@ export default function DeviceSettings() {
             <div className="space-y-4">
               <div>
                 <label className="block text-xs font-bold text-secondary uppercase mb-1">
-                  Broker Host / IP
+                  Raspberry Pi 5 IP / Broker Host
                 </label>
                 <input
                   type="text"
+                  placeholder="e.g. 192.168.1.105"
                   value={mqttHost}
                   onChange={(e) => setMqttHost(e.target.value)}
                   className="w-full bg-surface-container-low border border-outline-variant/40 rounded-xl px-3.5 py-2 text-sm font-mono text-on-surface focus:ring-2 focus:ring-primary focus:outline-none"
                 />
+                <p className="text-[11px] text-secondary mt-1">
+                  Enter your Pi 5's local Wi-Fi IP address to connect the website directly to your Pi.
+                </p>
               </div>
 
               <div className="grid grid-cols-2 gap-3">
@@ -426,9 +430,10 @@ export default function DeviceSettings() {
           <div className="mt-6 pt-4 border-t border-slate-100 flex justify-end">
             <button
               onClick={handleSaveAll}
-              className="px-5 py-2 bg-tertiary hover:bg-tertiary-container text-white font-bold text-xs rounded-full shadow-sm active:scale-95 transition-all"
+              className="px-5 py-2 bg-tertiary hover:bg-tertiary-container text-white font-bold text-xs rounded-full shadow-sm active:scale-95 transition-all flex items-center gap-1.5"
             >
-              Re-bind MQTT Broker
+              <span className="material-symbols-outlined text-sm">link</span>
+              <span>Connect to Pi 5 Broker</span>
             </button>
           </div>
         </section>

@@ -149,19 +149,17 @@ export default function OpticalEvidence() {
 
       {/* Global Status Banner */}
       <div
-        className={`w-full border-2 rounded-3xl p-5 sm:p-6 flex flex-col md:flex-row md:items-center justify-between gap-5 shadow-sm transition-colors duration-300 ${
-          isThreat
+        className={`w-full border-2 rounded-3xl p-5 sm:p-6 flex flex-col md:flex-row md:items-center justify-between gap-5 shadow-sm transition-colors duration-300 ${isThreat
             ? 'bg-rose-50 border-rose-300 text-rose-950'
             : isWarning
-            ? 'bg-amber-50 border-amber-300 text-amber-950'
-            : 'bg-emerald-50 border-emerald-300 text-emerald-950'
-        }`}
+              ? 'bg-amber-50 border-amber-300 text-amber-950'
+              : 'bg-emerald-50 border-emerald-300 text-emerald-950'
+          }`}
       >
         <div className="flex items-center gap-4">
           <div
-            className={`w-12 h-12 rounded-2xl flex items-center justify-center text-white shadow-md shrink-0 ${
-              isThreat ? 'bg-rose-600 animate-pulse' : isWarning ? 'bg-amber-500' : 'bg-emerald-600'
-            }`}
+            className={`w-12 h-12 rounded-2xl flex items-center justify-center text-white shadow-md shrink-0 ${isThreat ? 'bg-rose-600 animate-pulse' : isWarning ? 'bg-amber-500' : 'bg-emerald-600'
+              }`}
           >
             <span className="material-symbols-outlined text-2xl font-bold">
               {isThreat ? 'dangerous' : isWarning ? 'warning' : 'verified_user'}
@@ -181,8 +179,8 @@ export default function OpticalEvidence() {
               {isThreat
                 ? `Active Threat Detected (${telemetry.prediction || 'Harmful Gas'}) — Incident frame captured via Raspberry Pi camera.`
                 : isWarning
-                ? 'Elevated Gas Concentration (Not Harmful) — Atmospheric levels monitored.'
-                : 'Normal Atmospheric Baseline — Sensors clean. Camera in passive ready standby.'}
+                  ? 'Elevated Gas Concentration (Not Harmful) — Atmospheric levels monitored.'
+                  : 'Normal Atmospheric Baseline — Sensors clean. Camera in passive ready standby.'}
             </p>
           </div>
         </div>
@@ -246,7 +244,7 @@ export default function OpticalEvidence() {
                     severity: 'CRITICAL'
                   })}
                 />
-                
+
                 {/* Visual Overlay Header */}
                 <div className="absolute top-3 left-3 right-3 flex items-center justify-between pointer-events-none">
                   <div className="bg-black/75 backdrop-blur-md px-3 py-1.5 rounded-xl border border-white/20 text-white text-xs font-bold flex items-center gap-2">
@@ -338,9 +336,8 @@ export default function OpticalEvidence() {
                 </div>
                 <h2 className="text-xl font-extrabold text-on-surface">Incident Telemetry</h2>
               </div>
-              <span className={`px-3 py-0.5 rounded-full text-xs font-black uppercase ${
-                isThreat ? 'bg-rose-100 text-rose-900 border border-rose-300' : 'bg-blue-50 text-blue-900 border border-blue-200'
-              }`}>
+              <span className={`px-3 py-0.5 rounded-full text-xs font-black uppercase ${isThreat ? 'bg-rose-100 text-rose-900 border border-rose-300' : 'bg-blue-50 text-blue-900 border border-blue-200'
+                }`}>
                 {telemetry.prediction || 'Normal'}
               </span>
             </div>

@@ -6,15 +6,35 @@ class MqttService extends EventEmitter {
     super();
     this.client = null;
     this.isConnected = false;
-    this.brokerUrl = process.env.MQTT_BROKER_URL || process.env.MQTT_URL || 'mqtt://127.0.0.1:1883';
+    const initialHost = process.env.PI_IP || process.env.MQTT_HOST || '127.0.0.1';
+    const initialPort = process.env.MQTT_PORT || '1883';
+    this.brokerUrl = process.env.MQTT_BROKER_URL || process.env.MQTT_URL || `mqtt://${initialHost}:${initialPort}`;
     this.topicPrefix = process.env.MQTT_TOPIC_PREFIX || 'narconose/';
     this.lastPing = Date.now();
     this.reconnectAttempts = 0;
   }
 
+  reconnect(options = {}) {
+    console.log('[MQTT] Reconnecting to broker with new options:', options);
+    if (this.client) {
+      try {
+        const oldClient = this.client;
+        oldClient.on('error', () => {}); // Catch and suppress lingering errors on closing client
+        oldClient.end(true);
+      } catch (e) {}
+      this.client = null;
+    }
+    this.isConnected = false;
+    this.emit('connection_change', { connected: false, message: 'Reconnecting...' });
+    this.init(options);
+  }
+
   init(options = {}) {
-    if (options.host && options.port) {
-      this.brokerUrl = `mqtt://${options.host}:${options.port}`;
+    if (options.host) {
+      const port = options.port || 1883;
+      // Strip protocol if user pasted mqtt://
+      const cleanHost = options.host.replace(/^mqtt:\/\//, '').replace(/:.*$/, '');
+      this.brokerUrl = `mqtt://${cleanHost}:${port}`;
     }
     if (options.topicPrefix) {
       this.topicPrefix = options.topicPrefix;
@@ -56,9 +76,9 @@ class MqttService extends EventEmitter {
       });
 
       this.client.on('error', (err) => {
-        // Soft error handling so mock simulator takes over smoothly
+        console.warn(`[MQTT] Broker notice (${this.brokerUrl}):`, err.message);
         this.isConnected = false;
-        this.emit('connection_change', { connected: false, error: err.message });
+        this.emit('connection_change', { connected: false, error: err.message, broker: this.brokerUrl });
       });
 
       this.client.on('offline', () => {
