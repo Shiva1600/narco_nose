@@ -1,15 +1,58 @@
-const sqlite3 = require('sqlite3').verbose();
 const path = require('path');
+const fs = require('fs');
 
-const dbPath = path.join(__dirname, 'narco_nose.db');
-const db = new sqlite3.Database(dbPath, (err) => {
-  if (err) {
-    console.error('Failed to open SQLite database:', err.message);
-  } else {
-    console.log('Connected to SQLite database at', dbPath);
-    initTables();
+let sqlite3 = null;
+let db = null;
+
+try {
+  sqlite3 = require('sqlite3').verbose();
+  const dbPath = path.join(__dirname, 'narco_nose.db');
+  db = new sqlite3.Database(dbPath, (err) => {
+    if (err) {
+      console.warn('[Database] SQLite disk file notice, using memory fallback:', err.message);
+      db = null;
+    } else {
+      console.log('Connected to SQLite database at', dbPath);
+      initTables();
+    }
+  });
+} catch (loadErr) {
+  console.warn('[Database] SQLite native binary notice (using memory store fallback):', loadErr.message);
+  db = null;
+}
+
+// In-memory fallback store
+const memStore = {
+  telemetry: [],
+  anomalies: [
+    {
+      id: 1,
+      timestamp: new Date(Date.now() - 22 * 60 * 1000).toISOString(),
+      threat_type: "Vapor Plume / Ethanol Derivative",
+      severity: "CRITICAL",
+      confidence: 96.4,
+      mq2: 685,
+      mq3: 840,
+      mq135: 720,
+      lat: 37.7749,
+      lon: -122.4194,
+      snapshot_url: "/snapshots/threat_sample_1.jpg"
+    }
+  ],
+  settings: {
+    fan_mode: 'AUTO',
+    fan_state: 'OFF',
+    buzzer_state: 'ARMED',
+    led_mode: 'PULSE_TEAL',
+    mq2_threshold: '420',
+    mq3_threshold: '380',
+    mq135_threshold: '550',
+    confidence_threshold: '85',
+    mqtt_host: '127.0.0.1',
+    mqtt_port: '1883',
+    mqtt_topic_prefix: 'narconose/'
   }
-});
+};
 
 function initTables() {
   db.serialize(() => {
@@ -164,7 +207,14 @@ function seedInitialHistory() {
 }
 
 // Database helper promises
+// Database helper promises with fallback
 function logTelemetry(data) {
+  if (!db) {
+    const entry = { id: memStore.telemetry.length + 1, timestamp: new Date().toISOString(), ...data };
+    memStore.telemetry.push(entry);
+    if (memStore.telemetry.length > 500) memStore.telemetry.shift();
+    return Promise.resolve(entry);
+  }
   return new Promise((resolve, reject) => {
     const sql = `
       INSERT INTO telemetry (mq2_smoke, mq3_alcohol, mq135_air, temp, humidity, heat_index, threat_level, ml_confidence)
@@ -182,6 +232,12 @@ function logTelemetry(data) {
 }
 
 function logAnomaly(data) {
+  if (!db) {
+    const entry = { id: memStore.anomalies.length + 1, timestamp: new Date().toISOString(), ...data };
+    memStore.anomalies.unshift(entry);
+    if (memStore.anomalies.length > 200) memStore.anomalies.pop();
+    return Promise.resolve(entry);
+  }
   return new Promise((resolve, reject) => {
     const sql = `
       INSERT INTO anomalies (threat_type, severity, confidence, mq2, mq3, mq135, snapshot_url, lat, lon)
@@ -199,6 +255,9 @@ function logAnomaly(data) {
 }
 
 function getRecentTelemetry(limit = 100) {
+  if (!db) {
+    return Promise.resolve(memStore.telemetry.slice(-limit));
+  }
   return new Promise((resolve, reject) => {
     db.all(`SELECT * FROM telemetry ORDER BY id DESC LIMIT ?`, [limit], (err, rows) => {
       if (err) reject(err);
@@ -208,6 +267,9 @@ function getRecentTelemetry(limit = 100) {
 }
 
 function getAnomalies(limit = 50) {
+  if (!db) {
+    return Promise.resolve(memStore.anomalies.slice(0, limit));
+  }
   return new Promise((resolve, reject) => {
     db.all(`SELECT * FROM anomalies ORDER BY id DESC LIMIT ?`, [limit], (err, rows) => {
       if (err) reject(err);
@@ -217,6 +279,9 @@ function getAnomalies(limit = 50) {
 }
 
 function getSettings() {
+  if (!db) {
+    return Promise.resolve(memStore.settings);
+  }
   return new Promise((resolve, reject) => {
     db.all(`SELECT * FROM settings`, [], (err, rows) => {
       if (err) reject(err);
@@ -230,6 +295,10 @@ function getSettings() {
 }
 
 function updateSetting(key, value) {
+  if (!db) {
+    memStore.settings[key] = String(value);
+    return Promise.resolve({ success: true });
+  }
   return new Promise((resolve, reject) => {
     db.run(
       `INSERT INTO settings (key, value) VALUES (?, ?) ON CONFLICT(key) DO UPDATE SET value = excluded.value`,
