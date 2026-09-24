@@ -22,6 +22,10 @@ const io = new Server(server, {
 
 const PORT = process.env.PORT || 5000;
 
+// Universal Default GPS Location: University of Engineering & Management (UEM), Kolkata
+const DEFAULT_UEM_LAT = 22.560264;
+const DEFAULT_UEM_LON = 88.490171;
+
 // Ensure snapshots directory exists
 const snapshotsDir = path.join(__dirname, '../public/snapshots');
 if (!fs.existsSync(snapshotsDir)) {
@@ -116,14 +120,18 @@ async function processThreatPayload(rawPayload) {
 
   // 4. GPS Location Extraction (supports nested "gps" object or root lat/lon)
   const gpsData = rawPayload.gps || {};
-  const lat = Number(rawPayload.lat ?? rawPayload.latitude ?? gpsData.lat ?? gpsData.latitude ?? simEngine.gps?.lat ?? 37.774929);
-  const lon = Number(rawPayload.lon ?? rawPayload.lng ?? rawPayload.longitude ?? gpsData.lon ?? gpsData.lng ?? gpsData.longitude ?? simEngine.gps?.lon ?? -122.419416);
+  let lat = Number(rawPayload.lat ?? rawPayload.latitude ?? gpsData.lat ?? gpsData.latitude ?? simEngine.gps?.lat ?? DEFAULT_UEM_LAT);
+  let lon = Number(rawPayload.lon ?? rawPayload.lng ?? rawPayload.longitude ?? gpsData.lon ?? gpsData.lng ?? gpsData.longitude ?? simEngine.gps?.lon ?? DEFAULT_UEM_LON);
+
+  // If GPS is offline / zero / NaN / no fix, fallback to UEM Kolkata default
+  if (!lat || Math.abs(lat) < 0.001 || isNaN(lat)) lat = DEFAULT_UEM_LAT;
+  if (!lon || Math.abs(lon) < 0.001 || isNaN(lon)) lon = DEFAULT_UEM_LON;
 
   if (rawPayload.lat !== undefined || rawPayload.latitude !== undefined || rawPayload.gps) {
     io.emit('gps_update', {
       lat,
       lon,
-      altitude: Number(rawPayload.altitude ?? gpsData.altitude ?? 42.5),
+      altitude: Number(rawPayload.altitude ?? gpsData.altitude ?? 14.5),
       speed: Number(rawPayload.speed ?? gpsData.speed ?? 0.0),
       satellites: Number(rawPayload.satellites ?? gpsData.satellites ?? 9),
       fix: '3D Fix',
@@ -276,8 +284,14 @@ app.post('/api/telemetry', async (req, res) => {
 app.post('/api/gps', (req, res) => {
   try {
     const gpsData = req.body || {};
+    let lat = Number(gpsData.lat ?? gpsData.latitude);
+    let lon = Number(gpsData.lon ?? gpsData.lng ?? gpsData.longitude);
+    if (!lat || Math.abs(lat) < 0.001 || isNaN(lat)) lat = DEFAULT_UEM_LAT;
+    if (!lon || Math.abs(lon) < 0.001 || isNaN(lon)) lon = DEFAULT_UEM_LON;
+    gpsData.lat = lat;
+    gpsData.lon = lon;
     io.emit('gps_update', gpsData);
-    res.json({ success: true });
+    res.json({ success: true, lat, lon });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -527,6 +541,11 @@ io.on('connection', (socket) => {
     io.emit('calibration_complete', res);
   });
 
+  socket.on('dismiss_snapshot', () => {
+    simEngine.latestSnapshot = null;
+    io.emit('snapshot_dismissed');
+  });
+
   socket.on('trigger_scenario', (scenario) => {
     lastRealPiTime = 0;
     if (!simEngine.timer) {
@@ -583,6 +602,14 @@ mqttService.on('telemetry', async (data) => {
 
 mqttService.on('gps', (data) => {
   lastRealPiTime = Date.now();
+  if (data && typeof data === 'object') {
+    let lat = Number(data.lat ?? data.latitude);
+    let lon = Number(data.lon ?? data.lng ?? data.longitude);
+    if (!lat || Math.abs(lat) < 0.001 || isNaN(lat)) lat = DEFAULT_UEM_LAT;
+    if (!lon || Math.abs(lon) < 0.001 || isNaN(lon)) lon = DEFAULT_UEM_LON;
+    data.lat = lat;
+    data.lon = lon;
+  }
   io.emit('gps_update', data);
 });
 

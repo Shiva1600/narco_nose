@@ -9,7 +9,7 @@
 [![Raspberry Pi 5](https://img.shields.io/badge/Hardware-Raspberry_Pi_5-C51A4A?logo=raspberrypi&logoColor=white)](https://www.raspberrypi.com/)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](#license)
 
-> **Narco Nose** is a full-stack IoT biosensing and computer vision command interface designed for real-time chemical threat proxy detection. Built for a field-deployable **Raspberry Pi 5** hardware unit equipped with an MQ-series electronic nose (e-nose), DHT22 environmental sensor, NEO-6M GPS module, and local YOLOv8 object detection.
+> **Narco Nose** is a full-stack IoT biosensing and computer vision command interface designed for real-time chemical threat proxy detection. Built for a field-deployable **Raspberry Pi 5** hardware unit equipped with an MQ-series electronic nose (e-nose), DHT11 environmental sensor, NEO-6M GPS module, and local YOLOv8 object detection.
 
 ---
 
@@ -27,7 +27,7 @@ The dashboard strictly adheres to a modern **Light Mode, Squircle (28px radius)*
   - **MQ-2**: Combustible gases, smoke, LPG (ppm)
   - **MQ-3**: Alcohol, ethanol, solvent vapor proxies (ppm)
   - **MQ-135**: Air quality, ammonia, hazardous benzene traces (ppm)
-  - **DHT22**: Temperature (°C/°F), Relative Humidity (%), and Vapor Pressure Heat Index
+  - **DHT11**: Temperature (°C/°F), Relative Humidity (%), and Vapor Pressure Heat Index
 - **Advanced Info Mode**:
   - **Rolling Multi-Line Trend Graph**: Real-time 30-second multi-gas ppm synchronization (Chart.js).
   - **5-Axis Chemical Vector Radar**: Signature geometry comparing live gas readings against clean-air calibration baselines.

@@ -2,26 +2,12 @@ import React, { useState } from 'react';
 import { useApp } from '../context/AppContext';
 
 export default function SimulationBar() {
-  const { triggerScenario, calibrate, telemetry, actuators, setActuator } = useApp();
+  const { triggerScenario, calibrate, actuators, setActuator } = useApp();
   const [collapsed, setCollapsed] = useState(true);
 
   return (
     <div className="bg-transparent text-xs px-4 sm:px-6 lg:px-8 xl:px-10 py-1 transition-all w-full">
-      <div className="w-full flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <span className="text-[11px] font-semibold text-secondary">Data Stream:</span>
-          {telemetry.hardware_online ? (
-            <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-emerald-50 text-emerald-800 border border-emerald-300">
-              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
-              Real Pi 5 Hardware Active
-            </span>
-          ) : (
-            <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-amber-50 text-amber-900 border border-amber-300">
-              <span className="w-2 h-2 rounded-full bg-amber-500"></span>
-              Simulation Mode (Pi 5 Offline)
-            </span>
-          )}
-        </div>
+      <div className="w-full flex items-center justify-end">
 
         <button
           onClick={() => setCollapsed(!collapsed)}

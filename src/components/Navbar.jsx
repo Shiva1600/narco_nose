@@ -14,13 +14,10 @@ export default function Navbar() {
   } = useApp();
 
   const [showNotifications, setShowNotifications] = useState(false);
-  const [navMousePos, setNavMousePos] = useState({ x: 50, y: 50 });
   const [isNavHovered, setIsNavHovered] = useState(false);
   const [hoveredTab, setHoveredTab] = useState(null);
 
   const navRef = useRef(null);
-  const tabRefs = useRef({});
-
   const currentDropletTab = hoveredTab || activeTab;
 
   const tabs = [
@@ -28,46 +25,17 @@ export default function Navbar() {
     { id: 'sensors', label: 'Sensor Data', icon: 'monitoring' },
     { id: 'camera', label: 'Optical Evidence', icon: 'photo_camera' },
     { id: 'history', label: 'History', icon: 'history' },
-    { id: 'diagnostics', label: 'Diagnostics', icon: 'memory' },
     { id: 'settings', label: 'Settings', icon: 'settings' }
   ];
 
   const handleNavMouseMove = (e) => {
     const navEl = navRef.current;
     if (!navEl) return;
-    const clientX = e.clientX;
     const navRect = navEl.getBoundingClientRect();
-
-    // Specular refraction glint coordinates
-    const x = ((clientX - navRect.left) / navRect.width) * 100;
+    const x = ((e.clientX - navRect.left) / navRect.width) * 100;
     const y = ((e.clientY - navRect.top) / navRect.height) * 100;
-    setNavMousePos({ x, y });
-
-    // Continuous proximity tab detection - zero dead zones
-    let closestTab = null;
-    let minDistance = Infinity;
-
-    for (const t of tabs) {
-      const el = tabRefs.current[t.id];
-      if (el) {
-        const rect = el.getBoundingClientRect();
-        if (clientX >= rect.left && clientX <= rect.right) {
-          closestTab = t.id;
-          minDistance = 0;
-          break;
-        }
-        const center = rect.left + rect.width / 2;
-        const dist = Math.abs(clientX - center);
-        if (dist < minDistance) {
-          minDistance = dist;
-          closestTab = t.id;
-        }
-      }
-    }
-
-    if (closestTab && closestTab !== hoveredTab) {
-      setHoveredTab(closestTab);
-    }
+    navEl.style.setProperty('--mouse-x', `${x}%`);
+    navEl.style.setProperty('--mouse-y', `${y}%`);
   };
 
   const isThreat = telemetry.threat_level === 'THREAT';
@@ -102,9 +70,9 @@ export default function Navbar() {
                 animate={{ opacity: 1, scale: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.95, y: -4 }}
                 whileHover={{
-                  y: -8,
-                  scale: 1.045,
-                  transition: { type: 'spring', stiffness: 450, damping: 14, mass: 0.8 }
+                  y: -2,
+                  scale: 1.015,
+                  transition: { duration: 0.2, ease: 'easeOut' }
                 }}
                 transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
                 onMouseEnter={() => setIsNavHovered(true)}
@@ -120,20 +88,18 @@ export default function Navbar() {
 
                 {/* Interactive Dynamic Mouse Refraction Hotspot */}
                 <div
-                  className="absolute inset-0 pointer-events-none rounded-full transition-opacity duration-150 z-[3]"
+                  className="absolute inset-0 pointer-events-none rounded-full transition-opacity duration-200 z-[3]"
                   style={{
                     opacity: isNavHovered ? 1 : 0,
-                    background: `radial-gradient(140px circle at ${navMousePos.x}% ${navMousePos.y}%, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.3) 40%, transparent 75%)`
+                    background: `radial-gradient(140px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.3) 40%, transparent 75%)`
                   }}
                 />
 
                 {tabs.map(t => {
                   const isDropletHere = currentDropletTab === t.id;
-                  const isActivePage = activeTab === t.id;
                   return (
                     <button
                       key={t.id}
-                      ref={el => (tabRefs.current[t.id] = el)}
                       onClick={() => {
                         setActiveTab(t.id);
                         setHoveredTab(null);
@@ -148,12 +114,12 @@ export default function Navbar() {
                       {isDropletHere && (
                         <motion.div
                           layoutId="liquidGlassDroplet"
-                          className="absolute inset-0 liquid-active-pill rounded-full pointer-events-none -z-10"
+                          className="absolute inset-0 liquid-active-pill rounded-full pointer-events-none -z-10 will-change-transform"
                           transition={{
                             type: 'spring',
-                            stiffness: 580,
-                            damping: 32,
-                            mass: 0.45
+                            stiffness: 280,
+                            damping: 26,
+                            mass: 0.6
                           }}
                         />
                       )}

@@ -281,7 +281,7 @@ export default function HistoryLogs() {
                         <span>•</span>
                         <span>MQ-135: <strong className="text-on-surface">{evt.mq135} ppm</strong></span>
                         <span>•</span>
-                        <span>GPS: <strong className="font-mono text-on-surface">{evt.lat ? `${evt.lat.toFixed(4)}, ${evt.lon.toFixed(4)}` : '37.7749, -122.4194'}</strong></span>
+                        <span>GPS: <strong className="font-mono text-on-surface">{evt.lat ? `${evt.lat.toFixed(4)}, ${evt.lon.toFixed(4)}` : '22.5603, 88.4902'}</strong></span>
                       </div>
                     </div>
                   </div>

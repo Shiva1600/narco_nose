@@ -7,7 +7,6 @@ import HomeHub from './pages/HomeHub';
 import SensorData from './pages/SensorData';
 import OpticalEvidence from './pages/OpticalEvidence';
 import HistoryLogs from './pages/HistoryLogs';
-import SystemDiagnostics from './pages/SystemDiagnostics';
 import DeviceSettings from './pages/DeviceSettings';
 
 import { AnimatePresence, motion } from 'framer-motion';
@@ -51,6 +50,7 @@ function DashboardContent() {
           />
           {/* Subtle cinematic top tint and compact bottom blend situated low at the bottom edge */}
           <div className="absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-slate-950/20 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-r from-slate-950/60 via-slate-950/25 to-transparent lg:hidden pointer-events-none" />
           <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-slate-50 to-transparent" />
         </div>
       )}
@@ -83,7 +83,6 @@ function DashboardContent() {
             {activeTab === 'sensors' && <SensorData />}
             {activeTab === 'camera' && <OpticalEvidence />}
             {activeTab === 'history' && <HistoryLogs />}
-            {activeTab === 'diagnostics' && <SystemDiagnostics />}
             {activeTab === 'settings' && <DeviceSettings />}
           </motion.div>
         </AnimatePresence>

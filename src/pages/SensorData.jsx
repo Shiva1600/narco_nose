@@ -34,7 +34,8 @@ export default function SensorData() {
     calibrate,
     triggerScenario,
     setSelectedSnapshot,
-    dismissThreatSnapshot
+    dismissThreatSnapshot,
+    dismissedSnapshot
   } = useApp();
 
   const isThreat = telemetry.threat_level === 'THREAT';
@@ -224,7 +225,7 @@ export default function SensorData() {
       </div>
 
       {/* Live Threat Optical Evidence Card (Triggered by Pi 5 Camera on >=80% Threat) */}
-      {telemetry.captured_image && (
+      {telemetry.captured_image && telemetry.captured_image !== dismissedSnapshot && (
         <div className="w-full p-4 sm:p-5 squircle-card border border-rose-300/80 bg-rose-50/80 shadow-lg ring-1 ring-rose-400/40 backdrop-blur-sm animate-in fade-in slide-in-from-top-4 duration-300">
           <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
             <div className="flex items-start sm:items-center gap-4">
@@ -294,7 +295,10 @@ export default function SensorData() {
                 <span>Inspect Snapshot</span>
               </button>
               <button
-                onClick={dismissThreatSnapshot}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  dismissThreatSnapshot();
+                }}
                 className="bg-rose-200/80 hover:bg-rose-300 text-rose-900 px-3 py-2 rounded-xl font-bold text-xs transition-all active:scale-95 flex items-center gap-1 cursor-pointer"
                 title="Dismiss snapshot banner"
               >
@@ -494,14 +498,14 @@ export default function SensorData() {
               </div>
             </div>
 
-            {/* Card: DHT22 Chamber Temperature */}
+            {/* Card: DHT11 Chamber Temperature */}
             <div className="squircle-card hover-pop-amber bg-surface-container-lowest p-5 flex flex-col justify-between cursor-default">
               <div className="flex justify-between items-start">
                 <div>
                   <span className="text-[11px] font-bold uppercase tracking-wider text-secondary">
                     Chamber Temp
                   </span>
-                  <h3 className="text-lg font-extrabold text-on-surface mt-0.5">DHT22 Temp</h3>
+                  <h3 className="text-lg font-extrabold text-on-surface mt-0.5">DHT11 Temp</h3>
                 </div>
                 <div className="w-9 h-9 rounded-2xl bg-amber-50 border border-amber-200 flex items-center justify-center text-amber-700">
                   <span className="material-symbols-outlined text-xl">thermostat</span>
@@ -520,14 +524,14 @@ export default function SensorData() {
               </div>
             </div>
 
-            {/* Card: DHT22 Relative Humidity */}
+            {/* Card: DHT11 Relative Humidity */}
             <div className="squircle-card hover-pop-teal bg-surface-container-lowest p-5 flex flex-col justify-between cursor-default">
               <div className="flex justify-between items-start">
                 <div>
                   <span className="text-[11px] font-bold uppercase tracking-wider text-secondary">
                     Chamber Humidity
                   </span>
-                  <h3 className="text-lg font-extrabold text-on-surface mt-0.5">DHT22 RH</h3>
+                  <h3 className="text-lg font-extrabold text-on-surface mt-0.5">DHT11 RH</h3>
                 </div>
                 <div className="w-9 h-9 rounded-2xl bg-blue-50 border border-blue-200 flex items-center justify-center text-primary">
                   <span className="material-symbols-outlined text-xl">humidity_mid</span>

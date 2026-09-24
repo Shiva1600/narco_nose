@@ -53,26 +53,26 @@ class SimulationEngine extends EventEmitter {
         mq2: { online: true, voltage: 1.12, status: 'Nominal' },
         mq3: { online: true, voltage: 0.98, status: 'Nominal' },
         mq135: { online: true, voltage: 1.25, status: 'Nominal' },
-        dht22: { online: true, i2c: '0x38', status: 'Nominal' },
+        dht11: { online: true, i2c: '0x38', status: 'Nominal' },
         gps_neo6m: { online: true, port: '/dev/ttyAMA0', baud: 9600, status: 'Fix 3D' },
         camera_usb: { online: true, fps: 29.8, status: 'Streaming' },
         ads1115_adc: { online: true, address: '0x48', status: 'Ready' }
       }
     };
 
-    // NEO-6M GPS State
+    // NEO-6M GPS State (Default: University of Engineering & Management, UEM Kolkata)
     this.gps = {
-      lat: 37.774929,
-      lon: -122.419416,
-      altitude: 42.5,
-      speed: 0.6,
+      lat: 22.560264,
+      lon: 88.490171,
+      altitude: 14.5,
+      speed: 0.0,
       satellites: 9,
       fix: '3D Fix',
       hdop: 1.1,
       routeTrail: [
-        [37.7745, -122.4198],
-        [37.7747, -122.4196],
-        [37.774929, -122.419416]
+        [22.5598, 88.4895],
+        [22.5600, 88.4899],
+        [22.560264, 88.490171]
       ]
     };
 

@@ -42,19 +42,19 @@ export function AppProvider({ children }) {
     ledMode: 'PULSE_BLUE'
   });
 
-  // GPS coordinates & tracking
+  // GPS coordinates & tracking (Default: University of Engineering & Management, UEM Kolkata)
   const [gps, setGps] = useState({
-    lat: 37.774929,
-    lon: -122.419416,
-    altitude: 42.5,
-    speed: 0.6,
+    lat: 22.560264,
+    lon: 88.490171,
+    altitude: 14.5,
+    speed: 0.0,
     satellites: 9,
     fix: '3D Fix',
     hdop: 1.1,
     routeTrail: [
-      [37.7745, -122.4198],
-      [37.7747, -122.4196],
-      [37.774929, -122.419416]
+      [22.5598, 88.4895],
+      [22.5600, 88.4899],
+      [22.560264, 88.490171]
     ]
   });
 
@@ -71,7 +71,7 @@ export function AppProvider({ children }) {
       mq2: { online: true, voltage: 1.12, status: 'Nominal' },
       mq3: { online: true, voltage: 0.98, status: 'Nominal' },
       mq135: { online: true, voltage: 1.25, status: 'Nominal' },
-      dht22: { online: true, i2c: '0x38', status: 'Nominal' },
+      dht11: { online: true, i2c: '0x38', status: 'Nominal' },
       gps_neo6m: { online: true, port: '/dev/ttyAMA0', baud: 9600, status: 'Fix 3D' },
       camera_usb: { online: true, fps: 29.8, status: 'Streaming' },
       ads1115_adc: { online: true, address: '0x48', status: 'Ready' }
@@ -88,6 +88,10 @@ export function AppProvider({ children }) {
 
   // System Notification Toast
   const [notification, setNotification] = useState(null);
+
+  // Dismissed Snapshot Tracker (prevents recurring simulator ticks from un-dismissing)
+  const dismissedSnapshotRef = useRef(null);
+  const [dismissedSnapshot, setDismissedSnapshot] = useState(null);
 
   const socketRef = useRef(null);
 
@@ -158,12 +162,23 @@ export function AppProvider({ children }) {
         prediction: data.prediction || (threatLevel === 'THREAT' ? 'Threat Detected' : threatLevel === 'WARNING' ? 'Not Harmful' : 'Normal')
       };
 
-      setTelemetry(prev => ({
-        ...normalizedData,
-        captured_image: normalizedData.captured_image !== undefined 
-          ? normalizedData.captured_image 
-          : prev.captured_image
-      }));
+      setTelemetry(prev => {
+        let resolvedImage = prev.captured_image;
+        const incomingImage = normalizedData.captured_image;
+        if (incomingImage !== undefined) {
+          if (incomingImage && incomingImage !== dismissedSnapshotRef.current) {
+            resolvedImage = incomingImage;
+            dismissedSnapshotRef.current = null;
+            setDismissedSnapshot(null);
+          } else if (!incomingImage || incomingImage === dismissedSnapshotRef.current) {
+            resolvedImage = null;
+          }
+        }
+        return {
+          ...normalizedData,
+          captured_image: resolvedImage
+        };
+      });
       if (data.actuators) {
         setActuators(data.actuators);
       }
@@ -179,7 +194,19 @@ export function AppProvider({ children }) {
     });
 
     socket.on('gps_update', (data) => {
-      setGps(data);
+      if (!data) return;
+      let lat = Number(data.lat ?? data.latitude);
+      let lon = Number(data.lon ?? data.lng ?? data.longitude);
+      // Fallback to UEM Kolkata if GPS module on Pi has no satellite lock or sends invalid coordinates
+      if (!lat || Math.abs(lat) < 0.001 || isNaN(lat)) lat = 22.560264;
+      if (!lon || Math.abs(lon) < 0.001 || isNaN(lon)) lon = 88.490171;
+      setGps(prev => ({
+        ...prev,
+        ...data,
+        lat,
+        lon,
+        routeTrail: data.routeTrail && data.routeTrail.length > 0 ? data.routeTrail : (prev.routeTrail || [[lat, lon]])
+      }));
     });
 
     socket.on('pi_diagnostics', (data) => {
@@ -194,6 +221,10 @@ export function AppProvider({ children }) {
       if (data && data.activeDetections) {
         setDetections(data.activeDetections);
       }
+    });
+
+    socket.on('snapshot_dismissed', () => {
+      setTelemetry(prev => ({ ...prev, captured_image: null }));
     });
 
     socket.on('threat_alert', (anomaly) => {
@@ -285,7 +316,13 @@ export function AppProvider({ children }) {
   };
 
   const dismissThreatSnapshot = () => {
+    const currentImg = telemetry.captured_image;
+    dismissedSnapshotRef.current = currentImg;
+    setDismissedSnapshot(currentImg);
     setTelemetry(prev => ({ ...prev, captured_image: null }));
+    if (socketRef.current) {
+      socketRef.current.emit('dismiss_snapshot');
+    }
   };
 
   return (
@@ -314,7 +351,8 @@ export function AppProvider({ children }) {
         calibrate,
         triggerScenario,
         captureSnapshot,
-        dismissThreatSnapshot
+        dismissThreatSnapshot,
+        dismissedSnapshot
       }}
     >
       {children}

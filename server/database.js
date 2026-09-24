@@ -34,8 +34,8 @@ const memStore = {
       mq2: 685,
       mq3: 840,
       mq135: 720,
-      lat: 37.7749,
-      lon: -122.4194,
+      lat: 22.5603,
+      lon: 88.4902,
       snapshot_url: "/snapshots/threat_sample_1.jpg"
     }
   ],
@@ -136,8 +136,8 @@ function seedInitialHistory() {
       mq2: 685,
       mq3: 840,
       mq135: 720,
-      lat: 37.7749,
-      lon: -122.4194,
+      lat: 22.5603,
+      lon: 88.4902,
       snapshot_url: "/snapshots/threat_sample_1.jpg"
     },
     {
@@ -148,8 +148,8 @@ function seedInitialHistory() {
       mq2: 520,
       mq3: 310,
       mq135: 460,
-      lat: 37.7752,
-      lon: -122.4188,
+      lat: 22.5607,
+      lon: 88.4905,
       snapshot_url: "/snapshots/threat_sample_2.jpg"
     },
     {
@@ -160,8 +160,8 @@ function seedInitialHistory() {
       mq2: 340,
       mq3: 290,
       mq135: 410,
-      lat: 37.7758,
-      lon: -122.4175,
+      lat: 22.5611,
+      lon: 88.4899,
       snapshot_url: "/snapshots/threat_sample_3.jpg"
     },
     {
@@ -172,8 +172,8 @@ function seedInitialHistory() {
       mq2: 310,
       mq3: 270,
       mq135: 610,
-      lat: 37.7761,
-      lon: -122.4162,
+      lat: 22.5601,
+      lon: 88.4908,
       snapshot_url: "/snapshots/threat_sample_1.jpg"
     }
   ];
@@ -245,7 +245,7 @@ function logAnomaly(data) {
     `;
     db.run(
       sql,
-      [data.threat_type, data.severity, data.confidence, data.mq2, data.mq3, data.mq135, data.snapshot_url || '/snapshots/threat_sample_1.jpg', data.lat || 37.7749, data.lon || -122.4194],
+      [data.threat_type, data.severity, data.confidence, data.mq2, data.mq3, data.mq135, data.snapshot_url || '/snapshots/threat_sample_1.jpg', data.lat || 22.560264, data.lon || 88.490171],
       function (err) {
         if (err) reject(err);
         else resolve({ id: this.lastID });

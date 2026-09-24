@@ -2,7 +2,7 @@ import React from 'react';
 import { useApp } from '../context/AppContext';
 
 export default function HomeHub() {
-  const { setActiveTab, telemetry, diagnostics, detections, anomalies } = useApp();
+  const { setActiveTab, telemetry, detections, anomalies } = useApp();
 
   return (
     <div className="flex-1 w-full max-w-[1720px] mx-auto px-6 sm:px-10 lg:px-12 pb-8 pt-4 flex flex-col justify-end home-hub-page">
@@ -17,11 +17,11 @@ export default function HomeHub() {
               <span>Edge AI &amp; Biosensing Core</span>
             </div>
             
-            <h1 className="text-5xl sm:text-6xl xl:text-7xl font-black font-inter text-slate-900 tracking-tight leading-[1.08]">
+            <h1 className="text-5xl sm:text-6xl xl:text-7xl font-black font-inter text-white lg:text-slate-900 tracking-tight leading-[1.08] drop-shadow-[0_2px_8px_rgba(0,0,0,0.85)] lg:drop-shadow-none">
               Narco Nose
             </h1>
             
-            <p className="text-base sm:text-lg text-slate-600 font-normal leading-relaxed max-w-lg">
+            <p className="text-base sm:text-lg text-slate-100 lg:text-slate-600 font-normal leading-relaxed max-w-lg drop-shadow-[0_1px_4px_rgba(0,0,0,0.9)] lg:drop-shadow-none">
               Real-Time Chemical Threat Proxy Detection &amp; Edge Machine Learning Interface. Multi-gas proxy fusion with automated OpenCV threat photo capture and GPS tracking.
             </p>
           </div>
@@ -50,7 +50,7 @@ export default function HomeHub() {
                 {telemetry.hardware_online ? 'Real MQTT Telemetry' : 'Mock Physics Engine'}
               </span>
               <span>•</span>
-              <span>{diagnostics.tempC}°C Core Temp</span>
+              <span>{telemetry.temp || 24}°C Sensor Temp</span>
               <span>•</span>
               <span className="text-emerald-700 font-bold">Nominal Base</span>
             </div>
@@ -123,8 +123,8 @@ export default function HomeHub() {
             </button>
           </div>
 
-          {/* Row 2: 3 Management Modules (History, System Diagnostics, Settings) */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 sm:gap-6">
+          {/* Row 2: 2 Management Modules (History & Settings) */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 sm:gap-6">
             {/* Card 3: History */}
             <button
               onClick={() => setActiveTab('history')}
@@ -155,37 +155,7 @@ export default function HomeHub() {
               </div>
             </button>
 
-            {/* Card 4: System Diagnostics */}
-            <button
-              onClick={() => setActiveTab('diagnostics')}
-              aria-label="Run System Diagnostics"
-              className="squircle-card edge-light-blue bg-surface-container-lowest w-full min-h-[190px] sm:min-h-[200px] flex flex-col justify-between p-5 text-left group cursor-pointer active:scale-98 relative shadow-xs"
-            >
-              <div className="flex justify-between items-start w-full relative z-[2]">
-                <div className="w-11 h-11 rounded-2xl bg-blue-50 border border-blue-100 flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
-                  <span className="material-symbols-outlined text-2xl">memory</span>
-                </div>
-                <span className="text-[11px] font-bold px-2 py-0.5 rounded-full bg-surface-container text-primary border border-outline-variant/30">
-                  {diagnostics.tempC}°C
-                </span>
-              </div>
-
-              <div className="my-1 relative z-[2]">
-                <h3 className="text-lg font-black text-slate-900 group-hover:text-primary transition-colors tracking-tight">
-                  System Diagnostics
-                </h3>
-                <p className="text-xs font-medium text-slate-500 mt-0.5">
-                  Hardware telemetry &amp; buses
-                </p>
-              </div>
-
-              <div className="flex items-center gap-1 text-[11px] font-bold text-primary pt-1.5 border-t border-surface-container/60 relative z-[2]">
-                <span>Inspect Health</span>
-                <span className="material-symbols-outlined text-xs group-hover:translate-x-1 transition-transform">arrow_forward</span>
-              </div>
-            </button>
-
-            {/* Card 5: Settings */}
+            {/* Card 4: Settings */}
             <button
               onClick={() => setActiveTab('settings')}
               aria-label="Configure Settings"
@@ -193,10 +163,10 @@ export default function HomeHub() {
             >
               <div className="flex justify-between items-start w-full relative z-[2]">
                 <div className="w-11 h-11 rounded-2xl bg-amber-50 border border-amber-100 flex items-center justify-center text-amber-700 group-hover:scale-110 transition-transform">
-                  <span className="material-symbols-outlined text-2xl">tune</span>
+                  <span className="material-symbols-outlined text-2xl">hub</span>
                 </div>
                 <span className="text-[11px] font-bold px-2 py-0.5 rounded-full bg-surface-container text-secondary border border-outline-variant/30">
-                  I/O Ready
+                  MQTT Gateway
                 </span>
               </div>
 
@@ -205,12 +175,12 @@ export default function HomeHub() {
                   Settings
                 </h3>
                 <p className="text-xs font-medium text-slate-500 mt-0.5">
-                  Actuators, ML &amp; MQTT
+                  MQTT broker &amp; Pi 5 link
                 </p>
               </div>
 
               <div className="flex items-center gap-1 text-[11px] font-bold text-amber-700 pt-1.5 border-t border-surface-container/60 relative z-[2]">
-                <span>Configure I/O</span>
+                <span>Configure Broker</span>
                 <span className="material-symbols-outlined text-xs group-hover:translate-x-1 transition-transform">arrow_forward</span>
               </div>
             </button>

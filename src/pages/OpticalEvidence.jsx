@@ -45,8 +45,8 @@ export default function OpticalEvidence() {
   useEffect(() => {
     if (!mapContainerRef.current) return;
 
-    const lat = gps?.lat || 28.6139;
-    const lon = gps?.lon || 77.2090;
+    const lat = gps?.lat || 22.560264;
+    const lon = gps?.lon || 88.490171;
 
     const map = L.map(mapContainerRef.current, {
       center: [lat, lon],
@@ -71,7 +71,7 @@ export default function OpticalEvidence() {
     });
 
     const marker = L.marker([lat, lon], { icon: customIcon }).addTo(map);
-    marker.bindPopup(`<b>Threat Incident Location</b><br/>Lat: ${lat.toFixed(5)}<br/>Lon: ${lon.toFixed(5)}`);
+    marker.bindPopup(`<b>Narco Nose Monitoring Node</b><br/>UEM Kolkata Campus<br/>Lat: ${lat.toFixed(5)}<br/>Lon: ${lon.toFixed(5)}`);
 
     const polyline = L.polyline(gps.routeTrail || [[lat, lon]], {
       color: '#ba1a1a',
@@ -411,15 +411,15 @@ export default function OpticalEvidence() {
             <div className="grid grid-cols-2 gap-2 text-xs bg-surface-container-low p-3 rounded-2xl border border-outline-variant/30 font-mono">
               <div>
                 <span className="text-secondary block font-sans font-semibold">LATITUDE</span>
-                <span className="font-bold text-on-surface">{(gps.lat || 28.6139).toFixed(6)}° N</span>
+                <span className="font-bold text-on-surface">{(gps.lat || 22.560264).toFixed(6)}° N</span>
               </div>
               <div>
                 <span className="text-secondary block font-sans font-semibold">LONGITUDE</span>
-                <span className="font-bold text-on-surface">{(gps.lon || 77.2090).toFixed(6)}° E</span>
+                <span className="font-bold text-on-surface">{(gps.lon || 88.490171).toFixed(6)}° E</span>
               </div>
               <div>
                 <span className="text-secondary block font-sans font-semibold">ALTITUDE</span>
-                <span className="font-bold text-on-surface">{gps.altitude || 216.5} m MSL</span>
+                <span className="font-bold text-on-surface">{gps.altitude || 14.5} m MSL</span>
               </div>
               <div>
                 <span className="text-secondary block font-sans font-semibold">GROUND SPEED</span>

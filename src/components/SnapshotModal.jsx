@@ -62,7 +62,7 @@ export default function SnapshotModal() {
           <div>
             <span className="text-secondary block font-medium">GPS Location</span>
             <span className="font-bold text-on-surface">
-              {selectedSnapshot.lat ? `${selectedSnapshot.lat.toFixed(4)}, ${selectedSnapshot.lon.toFixed(4)}` : '37.7749, -122.4194'}
+              {selectedSnapshot.lat ? `${selectedSnapshot.lat.toFixed(4)}, ${selectedSnapshot.lon.toFixed(4)}` : '22.5603, 88.4902'}
             </span>
           </div>
           <div>
