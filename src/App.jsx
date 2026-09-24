@@ -16,7 +16,7 @@ function DashboardContent() {
   const isHomePage = activeTab === 'home';
 
   return (
-    <div className={`min-h-screen flex flex-col ${isHomePage ? 'bg-slate-50' : 'bg-transparent page-translucent'} text-on-surface overflow-x-hidden relative`}>
+    <div className={`min-h-[100dvh] flex flex-col ${isHomePage ? 'bg-slate-50' : 'bg-transparent page-translucent'} text-on-surface overflow-x-hidden relative`}>
       {/* Railway Station Platform Background - Only active for pages other than homepage */}
       {!isHomePage && (
         <div className="fixed inset-0 pointer-events-none -z-10 overflow-hidden">
@@ -34,7 +34,7 @@ function DashboardContent() {
       {/* Homepage Top Background Video - Google Flow Vintage Railway Station ("No Drugs Only Bugs") */}
       {isHomePage && (
         <div
-          className="absolute top-0 left-0 right-0 h-[460px] sm:h-[520px] lg:h-[580px] xl:h-[630px] pointer-events-none z-0 overflow-hidden select-none"
+          className="absolute top-0 left-0 right-0 h-[340px] sm:h-[520px] lg:h-[580px] xl:h-[630px] pointer-events-none z-0 overflow-hidden select-none"
           style={{
             maskImage: 'linear-gradient(to bottom, rgba(0,0,0,1) 82%, rgba(0,0,0,0) 100%)',
             WebkitMaskImage: 'linear-gradient(to bottom, rgba(0,0,0,1) 82%, rgba(0,0,0,0) 100%)'
@@ -66,7 +66,7 @@ function DashboardContent() {
       </div>
 
       {/* Main Animated Tab Router Canvas */}
-      <main className="flex-1 flex flex-col relative z-10 overflow-hidden pb-20 md:pb-0">
+      <main className="flex-1 flex flex-col relative z-10 overflow-hidden pb-16 md:pb-0">
         <AnimatePresence mode="wait">
           <motion.div
             key={activeTab}

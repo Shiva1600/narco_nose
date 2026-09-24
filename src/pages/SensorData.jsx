@@ -174,7 +174,7 @@ export default function SensorData() {
   };
 
   return (
-    <div className="flex-1 w-full max-w-[1720px] mx-auto px-6 sm:px-8 lg:px-12 py-6 flex flex-col gap-6">
+    <div className="flex-1 w-full max-w-[1720px] mx-auto px-4 sm:px-8 lg:px-12 py-3 sm:py-6 flex flex-col gap-4 sm:gap-6">
       {/* Header & Mode Switch */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white/85 backdrop-blur-md p-4 sm:p-5 rounded-3xl border border-white/60 shadow-xs">
         <div>
@@ -385,28 +385,28 @@ export default function SensorData() {
 
       {/* VIEW MODE 1: SIMPLE INFO */}
       {sensorViewMode === 'simple' && (
-        <div className="flex flex-col gap-6">
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-4 sm:gap-5">
+        <div className="flex flex-col gap-4 sm:gap-6">
+          <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-2.5 sm:gap-5">
             {/* Card: MQ-2 Combustible Gas & Smoke */}
-            <div className="squircle-card hover-pop-teal bg-surface-container-lowest p-5 flex flex-col justify-between cursor-default">
+            <div className="squircle-card hover-pop-teal bg-surface-container-lowest p-3.5 sm:p-5 flex flex-col justify-between cursor-default">
               <div className="flex justify-between items-start">
                 <div>
-                  <span className="text-[11px] font-bold uppercase tracking-wider text-secondary">
-                    Combustible / Smoke
+                  <span className="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-secondary">
+                    Combustible
                   </span>
-                  <h3 className="text-lg font-extrabold text-on-surface mt-0.5">MQ-2 Sensor</h3>
+                  <h3 className="text-sm sm:text-lg font-extrabold text-on-surface mt-0.5">MQ-2</h3>
                 </div>
-                <div className="w-9 h-9 rounded-2xl bg-blue-50 border border-blue-200 flex items-center justify-center text-primary">
-                  <span className="material-symbols-outlined text-xl">propane</span>
+                <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl sm:rounded-2xl bg-blue-50 border border-blue-200 flex items-center justify-center text-primary">
+                  <span className="material-symbols-outlined text-lg sm:text-xl">propane</span>
                 </div>
               </div>
 
-              <div className="my-4">
-                <div className="text-3xl sm:text-4xl font-black text-on-surface tracking-tight">
-                  {telemetry.mq2} <span className="text-sm font-bold text-secondary">ppm</span>
+              <div className="my-2 sm:my-4">
+                <div className="text-2xl sm:text-4xl font-black text-on-surface tracking-tight">
+                  {telemetry.mq2} <span className="text-xs sm:text-sm font-bold text-secondary">ppm</span>
                 </div>
-                <div className="text-xs text-secondary mt-1 flex items-center gap-1">
-                  <span>Threshold: 420</span>
+                <div className="text-[11px] sm:text-xs text-secondary mt-1 flex items-center gap-1">
+                  <span>Thresh: 420</span>
                   <span>•</span>
                   <span className={telemetry.mq2 > 420 ? 'text-rose-600 font-bold' : 'text-primary font-medium'}>
                     {telemetry.mq2 > 420 ? 'SPIKE' : 'Nominal'}
@@ -414,7 +414,7 @@ export default function SensorData() {
                 </div>
               </div>
 
-              <div className="w-full bg-surface-container h-2 rounded-full overflow-hidden">
+              <div className="w-full bg-surface-container h-1.5 sm:h-2 rounded-full overflow-hidden">
                 <div
                   className={`h-full transition-all duration-300 ${
                     telemetry.mq2 > 420 ? 'bg-rose-500' : 'bg-primary'
@@ -425,33 +425,33 @@ export default function SensorData() {
             </div>
 
             {/* Card: MQ-3 Alcohol & Organic Vapors */}
-            <div className="squircle-card hover-pop-rose bg-surface-container-lowest p-5 flex flex-col justify-between cursor-default">
+            <div className="squircle-card hover-pop-rose bg-surface-container-lowest p-3.5 sm:p-5 flex flex-col justify-between cursor-default">
               <div className="flex justify-between items-start">
                 <div>
-                  <span className="text-[11px] font-bold uppercase tracking-wider text-secondary">
-                    Alcohol / Vapors
+                  <span className="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-secondary">
+                    Vapors
                   </span>
-                  <h3 className="text-lg font-extrabold text-on-surface mt-0.5">MQ-3 Sensor</h3>
+                  <h3 className="text-sm sm:text-lg font-extrabold text-on-surface mt-0.5">MQ-3</h3>
                 </div>
-                <div className="w-9 h-9 rounded-2xl bg-rose-50 border border-rose-200 flex items-center justify-center text-rose-600">
-                  <span className="material-symbols-outlined text-xl">local_fire_department</span>
+                <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl sm:rounded-2xl bg-rose-50 border border-rose-200 flex items-center justify-center text-rose-600">
+                  <span className="material-symbols-outlined text-lg sm:text-xl">local_fire_department</span>
                 </div>
               </div>
 
-              <div className="my-4">
-                <div className="text-3xl sm:text-4xl font-black text-on-surface tracking-tight">
-                  {telemetry.mq3} <span className="text-sm font-bold text-secondary">ppm</span>
+              <div className="my-2 sm:my-4">
+                <div className="text-2xl sm:text-4xl font-black text-on-surface tracking-tight">
+                  {telemetry.mq3} <span className="text-xs sm:text-sm font-bold text-secondary">ppm</span>
                 </div>
-                <div className="text-xs text-secondary mt-1 flex items-center gap-1">
-                  <span>Threshold: 380</span>
+                <div className="text-[11px] sm:text-xs text-secondary mt-1 flex items-center gap-1">
+                  <span>Thresh: 380</span>
                   <span>•</span>
                   <span className={telemetry.mq3 > 380 ? 'text-rose-600 font-bold' : 'text-primary font-medium'}>
-                    {telemetry.mq3 > 380 ? 'VAPOR SPIKE' : 'Safe Trace'}
+                    {telemetry.mq3 > 380 ? 'SPIKE' : 'Safe'}
                   </span>
                 </div>
               </div>
 
-              <div className="w-full bg-surface-container h-2 rounded-full overflow-hidden">
+              <div className="w-full bg-surface-container h-1.5 sm:h-2 rounded-full overflow-hidden">
                 <div
                   className={`h-full transition-all duration-300 ${
                     telemetry.mq3 > 380 ? 'bg-rose-500' : 'bg-rose-600'
@@ -462,25 +462,25 @@ export default function SensorData() {
             </div>
 
             {/* Card: MQ-135 Hazardous Gases & Air Quality */}
-            <div className="squircle-card hover-pop-blue bg-surface-container-lowest p-5 flex flex-col justify-between cursor-default">
+            <div className="squircle-card hover-pop-blue bg-surface-container-lowest p-3.5 sm:p-5 flex flex-col justify-between cursor-default">
               <div className="flex justify-between items-start">
                 <div>
-                  <span className="text-[11px] font-bold uppercase tracking-wider text-secondary">
-                    Toxics / NH3 / Benzene
+                  <span className="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-secondary">
+                    Air Quality
                   </span>
-                  <h3 className="text-lg font-extrabold text-on-surface mt-0.5">MQ-135 Sensor</h3>
+                  <h3 className="text-sm sm:text-lg font-extrabold text-on-surface mt-0.5">MQ-135</h3>
                 </div>
-                <div className="w-9 h-9 rounded-2xl bg-blue-50 border border-blue-200 flex items-center justify-center text-tertiary">
-                  <span className="material-symbols-outlined text-xl">air</span>
+                <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl sm:rounded-2xl bg-blue-50 border border-blue-200 flex items-center justify-center text-tertiary">
+                  <span className="material-symbols-outlined text-lg sm:text-xl">air</span>
                 </div>
               </div>
 
-              <div className="my-4">
-                <div className="text-3xl sm:text-4xl font-black text-on-surface tracking-tight">
-                  {telemetry.mq135} <span className="text-sm font-bold text-secondary">ppm</span>
+              <div className="my-2 sm:my-4">
+                <div className="text-2xl sm:text-4xl font-black text-on-surface tracking-tight">
+                  {telemetry.mq135} <span className="text-xs sm:text-sm font-bold text-secondary">ppm</span>
                 </div>
-                <div className="text-xs text-secondary mt-1 flex items-center gap-1">
-                  <span>Threshold: 550</span>
+                <div className="text-[11px] sm:text-xs text-secondary mt-1 flex items-center gap-1">
+                  <span>Thresh: 550</span>
                   <span>•</span>
                   <span className={telemetry.mq135 > 550 ? 'text-rose-600 font-bold' : 'text-tertiary font-medium'}>
                     {telemetry.mq135 > 550 ? 'ELEVATED' : 'Clean'}
@@ -488,7 +488,7 @@ export default function SensorData() {
                 </div>
               </div>
 
-              <div className="w-full bg-surface-container h-2 rounded-full overflow-hidden">
+              <div className="w-full bg-surface-container h-1.5 sm:h-2 rounded-full overflow-hidden">
                 <div
                   className={`h-full transition-all duration-300 ${
                     telemetry.mq135 > 550 ? 'bg-rose-500' : 'bg-tertiary'
@@ -499,120 +499,120 @@ export default function SensorData() {
             </div>
 
             {/* Card: DHT11 Chamber Temperature */}
-            <div className="squircle-card hover-pop-amber bg-surface-container-lowest p-5 flex flex-col justify-between cursor-default">
+            <div className="squircle-card hover-pop-amber bg-surface-container-lowest p-3.5 sm:p-5 flex flex-col justify-between cursor-default">
               <div className="flex justify-between items-start">
                 <div>
-                  <span className="text-[11px] font-bold uppercase tracking-wider text-secondary">
-                    Chamber Temp
+                  <span className="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-secondary">
+                    Temp
                   </span>
-                  <h3 className="text-lg font-extrabold text-on-surface mt-0.5">DHT11 Temp</h3>
+                  <h3 className="text-sm sm:text-lg font-extrabold text-on-surface mt-0.5">DHT11 Temp</h3>
                 </div>
-                <div className="w-9 h-9 rounded-2xl bg-amber-50 border border-amber-200 flex items-center justify-center text-amber-700">
-                  <span className="material-symbols-outlined text-xl">thermostat</span>
+                <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl sm:rounded-2xl bg-amber-50 border border-amber-200 flex items-center justify-center text-amber-700">
+                  <span className="material-symbols-outlined text-lg sm:text-xl">thermostat</span>
                 </div>
               </div>
-              <div className="my-4">
-                <div className="text-3xl sm:text-4xl font-black text-on-surface tracking-tight">
-                  {telemetry.temp}°<span className="text-sm font-bold text-secondary">C</span>
+              <div className="my-2 sm:my-4">
+                <div className="text-2xl sm:text-4xl font-black text-on-surface tracking-tight">
+                  {telemetry.temp}°<span className="text-xs sm:text-sm font-bold text-secondary">C</span>
                 </div>
-                <div className="text-xs text-secondary mt-1">
+                <div className="text-[11px] sm:text-xs text-secondary mt-1">
                   Range: 20°C - 45°C
                 </div>
               </div>
-              <div className="text-[11px] font-semibold text-amber-800 bg-amber-50 px-2.5 py-1 rounded-full w-fit">
-                Thermal Steady State
+              <div className="text-[10px] sm:text-[11px] font-semibold text-amber-800 bg-amber-50 px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-full w-fit">
+                Steady State
               </div>
             </div>
 
             {/* Card: DHT11 Relative Humidity */}
-            <div className="squircle-card hover-pop-teal bg-surface-container-lowest p-5 flex flex-col justify-between cursor-default">
+            <div className="squircle-card hover-pop-teal bg-surface-container-lowest p-3.5 sm:p-5 flex flex-col justify-between cursor-default">
               <div className="flex justify-between items-start">
                 <div>
-                  <span className="text-[11px] font-bold uppercase tracking-wider text-secondary">
-                    Chamber Humidity
+                  <span className="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-secondary">
+                    Humidity
                   </span>
-                  <h3 className="text-lg font-extrabold text-on-surface mt-0.5">DHT11 RH</h3>
+                  <h3 className="text-sm sm:text-lg font-extrabold text-on-surface mt-0.5">DHT11 RH</h3>
                 </div>
-                <div className="w-9 h-9 rounded-2xl bg-blue-50 border border-blue-200 flex items-center justify-center text-primary">
-                  <span className="material-symbols-outlined text-xl">humidity_mid</span>
-                </div>
-              </div>
-              <div className="my-4">
-                <div className="text-3xl sm:text-4xl font-black text-on-surface tracking-tight">
-                  {telemetry.humidity}<span className="text-sm font-bold text-secondary">%</span>
-                </div>
-                <div className="text-xs text-secondary mt-1">
-                  Target: 35% - 65% RH
+                <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl sm:rounded-2xl bg-blue-50 border border-blue-200 flex items-center justify-center text-primary">
+                  <span className="material-symbols-outlined text-lg sm:text-xl">humidity_mid</span>
                 </div>
               </div>
-              <div className="text-[11px] font-semibold text-blue-800 bg-blue-50 px-2.5 py-1 rounded-full w-fit">
-                Optimal Sensitivity
+              <div className="my-2 sm:my-4">
+                <div className="text-2xl sm:text-4xl font-black text-on-surface tracking-tight">
+                  {telemetry.humidity}<span className="text-xs sm:text-sm font-bold text-secondary">%</span>
+                </div>
+                <div className="text-[11px] sm:text-xs text-secondary mt-1">
+                  Target: 35% - 65%
+                </div>
+              </div>
+              <div className="text-[10px] sm:text-[11px] font-semibold text-blue-800 bg-blue-50 px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-full w-fit">
+                Optimal
               </div>
             </div>
 
             {/* Card: Heat Index & Vapor Pressure */}
-            <div className="squircle-card hover-pop-blue bg-surface-container-lowest p-5 flex flex-col justify-between cursor-default">
+            <div className="squircle-card hover-pop-blue bg-surface-container-lowest p-3.5 sm:p-5 flex flex-col justify-between cursor-default">
               <div className="flex justify-between items-start">
                 <div>
-                  <span className="text-[11px] font-bold uppercase tracking-wider text-secondary">
+                  <span className="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-secondary">
                     Heat Index
                   </span>
-                  <h3 className="text-lg font-extrabold text-on-surface mt-0.5">Enthalpy Proxy</h3>
+                  <h3 className="text-sm sm:text-lg font-extrabold text-on-surface mt-0.5">Enthalpy</h3>
                 </div>
-                <div className="w-9 h-9 rounded-2xl bg-blue-50 border border-blue-200 flex items-center justify-center text-tertiary">
-                  <span className="material-symbols-outlined text-xl">device_thermostat</span>
-                </div>
-              </div>
-              <div className="my-4">
-                <div className="text-3xl sm:text-4xl font-black text-on-surface tracking-tight">
-                  {telemetry.heat_index}°<span className="text-sm font-bold text-secondary">C</span>
-                </div>
-                <div className="text-xs text-secondary mt-1">
-                  Vapor sorption model
+                <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl sm:rounded-2xl bg-blue-50 border border-blue-200 flex items-center justify-center text-tertiary">
+                  <span className="material-symbols-outlined text-lg sm:text-xl">device_thermostat</span>
                 </div>
               </div>
-              <div className="text-[11px] font-semibold text-blue-800 bg-blue-50 px-2.5 py-1 rounded-full w-fit">
-                Compensation Active
+              <div className="my-2 sm:my-4">
+                <div className="text-2xl sm:text-4xl font-black text-on-surface tracking-tight">
+                  {telemetry.heat_index}°<span className="text-xs sm:text-sm font-bold text-secondary">C</span>
+                </div>
+                <div className="text-[11px] sm:text-xs text-secondary mt-1">
+                  Vapor sorption
+                </div>
+              </div>
+              <div className="text-[10px] sm:text-[11px] font-semibold text-blue-800 bg-blue-50 px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-full w-fit">
+                Active
               </div>
             </div>
           </div>
 
           {/* Panoramic Live Charts Section */}
-          <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 xl:grid-cols-3 gap-4 sm:gap-6">
             {/* Rolling Multi-Line Trend Chart (2 cols) */}
-            <div className="xl:col-span-2 squircle-card hover-pop-teal bg-surface-container-lowest p-6 flex flex-col">
-              <div className="flex justify-between items-center mb-4">
+            <div className="xl:col-span-2 squircle-card hover-pop-teal bg-surface-container-lowest p-4 sm:p-6 flex flex-col">
+              <div className="flex justify-between items-center mb-3 sm:mb-4">
                 <div>
-                  <h3 className="text-xl font-black text-on-surface">
+                  <h3 className="text-base sm:text-xl font-black text-on-surface">
                     Rolling Multi-Sensor Trend (Last 30s)
                   </h3>
-                  <p className="text-xs text-secondary mt-0.5">
+                  <p className="text-[11px] sm:text-xs text-secondary mt-0.5">
                     Live dynamic synchronization of MQ-2, MQ-3, and MQ-135 ppm response
                   </p>
                 </div>
-                <div className="flex items-center gap-2">
-                  <span className="w-2.5 h-2.5 rounded-full bg-primary animate-ping" />
-                  <span className="text-xs font-bold text-primary">Streaming 1.2s</span>
+                <div className="flex items-center gap-1.5 sm:gap-2">
+                  <span className="w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full bg-primary animate-ping" />
+                  <span className="text-[10px] sm:text-xs font-bold text-primary">Streaming 1.2s</span>
                 </div>
               </div>
 
-              <div className="w-full h-80 min-h-[320px]">
+              <div className="w-full h-64 sm:h-80 min-h-[240px] sm:min-h-[320px]">
                 <Line data={multiLineData} options={lineOptions} />
               </div>
             </div>
 
             {/* 5-Axis Threat Radar Chart (1 col) */}
-            <div className="squircle-card hover-pop-purple bg-surface-container-lowest p-6 flex flex-col">
+            <div className="squircle-card hover-pop-purple bg-surface-container-lowest p-4 sm:p-6 flex flex-col">
               <div className="mb-2">
-                <h3 className="text-xl font-black text-on-surface">
+                <h3 className="text-base sm:text-xl font-black text-on-surface">
                   5-Axis Chemical Vector Radar
                 </h3>
-                <p className="text-xs text-secondary mt-0.5">
+                <p className="text-[11px] sm:text-xs text-secondary mt-0.5">
                   Multi-channel signature geometry for threat differentiation
                 </p>
               </div>
 
-              <div className="w-full h-80 min-h-[320px] flex items-center justify-center">
+              <div className="w-full h-64 sm:h-80 min-h-[240px] sm:min-h-[320px] flex items-center justify-center">
                 <Radar data={radarData} options={radarOptions} />
               </div>
             </div>
