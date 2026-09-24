@@ -576,11 +576,15 @@ export default function SensorData() {
               </div>
             </div>
           </div>
+        </div>
+      )}
 
-          {/* Panoramic Live Charts Section */}
-          <div className="grid grid-cols-1 xl:grid-cols-3 gap-4 sm:gap-6">
-            {/* Rolling Multi-Line Trend Chart (2 cols) */}
-            <div className="xl:col-span-2 squircle-card hover-pop-teal bg-surface-container-lowest p-4 sm:p-6 flex flex-col">
+      {/* VIEW MODE 2: ADVANCED INFOS (Multi-line trend + 5-axis radar chart) */}
+      {sensorViewMode === 'advanced' && (
+        <div className="flex flex-col gap-4 sm:gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
+            {/* Rolling Multi-Line Trend Chart */}
+            <div className="lg:col-span-2 squircle-card hover-pop-teal bg-surface-container-lowest p-4 sm:p-6 flex flex-col">
               <div className="flex justify-between items-center mb-3 sm:mb-4">
                 <div>
                   <h3 className="text-base sm:text-xl font-black text-on-surface">
@@ -601,7 +605,7 @@ export default function SensorData() {
               </div>
             </div>
 
-            {/* 5-Axis Threat Radar Chart (1 col) */}
+            {/* 5-Axis Threat Radar Chart */}
             <div className="squircle-card hover-pop-purple bg-surface-container-lowest p-4 sm:p-6 flex flex-col">
               <div className="mb-2">
                 <h3 className="text-base sm:text-xl font-black text-on-surface">
@@ -613,51 +617,6 @@ export default function SensorData() {
               </div>
 
               <div className="w-full h-64 sm:h-80 min-h-[240px] sm:min-h-[320px] flex items-center justify-center">
-                <Radar data={radarData} options={radarOptions} />
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* VIEW MODE 2: ADVANCED INFOS (Multi-line trend + 5-axis radar chart) */}
-      {sensorViewMode === 'advanced' && (
-        <div className="flex flex-col gap-6">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            {/* Rolling Multi-Line Trend Chart */}
-            <div className="lg:col-span-2 squircle-card hover-pop-teal bg-surface-container-lowest p-6 flex flex-col">
-              <div className="flex justify-between items-center mb-4">
-                <div>
-                  <h3 className="text-xl font-black text-on-surface">
-                    Rolling Multi-Sensor Trend (Last 30s)
-                  </h3>
-                  <p className="text-xs text-secondary mt-0.5">
-                    Live dynamic synchronization of MQ-2, MQ-3, and MQ-135 ppm response
-                  </p>
-                </div>
-                <div className="flex items-center gap-2">
-                  <span className="w-2.5 h-2.5 rounded-full bg-primary animate-ping" />
-                  <span className="text-xs font-bold text-primary">Streaming 1.2s</span>
-                </div>
-              </div>
-
-              <div className="w-full h-80 min-h-[320px]">
-                <Line data={multiLineData} options={lineOptions} />
-              </div>
-            </div>
-
-            {/* 5-Axis Threat Radar Chart */}
-            <div className="squircle-card hover-pop-purple bg-surface-container-lowest p-6 flex flex-col">
-              <div className="mb-2">
-                <h3 className="text-xl font-black text-on-surface">
-                  5-Axis Chemical Vector Radar
-                </h3>
-                <p className="text-xs text-secondary mt-0.5">
-                  Multi-channel signature geometry for threat differentiation
-                </p>
-              </div>
-
-              <div className="w-full h-80 min-h-[320px] flex items-center justify-center">
                 <Radar data={radarData} options={radarOptions} />
               </div>
             </div>
