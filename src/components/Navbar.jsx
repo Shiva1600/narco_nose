@@ -51,8 +51,12 @@ export default function Navbar() {
             onClick={() => setActiveTab('home')}
             className="text-xl md:text-2xl font-bold text-slate-900 tracking-tight flex items-center gap-2 hover:opacity-90 transition-opacity font-inter"
           >
-            <span className="material-symbols-outlined text-primary text-2xl font-bold" data-icon="sensors">
-              sensors
+            <span
+              className="material-symbols-outlined text-sky-600 text-[26px] drop-shadow-[0_1px_2px_rgba(2,132,199,0.25)]"
+              style={{ fontVariationSettings: "'wght' 700, 'opsz' 24" }}
+              data-icon="air"
+            >
+              air
             </span>
             <span className="font-bold">Narco Nose</span>
           </button>
