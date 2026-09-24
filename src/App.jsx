@@ -66,7 +66,7 @@ function DashboardContent() {
       </div>
 
       {/* Main Animated Tab Router Canvas */}
-      <main className="flex-1 flex flex-col relative z-10 overflow-hidden">
+      <main className="flex-1 flex flex-col relative z-10 overflow-hidden pb-20 md:pb-0">
         <AnimatePresence mode="wait">
           <motion.div
             key={activeTab}

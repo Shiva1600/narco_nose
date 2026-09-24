@@ -21,11 +21,11 @@ export default function Navbar() {
   const currentDropletTab = hoveredTab || activeTab;
 
   const tabs = [
-    { id: 'home', label: 'Home', icon: 'hub' },
-    { id: 'sensors', label: 'Sensor Data', icon: 'monitoring' },
-    { id: 'camera', label: 'Optical Evidence', icon: 'photo_camera' },
-    { id: 'history', label: 'History', icon: 'history' },
-    { id: 'settings', label: 'Settings', icon: 'settings' }
+    { id: 'home', label: 'Home', mobileLabel: 'Home', icon: 'hub' },
+    { id: 'sensors', label: 'Sensor Data', mobileLabel: 'Sensors', icon: 'monitoring' },
+    { id: 'camera', label: 'Optical Evidence', mobileLabel: 'Camera', icon: 'photo_camera' },
+    { id: 'history', label: 'History', mobileLabel: 'History', icon: 'history' },
+    { id: 'settings', label: 'Settings', mobileLabel: 'Settings', icon: 'settings' }
   ];
 
   const handleNavMouseMove = (e) => {
@@ -42,7 +42,8 @@ export default function Navbar() {
   const isWarning = telemetry.threat_level === 'WARNING';
 
   return (
-    <header className={`${activeTab === 'home' ? 'bg-white/60 backdrop-blur-md border-b border-white/30 shadow-2xs' : 'bg-white/85 backdrop-blur-md border-b border-slate-200/60 shadow-xs'} sticky top-0 z-50 w-full transition-colors duration-300`}>
+    <>
+      <header className={`${activeTab === 'home' ? 'bg-white/60 backdrop-blur-md border-b border-white/30 shadow-2xs' : 'bg-white/85 backdrop-blur-md border-b border-slate-200/60 shadow-xs'} sticky top-0 z-40 w-full transition-colors duration-300`}>
       <div className="w-full px-4 sm:px-6 lg:px-8 xl:px-10 flex justify-between items-center h-20">
         {/* Brand Anchor - Pushed to Far Left Corner */}
         <div className="flex items-center shrink-0">
@@ -249,44 +250,57 @@ export default function Navbar() {
           </div>
         </div>
       </div>
+    </header>
 
-      {/* Mobile Nav Scroller - Hidden on Homepage */}
-      <AnimatePresence>
-        {activeTab !== 'home' && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.2 }}
-            className="md:hidden flex items-center gap-2 px-4 py-2.5 overflow-x-auto bg-surface-container-low border-t border-outline-variant/20 scrollbar-none"
-          >
-            {tabs.map(t => {
-              const isActive = activeTab === t.id;
-              return (
-                <button
-                  key={t.id}
-                  onClick={() => setActiveTab(t.id)}
-                  className={`relative flex items-center gap-1 text-sm font-bold whitespace-nowrap px-3.5 py-1.5 rounded-full transition-colors z-10 ${
-                    isActive
-                      ? 'text-primary font-black'
-                      : 'text-secondary hover:text-on-surface'
+      {/* Native Mobile Bottom Navigation Bar - 1-Click Access to All 5 Sections */}
+      <nav
+        aria-label="Mobile Navigation"
+        className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-xl border-t border-slate-200/80 shadow-[0_-4px_24px_rgba(0,0,0,0.08)] px-2 pt-1.5 pb-[calc(0.6rem+env(safe-area-inset-bottom,0px))]"
+      >
+        <div className="grid grid-cols-5 items-center w-full max-w-md mx-auto">
+          {tabs.map(t => {
+            const isActive = activeTab === t.id;
+            return (
+              <button
+                key={t.id}
+                onClick={() => setActiveTab(t.id)}
+                className={`relative flex flex-col items-center justify-center py-1.5 px-0.5 rounded-2xl transition-all duration-200 select-none ${
+                  isActive
+                    ? 'text-primary font-bold'
+                    : 'text-slate-400 hover:text-slate-600'
+                }`}
+              >
+                {isActive && (
+                  <motion.div
+                    layoutId="mobileBottomNavActiveIndicator"
+                    className="absolute inset-0 bg-blue-50/90 rounded-2xl -z-10 border border-blue-200/60 shadow-2xs"
+                    transition={{ type: 'spring', stiffness: 450, damping: 32 }}
+                  />
+                )}
+                <div className="relative flex items-center justify-center">
+                  <span
+                    className={`material-symbols-outlined text-[23px] transition-transform duration-200 ${
+                      isActive ? 'scale-110 text-primary' : 'text-slate-400'
+                    }`}
+                  >
+                    {t.icon}
+                  </span>
+                  {isActive && (
+                    <span className="absolute -top-0.5 -right-1 w-1.5 h-1.5 rounded-full bg-primary ring-2 ring-white" />
+                  )}
+                </div>
+                <span
+                  className={`text-[10.5px] tracking-tight leading-tight mt-0.5 font-bold transition-colors ${
+                    isActive ? 'text-primary' : 'text-slate-500'
                   }`}
                 >
-                  {isActive && (
-                    <motion.div
-                      layoutId="mobileActiveNavPill"
-                      className="absolute inset-0 bg-surface-container-lowest rounded-full shadow-xs border border-outline-variant/40"
-                      transition={{ type: 'spring', stiffness: 420, damping: 32 }}
-                    />
-                  )}
-                  <span className="material-symbols-outlined text-base relative z-10">{t.icon}</span>
-                  <span className="relative z-10">{t.label}</span>
-                </button>
-              );
-            })}
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </header>
+                  {t.mobileLabel}
+                </span>
+              </button>
+            );
+          })}
+        </div>
+      </nav>
+    </>
   );
 }
