@@ -129,8 +129,8 @@ node start.js
 
 Open a web browser and navigate to `http://localhost:5173` (Vite dev server) or `http://localhost:5000` (full-stack production server).
 
-## Hackathon Track / Category
+## Problem Statement & Team Details
 
-*   **Target Track**: [Insert Hackathon Track Name Here, e.g., Smart Cities / Public Safety / IoT & Edge Computing]
-*   **Problem Statement**: [Insert Target Problem Statement or Challenge ID Here]
-*   **Team Name**: [Insert Team Name Here]
+*   **Problem Statement**: Development of Mobile (Quadruped)/Handheld Device/System for Real-Time Detection of Narcotics and Explosives across Indian Railways.
+*   **Team Name**: No Drugs, Only Bugs
+
