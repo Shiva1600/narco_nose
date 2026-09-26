@@ -48,10 +48,10 @@ function DashboardContent() {
             src="/videos/homepage_train.mp4"
             className="w-full h-full object-cover object-[center_70%]"
           />
-          {/* Subtle cinematic top tint and compact bottom blend situated low at the bottom edge */}
-          <div className="absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-slate-950/20 to-transparent" />
-          <div className="absolute inset-0 bg-gradient-to-r from-slate-950/60 via-slate-950/25 to-transparent lg:hidden pointer-events-none" />
-          <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-slate-50 to-transparent" />
+          {/* Cinematic ambient overlays to guarantee strong text contrast on all devices including laptops */}
+          <div className="absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-slate-950/30 to-transparent pointer-events-none" />
+          <div className="absolute inset-0 bg-gradient-to-r from-slate-950/85 via-slate-950/45 to-transparent pointer-events-none" />
+          <div className="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-slate-50 via-slate-50/70 to-transparent pointer-events-none" />
         </div>
       )}
 
