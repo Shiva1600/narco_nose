@@ -469,6 +469,8 @@ input[type=range]::-webkit-slider-runnable-track {
 /* Base transitions for edge-light elements */
 .home-hub-page .edge-light-purple,
 .home-hub-page .edge-light-blue,
+.home-hub-page .edge-light-teal,
+.home-hub-page .edge-light-cyan,
 .home-hub-page .edge-light-amber {
   transition: transform 0.26s cubic-bezier(0.16, 1, 0.3, 1),
               box-shadow 0.26s cubic-bezier(0.16, 1, 0.3, 1),
@@ -519,6 +521,31 @@ input[type=range]::-webkit-slider-runnable-track {
   z-index: 10 !important;
 }
 
+/* Optical Evidence (Subtle Cyan / Teal Edge Lighting on Hover Only) */
+.home-hub-page .squircle-card.edge-light-teal:hover,
+.home-hub-page button.edge-light-teal:hover,
+.edge-light-teal:hover,
+.home-hub-page .squircle-card.edge-light-cyan:hover,
+.home-hub-page button.edge-light-cyan:hover,
+.edge-light-cyan:hover {
+  transform: translateY(-4px) !important;
+  border-width: 1px !important;
+  border-top-color: rgba(255, 255, 255, 0.90) !important;
+  border-left-color: rgba(6, 182, 212, 0.50) !important;
+  border-right-color: rgba(6, 182, 212, 0.50) !important;
+  border-bottom-color: rgba(0, 123, 185, 0.65) !important;
+  box-shadow:
+    0 12px 24px -4px rgba(0, 123, 185, 0.18),
+    0 4px 12px -2px rgba(6, 182, 212, 0.12),
+    6px 8px 16px -4px rgba(6, 182, 212, 0.12),
+    -6px 8px 16px -4px rgba(6, 182, 212, 0.12),
+    inset 0 -2px 6px 0 rgba(0, 123, 185, 0.20),
+    inset 1.5px 0 4px 0 rgba(6, 182, 212, 0.12),
+    inset -1.5px 0 4px 0 rgba(6, 182, 212, 0.12),
+    inset 0 1px 1.5px 0 rgba(255, 255, 255, 0.95) !important;
+  z-index: 10 !important;
+}
+
 /* 3. Settings (Subtle Amber Edge Lighting on Hover Only) */
 .home-hub-page .squircle-card.edge-light-amber:hover,
 .home-hub-page button.edge-light-amber:hover,
@@ -544,6 +571,8 @@ input[type=range]::-webkit-slider-runnable-track {
 /* Delicate Ambient Lower & Side Glow on Hover Only */
 .edge-light-purple::before,
 .edge-light-blue::before,
+.edge-light-teal::before,
+.edge-light-cyan::before,
 .edge-light-amber::before {
   content: '';
   position: absolute;
@@ -563,12 +592,19 @@ input[type=range]::-webkit-slider-runnable-track {
   background: radial-gradient(ellipse 90% 40% at 50% 100%, rgba(59, 130, 246, 0.06) 0%, transparent 75%);
 }
 
+.edge-light-teal::before,
+.edge-light-cyan::before {
+  background: radial-gradient(ellipse 90% 40% at 50% 100%, rgba(0, 123, 185, 0.06) 0%, transparent 75%);
+}
+
 .edge-light-amber::before {
   background: radial-gradient(ellipse 90% 40% at 50% 100%, rgba(245, 158, 11, 0.06) 0%, transparent 75%);
 }
 
 .edge-light-purple:hover::before,
 .edge-light-blue:hover::before,
+.edge-light-teal:hover::before,
+.edge-light-cyan:hover::before,
 .edge-light-amber:hover::before {
   opacity: 1;
 }

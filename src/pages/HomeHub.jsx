@@ -67,9 +67,9 @@ export default function HomeHub() {
             <button
               onClick={() => setActiveTab('sensors')}
               aria-label="Open Sensor Data module"
-              className="squircle-card hover-pop-teal bg-white/92 backdrop-blur-2xl w-full min-h-[125px] sm:min-h-[150px] lg:min-h-[160px] xl:min-h-[185px] flex flex-col justify-between p-3.5 sm:p-4 lg:p-5 text-left group cursor-pointer active:scale-98 relative shadow-md border border-white/80"
+              className="squircle-card edge-light-blue bg-white/92 backdrop-blur-2xl w-full min-h-[125px] sm:min-h-[150px] lg:min-h-[160px] xl:min-h-[185px] flex flex-col justify-between p-3.5 sm:p-4 lg:p-5 text-left group cursor-pointer active:scale-98 relative shadow-md border border-white/80"
             >
-              <div className="flex justify-between items-start w-full">
+              <div className="flex justify-between items-start w-full relative z-[2]">
                 <div className="w-8 h-8 sm:w-11 sm:h-11 rounded-xl sm:rounded-2xl bg-blue-50 border border-blue-100 flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
                   <span className="material-symbols-outlined text-xl sm:text-2xl lg:text-3xl">graphic_eq</span>
                 </div>
@@ -78,7 +78,7 @@ export default function HomeHub() {
                 </span>
               </div>
 
-              <div className="my-1">
+              <div className="my-1 relative z-[2]">
                 <h3 className="text-sm sm:text-lg lg:text-xl font-black text-slate-900 group-hover:text-primary transition-colors tracking-tight">
                   Sensor Data
                 </h3>
@@ -87,7 +87,7 @@ export default function HomeHub() {
                 </p>
               </div>
 
-              <div className="flex items-center gap-1 text-[10px] sm:text-xs font-bold text-primary pt-1.5 sm:pt-2 border-t border-slate-200/80">
+              <div className="flex items-center gap-1 text-[10px] sm:text-xs font-bold text-primary pt-1.5 sm:pt-2 border-t border-slate-200/80 relative z-[2]">
                 <span>View Suite</span>
                 <span className="material-symbols-outlined text-xs sm:text-sm group-hover:translate-x-1.5 transition-transform">arrow_forward</span>
               </div>
@@ -97,10 +97,10 @@ export default function HomeHub() {
             <button
               onClick={() => setActiveTab('camera')}
               aria-label="Open Optical Threat Evidence"
-              className="squircle-card hover-pop-blue bg-white/92 backdrop-blur-2xl w-full min-h-[125px] sm:min-h-[150px] lg:min-h-[160px] xl:min-h-[185px] flex flex-col justify-between p-3.5 sm:p-4 lg:p-5 text-left group cursor-pointer active:scale-98 relative shadow-md border border-white/80"
+              className="squircle-card edge-light-teal bg-white/92 backdrop-blur-2xl w-full min-h-[125px] sm:min-h-[150px] lg:min-h-[160px] xl:min-h-[185px] flex flex-col justify-between p-3.5 sm:p-4 lg:p-5 text-left group cursor-pointer active:scale-98 relative shadow-md border border-white/80"
             >
-              <div className="flex justify-between items-start w-full">
-                <div className="w-8 h-8 sm:w-11 sm:h-11 rounded-xl sm:rounded-2xl bg-blue-50 border border-blue-100 flex items-center justify-center text-tertiary group-hover:scale-110 transition-transform">
+              <div className="flex justify-between items-start w-full relative z-[2]">
+                <div className="w-8 h-8 sm:w-11 sm:h-11 rounded-xl sm:rounded-2xl bg-cyan-50 border border-cyan-100 flex items-center justify-center text-tertiary group-hover:scale-110 transition-transform">
                   <span className="material-symbols-outlined text-xl sm:text-2xl lg:text-3xl">photo_camera</span>
                 </div>
                 <span className="text-[10px] sm:text-xs font-extrabold px-2 py-0.5 sm:px-3 sm:py-1 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200 flex items-center gap-1">
@@ -109,7 +109,7 @@ export default function HomeHub() {
                 </span>
               </div>
 
-              <div className="my-1">
+              <div className="my-1 relative z-[2]">
                 <h3 className="text-sm sm:text-lg lg:text-xl font-black text-slate-900 group-hover:text-tertiary transition-colors tracking-tight">
                   Evidence
                 </h3>
@@ -118,7 +118,7 @@ export default function HomeHub() {
                 </p>
               </div>
 
-              <div className="flex items-center gap-1 text-[10px] sm:text-xs font-bold text-tertiary pt-1.5 sm:pt-2 border-t border-slate-200/80">
+              <div className="flex items-center gap-1 text-[10px] sm:text-xs font-bold text-tertiary pt-1.5 sm:pt-2 border-t border-slate-200/80 relative z-[2]">
                 <span>View Camera</span>
                 <span className="material-symbols-outlined text-xs sm:text-sm group-hover:translate-x-1.5 transition-transform">arrow_forward</span>
               </div>
