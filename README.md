@@ -22,53 +22,55 @@ Narco Nose addresses this limitation by deploying an autonomous edge-sensing nod
 
 ![Home Hub View](./docs/screenshots/home_hub.png)
 
-*   **System Status Overview**: Provides real-time hardware status, network latency indicators, active sensor counts, and Raspberry Pi 5 operational metrics.
+*   **System Status Overview**: Provides real-time hardware status, active sensor counts, edge temperature readings, and operational state for Raspberry Pi 5 Node SN-9021-TX.
 *   **Dynamic Threat Evaluation**: Computes and displays system-wide composite risk state (Safe, Warning, Critical Threat) synthesized from live multi-gas analytics.
-*   **Bento Routing Grid**: Houses quick-navigation panels for Sensor Data, Optical Evidence, History, and Settings with interactive perimeter edge-lighting.
+*   **Bento Routing Grid**: Houses quick-navigation panels for Sensor Data, Evidence, History, and Settings with interactive perimeter edge-lighting.
 *   **Quick Simulation Suite**: Includes embedded triggers to inject vapor spikes, LPG leak signatures, and chamber purge cycles for validation when running detached from physical hardware.
-*   **Node Identity Tracking**: Displays current node serial identification, firmware release version, and connection heartbeat status.
+*   **Live Sensor Calibration**: Dedicated header controls to tare and recalibrate sensor baselines across active nodes.
 
 ### Sensor Data Dashboard
 
-![Sensor Data Dashboard View](./docs/screenshots/sensor_data.png)
+![Sensor Data Dashboard - Simple Info Mode](./docs/screenshots/sensor_data_simple.png)
 
-*   **Multi-Channel Gas Readouts**: Displays live numerical concentrations for MQ-2 (smoke/flammable hydrocarbons), MQ-3 (alcohol/solvent vapor proxies), and MQ-135 (toxic gases/ammonia).
-*   **Environmental Telemetry**: Tracks ambient temperature, relative humidity, and heat index derived from DHT11 sensor readings to evaluate vapor dispersion conditions.
-*   **View Mode Toggle**: Offers Simple Info mode for clear high-visibility field metrics and Advanced Info mode for technical vector breakdown.
+![Sensor Data Dashboard - Advanced Analytics Mode](./docs/screenshots/sensor_data_advanced.png)
+
+*   **Multi-Channel Gas Readouts**: Displays live numerical concentrations for MQ-2 (combustible gas), MQ-3 (alcohol/solvent vapor proxies), and MQ-135 (toxic gases/ammonia).
+*   **Environmental Telemetry**: Tracks ambient temperature, relative humidity, and enthalpy index derived from DHT11 sensor readings to evaluate vapor dispersion conditions.
+*   **Dual Inspection Modes**: Offers Simple Info mode for clear high-visibility field metrics and Advanced Infos mode for technical vector breakdown.
 *   **Synchronized Time-Series Chart**: Renders a rolling 30-second multi-gas ppm trend chart powered by Chart.js for tracking plume rise and decay rates.
 *   **Five-Axis Vector Radar**: Maps live gas ratios against baseline ambient signatures to assist in identifying specific chemical classifications.
 *   **ADC Conversion Matrix**: Displays live 16-bit analog voltages and raw offsets from the ADS1115 analog-to-digital converter.
-*   **Zero-Point Calibration**: Provides one-click clean-air baseline calibration to adjust for sensor drift and ambient humidity variations.
+*   **Baseline Drift Tracking**: Real-time delta tracking comparing live signal resistance to clean-air calibration references.
 
 ### Optical Threat Evidence
 
 ![Optical Threat Evidence View](./docs/screenshots/optical_evidence.png)
 
-*   **Optical Inspection Feed**: Displays real-time camera imagery coupled with target classification bounding boxes and model confidence scores.
+*   **Optical Inspection Feed**: Displays real-time camera imagery coupled with target classification bounding boxes and model confidence scores for identified items such as Class A chemical containers and suspicious powders.
 *   **Threat Telemetry Overlay**: Synchronizes captured optical frames with simultaneous sensor readings (gas ppm, temperature, timestamp) recorded at the exact moment of detection.
-*   **Interactive GPS Tracker**: Renders live coordinate positioning via Leaflet, including latitude, longitude, altitude, ground speed, and breadcrumb route trails.
+*   **Interactive GPS Tracker**: Renders live coordinate positioning via Leaflet, including latitude, longitude, altitude, ground speed, satellite fix quality (3D Fix), and breadcrumb route trails.
 *   **Bounding Box HUD Toggle**: Allows security personnel to enable or disable classification labels and target highlight boxes on the fly.
-*   **Manual Snapshot Capture**: Enables operators to trigger immediate high-resolution frame captures for evidentiary records.
+*   **Evidentiary Capture**: Automatically logs threat events with visual snapshot verification and GPS geo-tagging.
 
 ### History and Event Logs
 
 ![History and Event Logs View](./docs/screenshots/history_logs.png)
 
-*   **Chronological Incident Timeline**: Records all detected threat events with classified anomaly types, severity badges, and occurrence timestamps.
+*   **Historical Telemetry Trends**: Visualizes continuous multi-gas historical graphs querying SQLite database records across 1h, 6h, 24h, and 7d horizons with anomaly spike detection.
+*   **Chronological Incident Timeline**: Records all detected threat events with classified anomaly types, severity badges (Critical Threat, Warning), and occurrence timestamps.
 *   **Snapshot Inspection Modal**: Enables operators to select any logged incident to inspect the stored optical frame and review associated gas readings.
-*   **Tabular Telemetry Archive**: Lists continuous time-stamped sensor logs stored in the local SQLite database.
-*   **Data Export Pipeline**: Features dedicated endpoints to download complete incident logs in standardized CSV and JSON formats for post-incident analysis.
-*   **Log Filtering**: Allows sorting and filtering incidents based on threat severity level and sensor threshold triggers.
+*   **Data Export Pipeline**: Features dedicated endpoints to download complete incident logs in standardized CSV and JSON formats for external security audits.
+*   **Severity Filtering**: Allows filtering incidents based on threat severity level and sensor threshold triggers.
 
-### Device Settings & Hardware Diagnostics
+### Device Settings & Gateway Configuration
 
 ![Device Settings View](./docs/screenshots/device_settings.png)
 
-*   **SoC Hardware Monitoring**: Displays Raspberry Pi 5 Broadcom CPU utilization, memory allocation, storage capacity, and processor core temperature.
-*   **Peripheral Bus Diagnostics**: Validates operational status across physical communication buses (I2C at 0x48, UART on /dev/ttyAMA0, CSI camera bus, and GPIO actuators).
-*   **Actuator State Management**: Allows manual overrides and automation rules for the 5V chamber clearing fan (Auto, Manual On, Off), piezo alarm buzzer (Armed, Mute, Test), and RGB status indicators.
-*   **Threshold Calibration**: Sliders to adjust trigger levels for individual gas channels and set the minimum confidence cutoff for automated alarms.
-*   **MQTT Gateway Settings**: Interface to configure the target MQTT broker host IP, port number, and client topic prefix without code modifications.
+*   **Gateway & Telemetry Bridge**: Centralized interface to manage hardware communication parameters between the dashboard and Raspberry Pi 5 Node SN-9021-TX.
+*   **MQTT Broker Link**: Configuration panel for establishing connections to a local or remote Mosquitto MQTT broker.
+*   **Host and Port Binding**: Configurable parameters for broker IP address (e.g., local Wi-Fi IP address or loopback `127.0.0.1`) and port number (`1883`).
+*   **Topic Namespace Management**: Configurable prefix (`narconose/`) with explicit telemetry subscriptions (`narconose/telemetry`, `narconose/gps`) and command publications (`narconose/actuators/#`).
+*   **Persistent Configuration**: Immediate local SQLite persistence ensuring broker reconnection across restarts and network interruptions.
 
 ## Local Setup & Installation
 
