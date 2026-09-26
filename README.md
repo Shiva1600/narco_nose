@@ -1,89 +1,134 @@
-# 👃 Narco Nose — Real-Time Chemical Threat Proxy Detection Dashboard
+# Narco Nose
 
-[![Node.js](https://img.shields.io/badge/Node.js-v20%2B-339933?logo=node.js&logoColor=white)](https://nodejs.org/)
-[![React](https://img.shields.io/badge/React-18-61DAFB?logo=react&logoColor=black)](https://reactjs.org/)
-[![Vite](https://img.shields.io/badge/Vite-v5%2B-646CFF?logo=vite&logoColor=white)](https://vitejs.dev/)
-[![TailwindCSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
-[![Socket.io](https://img.shields.io/badge/Socket.io-Real--time-010101?logo=socket.io&logoColor=white)](https://socket.io/)
-[![SQLite](https://img.shields.io/badge/SQLite-Database-003B57?logo=sqlite&logoColor=white)](https://sqlite.org/)
-[![Raspberry Pi 5](https://img.shields.io/badge/Hardware-Raspberry_Pi_5-C51A4A?logo=raspberrypi&logoColor=white)](https://www.raspberrypi.com/)
-[![License](https://img.shields.io/badge/License-MIT-green.svg)](#license)
+An edge-computed electronic nose and optical surveillance telemetry system that detects, classifies, and maps chemical and narcotic proxy vapors in real time.
 
-> **Narco Nose** is a full-stack IoT biosensing and computer vision command interface designed for real-time chemical threat proxy detection. Built for a field-deployable **Raspberry Pi 5** hardware unit equipped with an MQ-series electronic nose (e-nose), DHT11 environmental sensor, NEO-6M GPS module, and local YOLOv8 object detection.
+## The Problem & The Solution
 
----
+Security checkpoints, railway coaches, baggage corridors, and enclosed transit infrastructure face persistent challenges in detecting concealed narcotics, illicit volatile solvents, and hazardous chemical contraband. Traditional screening methods depend heavily on canine units that experience olfactory fatigue within thirty to forty minutes, or manual swab and ion mobility spectrometers that require direct physical contact and cannot provide continuous, automated perimeter coverage. These operational constraints create surveillance blind spots across high-throughput transport hubs.
 
-## 🌟 Key Features & 5-Tab Architecture
+Narco Nose addresses this limitation by deploying an autonomous edge-sensing node built on a Raspberry Pi 5 platform paired with a multi-channel metal oxide semiconductor gas sensor array (MQ-2, MQ-3, MQ-135) and environmental transducers (DHT11). The system runs local baseline-compensated gas signature classification alongside camera-based optical object detection. Real-time telemetry, spatial GPS coordinates, and threat captures are published over an embedded MQTT broker and bidirectional WebSockets into a centralized browser dashboard, providing security operators with immediate threat alerts, physical actuator countermeasures, and forensic audit logs.
 
-The dashboard strictly adheres to a modern **Light Mode, Squircle (28px radius)** flat aesthetic designed for high field legibility:
+## Tech Stack
 
-### 1. 🎛️ Central Hub (Home)
-- **5 Squircle Routing Cards** with live metric badges (`Sensor Data`, `Camera YOLO`, `History`, `System Diagnostics`, `Settings`).
-- **Dynamic Threat Level Banner**: Color-coded system status (`SAFE` / `WARNING` / `CRITICAL THREAT`) calculated in real time from multi-gas ML confidence payloads.
-- **Node Status Pill**: Displays firmware state, node serial (`Node SN-9021-TX`), and live active sensors.
+*   **Frontend**: React 19, Vite 8, Tailwind CSS, Chart.js (`react-chartjs-2`), Leaflet (`react-leaflet`), Framer Motion, Lucide React
+*   **Backend**: Node.js (v20+), Express 5, Socket.io, Aedes (embedded MQTT broker), SQLite3
+*   **Hardware Architecture**: Raspberry Pi 5, MQ-2 (Combustible Gas/Smoke), MQ-3 (Solvent/Alcohol Vapor), MQ-135 (Air Quality/Ammonia/Benzene), DHT11 (Temperature & Relative Humidity), ADS1115 16-bit ADC, NEO-6M GPS Module, USB/CSI Optical Camera
+*   **Protocols & Transport**: MQTT (port 1883), WebSocket duplex telemetry (`socket.io`), HTTP REST APIs
+*   **Data Persistence**: SQLite database (`server/narco_nose.db`) with disk-backed optical threat snapshot storage
 
-### 2. 📊 Sensor Data Dashboard
-- **Simple Info Mode**: High-visibility numerical readout cards for:
-  - **MQ-2**: Combustible gases, smoke, LPG (ppm)
-  - **MQ-3**: Alcohol, ethanol, solvent vapor proxies (ppm)
-  - **MQ-135**: Air quality, ammonia, hazardous benzene traces (ppm)
-  - **DHT11**: Temperature (°C/°F), Relative Humidity (%), and Vapor Pressure Heat Index
-- **Advanced Info Mode**:
-  - **Rolling Multi-Line Trend Graph**: Real-time 30-second multi-gas ppm synchronization (Chart.js).
-  - **5-Axis Chemical Vector Radar**: Signature geometry comparing live gas readings against clean-air calibration baselines.
-  - **ADS1115 ADC Matrix**: Live analog voltage conversions and baseline tare delta offsets.
-- **One-Click Sensor Calibration**: Tare and calibrate sensors to ambient clean-air baseline.
+## Page-by-Page Feature Walkthrough & Automated Screenshots
 
-### 3. 🎥 Camera YOLO & GPS Mapping
-- **Optical Inspection Stream**: Real-time camera feed overlaid with YOLOv8 bounding boxes, confidence tags (e.g., *Chemical Container 94.2%*, *Suspicious Powder 88.7%*), and live framerate (29.8 FPS).
-- **Interactive Controls**: Toggle bounding box HUDs, adjust inference confidence cutoff sliders, and capture high-res snapshots.
-- **NEO-6M GPS Tracker**: Interactive Leaflet map displaying real-time field rover coordinates (Lat/Lon), ground speed, altitude, satellite fix quality, and breadcrumb route trails.
+### Home Hub
 
-### 4. 📜 Historical Telemetry & Threat Event Log
-- **24-Hour Telemetry Graphs**: Query continuous rolling gas trends logged directly to the local SQLite database.
-- **Chronological Threat Log**: Complete event timeline displaying anomaly category, severity, peak ppm values, and GPS locations.
-- **Snapshot Inspection Modal**: Click to inspect captured YOLO threat frames with zoom and download capabilities.
-- **Data Export**: Instant export of logged telemetry to **CSV** and **JSON**.
+![Home Hub View](./docs/screenshots/home_hub.png)
 
-### 5. ⚙️ Diagnostics & Actuator Settings
-- **Hardware Telemetry**: Pi 5 Broadcom BCM2712 CPU load %, LPDDR4X RAM allocation %, and SoC core temperature (°C) displayed with animated circular SVG gauges.
-- **Sensor I/O Matrix**: Status monitoring for all physical buses (I2C 0x48, UART /dev/ttyAMA0, CSI MIPI Camera, GPIO 4).
-- **Bi-Directional Actuator Control**:
-  - **5V Clearing Fan**: `AUTO` (auto-purges chamber on gas spike), `MANUAL ON`, or `OFF`.
-  - **Piezo Buzzer Alarm**: `ARMED`, `MUTE`, or `TEST`.
-  - **RGB Status LEDs**: `PULSE_TEAL`, `ALERT_RED`, `WARN_AMBER`, or `OFF`.
-- **Threshold Trimming**: Live sliders to customize alarm trip points for each gas channel and ML confidence.
-- **MQTT Gateway Config**: Easily bind to your Mosquitto broker IP, port, and topic prefix.
+*   **System Status Overview**: Provides real-time hardware status, network latency indicators, active sensor counts, and Raspberry Pi 5 operational metrics.
+*   **Dynamic Threat Evaluation**: Computes and displays system-wide composite risk state (Safe, Warning, Critical Threat) synthesized from live multi-gas analytics.
+*   **Bento Routing Grid**: Houses quick-navigation panels for Sensor Data, Optical Evidence, History, and Settings with interactive perimeter edge-lighting.
+*   **Quick Simulation Suite**: Includes embedded triggers to inject vapor spikes, LPG leak signatures, and chamber purge cycles for validation when running detached from physical hardware.
+*   **Node Identity Tracking**: Displays current node serial identification, firmware release version, and connection heartbeat status.
 
----
+### Sensor Data Dashboard
 
-## 🧪 Built-in Simulation & Threat Injector Suite
+![Sensor Data Dashboard View](./docs/screenshots/sensor_data.png)
 
-No physical hardware connected yet? No problem! The dashboard features a collapsible **Hardware Test Suite** banner at the top of the interface:
-- **Vapor Plume Spike**: Spikes MQ-3 (880 ppm) and injects an ethanol vapor detection event.
-- **Combustion / LPG Leak**: Spikes MQ-2 (920 ppm) and flags combustible gas anomalies.
-- **YOLO Powder Detection**: Simulates optical classification of suspicious chemical packages.
-- **Chamber Purge**: Automatically triggers the 5V clearing fan to dissipate gas back to clean air baseline within seconds.
+*   **Multi-Channel Gas Readouts**: Displays live numerical concentrations for MQ-2 (smoke/flammable hydrocarbons), MQ-3 (alcohol/solvent vapor proxies), and MQ-135 (toxic gases/ammonia).
+*   **Environmental Telemetry**: Tracks ambient temperature, relative humidity, and heat index derived from DHT11 sensor readings to evaluate vapor dispersion conditions.
+*   **View Mode Toggle**: Offers Simple Info mode for clear high-visibility field metrics and Advanced Info mode for technical vector breakdown.
+*   **Synchronized Time-Series Chart**: Renders a rolling 30-second multi-gas ppm trend chart powered by Chart.js for tracking plume rise and decay rates.
+*   **Five-Axis Vector Radar**: Maps live gas ratios against baseline ambient signatures to assist in identifying specific chemical classifications.
+*   **ADC Conversion Matrix**: Displays live 16-bit analog voltages and raw offsets from the ADS1115 analog-to-digital converter.
+*   **Zero-Point Calibration**: Provides one-click clean-air baseline calibration to adjust for sensor drift and ambient humidity variations.
 
----
+### Optical Threat Evidence
 
-## 🛠️ Tech Stack
+![Optical Threat Evidence View](./docs/screenshots/optical_evidence.png)
 
-- **Frontend**: React 18, Vite, Tailwind CSS, Chart.js (`react-chartjs-2`), Leaflet (`leaflet`), Material Symbols Outlined, Plus Jakarta Sans & Inter typography.
-- **Backend**: Node.js, Express, Socket.IO (bidirectional WebSockets), SQLite3 (`server/narco_nose.db`).
-- **Communication Protocol**: WebSockets for browser streaming + MQTT (`mqtt.js`) for Raspberry Pi 5 broker integration.
-- **Vision Pipeline**: YOLOv8-Nano inference metadata bridge + dynamic MJPEG/SVG HUD frame generator.
+*   **Optical Inspection Feed**: Displays real-time camera imagery coupled with target classification bounding boxes and model confidence scores.
+*   **Threat Telemetry Overlay**: Synchronizes captured optical frames with simultaneous sensor readings (gas ppm, temperature, timestamp) recorded at the exact moment of detection.
+*   **Interactive GPS Tracker**: Renders live coordinate positioning via Leaflet, including latitude, longitude, altitude, ground speed, and breadcrumb route trails.
+*   **Bounding Box HUD Toggle**: Allows security personnel to enable or disable classification labels and target highlight boxes on the fly.
+*   **Manual Snapshot Capture**: Enables operators to trigger immediate high-resolution frame captures for evidentiary records.
 
----
+### History and Event Logs
 
-## 🚀 Getting Started
+![History and Event Logs View](./docs/screenshots/history_logs.png)
 
-### 1. Prerequisites
-- **Node.js** v18 or higher ([Download Node.js](https://nodejs.org/))
-- **npm** v9 or higher
+*   **Chronological Incident Timeline**: Records all detected threat events with classified anomaly types, severity badges, and occurrence timestamps.
+*   **Snapshot Inspection Modal**: Enables operators to select any logged incident to inspect the stored optical frame and review associated gas readings.
+*   **Tabular Telemetry Archive**: Lists continuous time-stamped sensor logs stored in the local SQLite database.
+*   **Data Export Pipeline**: Features dedicated endpoints to download complete incident logs in standardized CSV and JSON formats for post-incident analysis.
+*   **Log Filtering**: Allows sorting and filtering incidents based on threat severity level and sensor threshold triggers.
 
-### 2. Clone and Install
+### Device Settings & Hardware Diagnostics
+
+![Device Settings View](./docs/screenshots/device_settings.png)
+
+*   **SoC Hardware Monitoring**: Displays Raspberry Pi 5 Broadcom CPU utilization, memory allocation, storage capacity, and processor core temperature.
+*   **Peripheral Bus Diagnostics**: Validates operational status across physical communication buses (I2C at 0x48, UART on /dev/ttyAMA0, CSI camera bus, and GPIO actuators).
+*   **Actuator State Management**: Allows manual overrides and automation rules for the 5V chamber clearing fan (Auto, Manual On, Off), piezo alarm buzzer (Armed, Mute, Test), and RGB status indicators.
+*   **Threshold Calibration**: Sliders to adjust trigger levels for individual gas channels and set the minimum confidence cutoff for automated alarms.
+*   **MQTT Gateway Settings**: Interface to configure the target MQTT broker host IP, port number, and client topic prefix without code modifications.
+
+## Local Setup & Installation
+
+### Prerequisites
+
+*   Node.js v20.0.0 or higher (compatible up to Node.js v22.x)
+*   npm v9.0.0 or higher
+*   Git command line tools
+
+### Installation Steps
+
+1. Clone the repository:
+
 ```bash
 git clone https://github.com/ankursinGGha/narco_nose.git
 cd narco_nose
+```
+
+2. Install dependencies:
+
+```bash
 npm install
+```
+
+3. Configure environment variables (optional):
+
+The application functions out of the box using default settings. If custom network bindings or ports are required, create a `.env` file in the project root:
+
+```bash
+# Server configuration
+PORT=5000
+
+# MQTT broker settings
+MQTT_PORT=1883
+MQTT_HOST=127.0.0.1
+
+# Node environment
+NODE_ENV=development
+```
+
+4. Launch the application:
+
+To run both the backend server and frontend development server concurrently with hot reload:
+
+```bash
+npm run dev
+```
+
+Alternatively, to compile the production bundle and launch the integrated full-stack server:
+
+```bash
+node start.js
+```
+
+5. Access the application:
+
+Open a web browser and navigate to `http://localhost:5173` (Vite dev server) or `http://localhost:5000` (full-stack production server).
+
+## Hackathon Track / Category
+
+*   **Target Track**: [Insert Hackathon Track Name Here, e.g., Smart Cities / Public Safety / IoT & Edge Computing]
+*   **Problem Statement**: [Insert Target Problem Statement or Challenge ID Here]
+*   **Team Name**: [Insert Team Name Here]
