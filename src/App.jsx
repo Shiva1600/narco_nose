@@ -34,10 +34,10 @@ function DashboardContent() {
       {/* Homepage Top Background Video - Google Flow Vintage Railway Station ("No Drugs Only Bugs") */}
       {isHomePage && (
         <div
-          className="absolute top-0 left-0 right-0 h-[340px] sm:h-[520px] lg:h-[580px] xl:h-[630px] pointer-events-none z-0 overflow-hidden select-none"
+          className="absolute top-0 left-0 right-0 h-[400px] sm:h-[480px] lg:h-[540px] xl:h-[600px] pointer-events-none z-0 overflow-hidden select-none"
           style={{
-            maskImage: 'linear-gradient(to bottom, rgba(0,0,0,1) 82%, rgba(0,0,0,0) 100%)',
-            WebkitMaskImage: 'linear-gradient(to bottom, rgba(0,0,0,1) 82%, rgba(0,0,0,0) 100%)'
+            maskImage: 'linear-gradient(to bottom, rgba(0,0,0,1) 68%, rgba(0,0,0,0) 100%)',
+            WebkitMaskImage: 'linear-gradient(to bottom, rgba(0,0,0,1) 68%, rgba(0,0,0,0) 100%)'
           }}
         >
           <video
@@ -46,12 +46,11 @@ function DashboardContent() {
             muted
             playsInline
             src="/videos/homepage_train.mp4"
-            className="w-full h-full object-cover object-[center_70%]"
+            className="w-full h-full object-cover object-[center_38%]"
           />
-          {/* Cinematic ambient overlays to guarantee strong text contrast on all devices including laptops */}
-          <div className="absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-slate-950/30 to-transparent pointer-events-none" />
-          <div className="absolute inset-0 bg-gradient-to-r from-slate-950/85 via-slate-950/45 to-transparent pointer-events-none" />
-          <div className="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-slate-50 via-slate-50/70 to-transparent pointer-events-none" />
+          {/* Subtle cinematic top tint and clean bottom blend into slate-50 */}
+          <div className="absolute inset-x-0 top-0 h-20 bg-gradient-to-b from-slate-950/20 to-transparent pointer-events-none" />
+          <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-slate-50 via-slate-50/75 to-transparent pointer-events-none" />
         </div>
       )}
 
